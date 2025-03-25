@@ -1,11 +1,9 @@
 using System.Globalization;
-using System.Text.RegularExpressions;
 using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using HtmlAgilityPack;
 using Imouto.BooruParser.Extensions;
-using Imouto.BooruParser.Implementations.Danbooru;
 using Microsoft.Extensions.Options;
 using Misaki;
 
@@ -13,9 +11,6 @@ namespace Imouto.BooruParser.Implementations.Gelbooru;
 
 public class GelbooruApiLoader : IBooruApiLoader
 {
-    private static readonly Regex DateTimeRegex = new(
-        ".*(?<month>\\w{3}).*(?<date>\\d{2}).*(?<hours>\\d{2})\\:(?<minutes>\\d{2})\\:(?<seconds>\\d{2}).*(?<tzhours>[+\\-]\\d{2})(?<tzminutes>\\d{2}).*(?<year>\\d{4})", RegexOptions.Compiled);
-    
     private const string BaseUrl = "https://gelbooru.com/";
     private readonly IFlurlClient _flurlClient;
 
@@ -180,7 +175,7 @@ public class GelbooruApiLoader : IBooruApiLoader
             return [];
 
         var notes = postHtml.DocumentNode
-            .SelectNodes(@"//*[@id='notes']/article")
+            .SelectNodes("//*[@id='notes']/article")
             ?.Select(note =>
             {
                 var height = note.Attributes["data-height"].Value;
@@ -206,13 +201,13 @@ public class GelbooruApiLoader : IBooruApiLoader
 
     private static IReadOnlyCollection<Tag> GetTags(HtmlDocument post) 
         => post.DocumentNode
-            .SelectSingleNode(@"//*[@id='tag-list']")
-            .SelectNodes(@"li")
+            .SelectSingleNode("//*[@id='tag-list']")
+            .SelectNodes("li")
             .Where(x => x.Attributes["class"]?.Value.StartsWith("tag-type-") == true)
             .Select(x =>
             {
                 var type = x.Attributes["class"].Value.Split('-').Last();
-                var name = x.SelectSingleNode(@"a").InnerHtml;
+                var name = x.SelectSingleNode("a").InnerHtml;
 
                 return new Tag(type, name);
             })
@@ -230,20 +225,11 @@ public class GelbooruApiLoader : IBooruApiLoader
 
     private static DateTimeOffset ExtractDate(GelbooruPost post)
     {
-        var datetime = DateTimeRegex.Match(post.CreatedAt);
-        
-        var year = int.Parse(datetime.Groups["year"].Value);
-        var monthString = datetime.Groups["month"].Value;
-        var date = int.Parse(datetime.Groups["date"].Value);
-        var hours = int.Parse(datetime.Groups["hours"].Value);
-        var minutes = int.Parse(datetime.Groups["minutes"].Value);
-        var seconds = int.Parse(datetime.Groups["seconds"].Value);
-        var tzHours = int.Parse(datetime.Groups["tzhours"].Value);
-        var tzMinutes = int.Parse(datetime.Groups["tzminutes"].Value);
-        var month = DateTime.Parse($"01 {monthString} 2020").Month;
-        
-        return new DateTimeOffset(year, month, date, hours, minutes, seconds,
-            new TimeSpan(tzHours, tzMinutes, 0));
+        // Sat Oct 22 02:03:36 -0500 2022
+        return DateTimeOffset.ParseExact(
+            post.CreatedAt,
+            "ddd MMM dd HH:mm:ss zzz yyyy",
+            CultureInfo.InvariantCulture);
     }
 
     private static Post CreatePost(GelbooruPost post, HtmlDocument postHtml) 

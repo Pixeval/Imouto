@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Imouto.BooruParser.Extensions;
 using Imouto.BooruParser.Implementations;
 using Imouto.BooruParser.Tests.Loaders.Fixtures;
 using Xunit;

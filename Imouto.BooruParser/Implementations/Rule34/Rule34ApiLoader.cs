@@ -3,7 +3,6 @@ using Flurl.Http;
 using Flurl.Http.Configuration;
 using HtmlAgilityPack;
 using Imouto.BooruParser.Extensions;
-using Imouto.BooruParser.Implementations.Gelbooru;
 using Microsoft.Extensions.Options;
 using Misaki;
 
@@ -206,8 +205,8 @@ public class Rule34ApiLoader : IBooruApiLoader
             return Array.Empty<Note>();
 
         
-        var boxes = postHtml.DocumentNode.SelectNodes(@"//*[@id='note-container']/*[@class='note-box']");
-        var bodies = postHtml.DocumentNode.SelectNodes(@"//*[@id='note-container']/*[@class='note-body']");
+        var boxes = postHtml.DocumentNode.SelectNodes("//*[@id='note-container']/*[@class='note-box']");
+        var bodies = postHtml.DocumentNode.SelectNodes("//*[@id='note-container']/*[@class='note-body']");
         var notes = boxes != null && bodies != null
             ? boxes.Zip(bodies)
                 .Select(x =>
@@ -242,8 +241,8 @@ public class Rule34ApiLoader : IBooruApiLoader
 
     private static IReadOnlyCollection<Tag> GetTags(HtmlDocument post) 
         => post.DocumentNode
-            .SelectSingleNode(@"//*[@id='tag-sidebar']")
-            .SelectNodes(@"li")
+            .SelectSingleNode("//*[@id='tag-sidebar']")
+            .SelectNodes("li")
             .Where(x => x.Attributes["class"]?.Value.StartsWith("tag-type-") == true)
             .Select(x =>
             {

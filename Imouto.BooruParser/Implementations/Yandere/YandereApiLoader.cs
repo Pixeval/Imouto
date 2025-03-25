@@ -5,7 +5,6 @@ using Flurl.Http;
 using Flurl.Http.Configuration;
 using HtmlAgilityPack;
 using Imouto.BooruParser.Extensions;
-using Imouto.BooruParser.Implementations.Rule34;
 using Microsoft.Extensions.Options;
 using Misaki;
 
@@ -259,9 +258,9 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
         HtmlDocument postHtml)
     {
         var childrenIds = postHtml.DocumentNode
-            .SelectNodes(@"//*[@id='post-view']/div[@class='status-notice']")
+            .SelectNodes("//*[@id='post-view']/div[@class='status-notice']")
             ?.FirstOrDefault(x => x.InnerHtml.Contains("child post"))
-            ?.SelectNodes(@"a").Where(x => x.Attributes["href"]?.Value.Contains("/post/show/") ?? false)
+            ?.SelectNodes("a").Where(x => x.Attributes["href"]?.Value.Contains("/post/show/") ?? false)
             .Select(x => int.Parse(x.InnerHtml))
             .ToArray() ?? [];
 
@@ -278,7 +277,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
     private static ExistState GetExistState(HtmlDocument postHtml)
     {
         var isDeleted = postHtml.DocumentNode
-            .SelectNodes(@"//*[@id='post-view']/div[@class='status-notice']")
+            .SelectNodes("//*[@id='post-view']/div[@class='status-notice']")
             ?.Any(x => x.InnerHtml.Contains("This post was deleted.")) ?? false;
 
         return isDeleted ? ExistState.MarkDeleted : ExistState.Exist;
@@ -287,7 +286,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
     private async Task<IReadOnlyCollection<Pool>> GetPoolsAsync(int postId, HtmlDocument postHtml)
     {
         var pools = postHtml.DocumentNode
-            .SelectNodes(@"//*[@id='post-view']/div[@class='status-notice']")
+            .SelectNodes("//*[@id='post-view']/div[@class='status-notice']")
             ?.Where(x => (x.Attributes["id"]?.Value)?[..4] == "pool")
             .Select(x =>
             {
@@ -325,8 +324,8 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
             return [];
 
         var notes = postHtml.DocumentNode
-            .SelectSingleNode(@"//*[@id='note-container']")
-            ?.SelectNodes(@"div")
+            .SelectSingleNode("//*[@id='note-container']")
+            ?.SelectNodes("div")
             ?.SelectPairs((styleNode, textNode) =>
             {
                 var stylesStrings = styleNode.Attributes["style"].Value;
@@ -356,12 +355,12 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
     private static IReadOnlyCollection<Tag> GetTags(HtmlDocument postHtml)
     {
         return postHtml.DocumentNode
-            .SelectSingleNode(@"//*[@id='tag-sidebar']")
-            .SelectNodes(@"li")
+            .SelectSingleNode("//*[@id='tag-sidebar']")
+            .SelectNodes("li")
             .Select(x =>
             {
                 var type = x.Attributes["class"].Value.Split('-').Last();
-                var aNode = x.SelectSingleNode(@"a[2]");
+                var aNode = x.SelectSingleNode("a[2]");
                 var name = aNode.InnerHtml;
 
                 return new Tag(type, name);
