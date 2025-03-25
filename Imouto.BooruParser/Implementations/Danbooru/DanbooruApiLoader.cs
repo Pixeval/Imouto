@@ -3,6 +3,7 @@ using Flurl.Http;
 using Flurl.Http.Configuration;
 using Imouto.BooruParser.Extensions;
 using Microsoft.Extensions.Options;
+using Misaki;
 
 namespace Imouto.BooruParser.Implementations.Danbooru;
 
@@ -36,8 +37,7 @@ public class DanbooruApiLoader : IBooruApiLoader, IBooruApiAccessor
             post.Source,
             new Size(post.ImageWidth, post.ImageHeight),
             post.FileSize,
-            GetRating(post.Rating),
-            GetRatingSafeLevel(post.Rating),
+            SafeRating.Parse(post.Rating),
             GetUgoiraMetadata(post),
             GetParent(post),
             GetChildren(post),
@@ -54,7 +54,7 @@ public class DanbooruApiLoader : IBooruApiLoader, IBooruApiAccessor
             .WithUserAgent(_botUserAgent)
             .GetJsonAsync<IReadOnlyCollection<DanbooruPost>>();
 
-        if (!posts.Any())
+        if (posts.Count is 0)
             return null;
 
         var post = posts.First();
@@ -69,8 +69,7 @@ public class DanbooruApiLoader : IBooruApiLoader, IBooruApiAccessor
             post.Source,
             new Size(post.ImageWidth, post.ImageHeight),
             post.FileSize,
-            GetRating(post.Rating),
-            GetRatingSafeLevel(post.Rating),
+            SafeRating.Parse(post.Rating),
             GetUgoiraMetadata(post),
             GetParent(post),
             GetChildren(post),
@@ -112,7 +111,7 @@ public class DanbooruApiLoader : IBooruApiLoader, IBooruApiAccessor
     public async Task<SearchResult> GetPreviousPageAsync(SearchResult results)
     {
         if (results.PageNumber <= 1)
-            throw new ArgumentOutOfRangeException("PageNumber", results.PageNumber, null);
+            throw new ArgumentOutOfRangeException(nameof(results.PageNumber), results.PageNumber, null);
 
         var nextPage = results.PageNumber - 1;
 
@@ -271,20 +270,6 @@ public class DanbooruApiLoader : IBooruApiLoader, IBooruApiAccessor
             .ToList();
     }
 
-    private static Rating GetRating(string postRating) => GetRatingFromChar(postRating).Item1;
-
-    private static RatingSafeLevel GetRatingSafeLevel(string postRating) => GetRatingFromChar(postRating).Item2;
-
-    private static (Rating, RatingSafeLevel) GetRatingFromChar(string rating)
-        => rating switch
-        {
-            "q" => (Rating.Questionable, RatingSafeLevel.None),
-            "s" => (Rating.Safe, RatingSafeLevel.Sensitive),
-            "g" => (Rating.Safe, RatingSafeLevel.General),
-            "e" => (Rating.Explicit, RatingSafeLevel.None),
-            _ => (Rating.Questionable, RatingSafeLevel.None)
-        };
-
     private static IReadOnlyCollection<Tag> GetTags(DanbooruPost post)
         => post.TagStringArtist.Split(' ').Select(x => (Type: "artist", Tag: x))
             .Union(post.TagStringCharacter.Split(' ').Select(x => (Type: "character", Tag: x)))
@@ -301,7 +286,7 @@ public class DanbooruApiLoader : IBooruApiLoader, IBooruApiAccessor
         var apiKey = options.Value.ApiKey;
         var delay = options.Value.PauseBetweenRequests;
 
-        if (options.Value.Login != null && options.Value.ApiKey != null)
+        if (options.Value is { Login: not null, ApiKey: not null })
             call.Request.SetQueryParam("login", login).SetQueryParam("api_key", apiKey);
 
         if (delay > TimeSpan.Zero)

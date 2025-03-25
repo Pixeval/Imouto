@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using Imouto.BooruParser.Extensions;
 using Imouto.BooruParser.Implementations.Danbooru;
 using Microsoft.Extensions.Options;
+using Misaki;
 
 namespace Imouto.BooruParser.Implementations.Gelbooru;
 
@@ -203,20 +204,6 @@ public class GelbooruApiLoader : IBooruApiLoader
         static int GetPositionInt(string number) => (int)Math.Ceiling(Convert.ToDouble(number) - 0.5);
     }
 
-    private static Rating GetRating(string postRating) => GetRatingFromChar(postRating).Item1;
-
-    private static RatingSafeLevel GetRatingSafeLevel(string postRating) => GetRatingFromChar(postRating).Item2;
-
-    private static (Rating, RatingSafeLevel) GetRatingFromChar(string rating)
-        => rating[0] switch
-        {
-            'q' => (Rating.Questionable, RatingSafeLevel.None),
-            's' => (Rating.Safe, RatingSafeLevel.Sensitive),
-            'g' => (Rating.Safe, RatingSafeLevel.General),
-            'e' => (Rating.Explicit, RatingSafeLevel.None),
-            _ => (Rating.Questionable, RatingSafeLevel.None)
-        };
-
     private static IReadOnlyCollection<Tag> GetTags(HtmlDocument post) 
         => post.DocumentNode
             .SelectSingleNode(@"//*[@id='tag-list']")
@@ -271,8 +258,7 @@ public class GelbooruApiLoader : IBooruApiLoader
             post.Source,
             new Size(post.Width, post.Height),
             -1,
-            GetRating(post.Rating),
-            GetRatingSafeLevel(post.Rating),
+            SafeRating.Parse(post.Rating),
             [],
             GetParent(post),
             GetChildren(),
@@ -316,8 +302,7 @@ public class GelbooruApiLoader : IBooruApiLoader
             source,
             new Size(size[0], size[1]),
             -1,
-            GetRating(rating),
-            GetRatingSafeLevel(rating),
+            SafeRating.Parse(rating),
             [],
             null,
             GetChildren(),

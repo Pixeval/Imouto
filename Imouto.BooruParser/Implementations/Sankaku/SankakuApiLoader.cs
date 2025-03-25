@@ -3,6 +3,7 @@ using Flurl.Http;
 using Flurl.Http.Configuration;
 using Imouto.BooruParser.Extensions;
 using Microsoft.Extensions.Options;
+using Misaki;
 
 namespace Imouto.BooruParser.Implementations.Sankaku;
 
@@ -74,9 +75,8 @@ public class SankakuApiLoader : IBooruApiLoader, IBooruApiAccessor
             null, // sankaku deprecated source field 
             new Size(post.Width, post.Height),
             post.FileSize,
-            GetRating(post.Rating),
-            RatingSafeLevel.None,
-            Array.Empty<int>(),
+            SafeRating.Parse(post.Rating),
+            [],
             await GetPostIdentityAsync(post.ParentId),
             await GetChildrenAsync(post),
             await GetPoolsAsync(postId).ToListAsync(),
@@ -107,9 +107,8 @@ public class SankakuApiLoader : IBooruApiLoader, IBooruApiAccessor
             null, // sankaku deprecated source field 
             new Size(post.Width, post.Height),
             post.FileSize,
-            GetRating(post.Rating),
-            RatingSafeLevel.None,
-            Array.Empty<int>(),
+            SafeRating.Parse(post.Rating),
+            [],
             await GetPostIdentityAsync(post.ParentId),
             await GetChildrenAsync(post),
             await GetPoolsAsync(post.Id).ToListAsync(),
@@ -318,15 +317,6 @@ public class SankakuApiLoader : IBooruApiLoader, IBooruApiAccessor
             .Select(x => new Note(x.Id, x.Body, new Position(x.Y, x.X), new Size(x.Width, x.Height)))
             .ToList();
     }
-
-    private static Rating GetRating(string rating)
-        => rating switch
-        {
-            "q" => Rating.Questionable,
-            "s" => Rating.Safe,
-            "e" => Rating.Explicit,
-            _ => Rating.Questionable
-        };
 
     private async Task<IReadOnlyCollection<Tag>> GetTags(SankakuPost post)
     {

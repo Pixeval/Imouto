@@ -1,4 +1,5 @@
 ﻿using Imouto.BooruParser.Implementations.Sankaku;
+using Misaki;
 
 namespace Imouto.BooruParser;
 
@@ -84,23 +85,21 @@ public record Post(
     string? Source,
     Size FileResolution,
     int FileSizeInBytes,
-    Rating Rating,
-    RatingSafeLevel RatingSafeLevel,
+    SafeRating Rating,
     IReadOnlyCollection<int> UgoiraFrameDelays,
     PostIdentity? Parent,
     IReadOnlyCollection<PostIdentity> ChildrenIds,
     IReadOnlyCollection<Pool> Pools,
     IReadOnlyCollection<Tag> Tags,
-    IReadOnlyCollection<Note> Notes);
+    IReadOnlyCollection<Note> Notes)
+{
 
+
+}
 
 public enum ExistState { Exist, MarkDeleted, Deleted }
 
 public enum PopularType { Day, Week, Month }
-
-public enum Rating { Safe, Questionable, Explicit }
-
-public enum RatingSafeLevel { None, Sensitive, General }
 
 public record Pool(string Id, string Name, int Position);
 

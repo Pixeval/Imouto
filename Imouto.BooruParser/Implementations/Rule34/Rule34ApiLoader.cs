@@ -5,6 +5,7 @@ using HtmlAgilityPack;
 using Imouto.BooruParser.Extensions;
 using Imouto.BooruParser.Implementations.Gelbooru;
 using Microsoft.Extensions.Options;
+using Misaki;
 
 namespace Imouto.BooruParser.Implementations.Rule34;
 
@@ -239,20 +240,6 @@ public class Rule34ApiLoader : IBooruApiLoader
         static int GetPositionInt(string number) => (int)Math.Ceiling(Convert.ToDouble(number) - 0.5);
     }
 
-    private static Rating GetRating(string postRating) => GetRatingFromChar(postRating).Item1;
-
-    private static RatingSafeLevel GetRatingSafeLevel(string postRating) => GetRatingFromChar(postRating).Item2;
-
-    private static (Rating, RatingSafeLevel) GetRatingFromChar(string rating)
-        => rating[0] switch
-        {
-            'q' => (Rating.Questionable, RatingSafeLevel.None),
-            's' => (Rating.Safe, RatingSafeLevel.Sensitive),
-            'g' => (Rating.Safe, RatingSafeLevel.General),
-            'e' => (Rating.Explicit, RatingSafeLevel.None),
-            _ => (Rating.Questionable, RatingSafeLevel.None)
-        };
-
     private static IReadOnlyCollection<Tag> GetTags(HtmlDocument post) 
         => post.DocumentNode
             .SelectSingleNode(@"//*[@id='tag-sidebar']")
@@ -290,8 +277,7 @@ public class Rule34ApiLoader : IBooruApiLoader
             post.Source,
             new Size(post.Width, post.Height),
             -1,
-            GetRating(post.Rating),
-            GetRatingSafeLevel(post.Rating),
+            SafeRating.Parse(post.Rating),
             Array.Empty<int>(),
             GetParent(post),
             GetChildren(),

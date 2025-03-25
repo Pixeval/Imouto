@@ -37,8 +37,7 @@ public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.Should().Be(Rating.Safe);
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.Sensitive);
+            post.Rating.IsSensitive.Should().Be(true);
             post.Source.Should().Be("https://twitter.com/sian_sasaland/status/1583461715777585154");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -76,8 +75,7 @@ public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.Should().Be(Rating.Safe);
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.Sensitive);
+            post.Rating.IsSensitive.Should().Be(true);
             post.Source.Should().Be("https://twitter.com/sian_sasaland/status/1583461715777585154");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -221,8 +219,7 @@ public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.Should().Be(Rating.Explicit);
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
+            post.Rating.IsExplicit.Should().Be(true);
             post.Source.Should().BeNull();
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.MarkDeleted);
@@ -260,8 +257,7 @@ public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.Should().Be(Rating.Explicit);
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
+            post.Rating.IsExplicit.Should().Be(true);
             post.Source.Should().BeNull();
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.MarkDeleted);

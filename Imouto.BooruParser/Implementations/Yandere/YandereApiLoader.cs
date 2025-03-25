@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using Imouto.BooruParser.Extensions;
 using Imouto.BooruParser.Implementations.Rule34;
 using Microsoft.Extensions.Options;
+using Misaki;
 
 namespace Imouto.BooruParser.Implementations.Yandere;
 
@@ -352,15 +353,6 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
         static int GetPositionInt(string number) => (int)Math.Ceiling(Convert.ToDouble(number) - 0.5);
     }
 
-    private static Rating GetRatingFromChar(string rating)
-        => rating switch
-        {
-            "q" => Rating.Questionable,
-            "s" => Rating.Safe,
-            "e" => Rating.Explicit,
-            _ => throw new ArgumentOutOfRangeException(nameof(rating))
-        };
-
     private static IReadOnlyCollection<Tag> GetTags(HtmlDocument postHtml)
     {
         return postHtml.DocumentNode
@@ -402,8 +394,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
             post.Source,
             new Size(post.Width, post.Height),
             post.FileSize,
-            GetRatingFromChar(post.Rating),
-            RatingSafeLevel.None,
+            SafeRating.Parse(post.Rating),
             [],
             await GetPostIdentityAsync(post.ParentId),
             await GetChildrenAsync(postHtml),

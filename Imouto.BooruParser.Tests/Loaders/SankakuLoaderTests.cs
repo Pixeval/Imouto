@@ -1,5 +1,4 @@
 using FluentAssertions;
-using Imouto.BooruParser.Extensions;
 using Imouto.BooruParser.Implementations;
 using Imouto.BooruParser.Tests.Loaders.Fixtures;
 using Xunit;
@@ -60,8 +59,7 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
             post.Parent!.Id.Should().Be("PVaD8oPQ7ab");
             post.Parent!.Md5Hash.Should().Be("8f37e824ec321d96f0e149d77ee5d21d");
             post.Pools.Should().HaveCount(2);
-            post.Rating.Should().Be(Rating.Explicit);
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
+            post.Rating.IsExplicit.Should().Be(true);
             post.Source.Should().Be(null);
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -100,8 +98,7 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
             post.Parent!.Id.Should().Be("PVaD8oPQ7ab");
             post.Parent!.Md5Hash.Should().Be("8f37e824ec321d96f0e149d77ee5d21d");
             post.Pools.Should().HaveCount(2);
-            post.Rating.Should().Be(Rating.Explicit);
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
+            post.Rating.IsExplicit.Should().Be(true);
             post.Source.Should().Be(null);
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -137,8 +134,7 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().HaveCount(0);
-            post.Rating.Should().Be(Rating.Explicit);
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
+            post.Rating.IsExplicit.Should().Be(true);
             post.Source.Should().Be(null);
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);

@@ -42,7 +42,7 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.Should().Be(Rating.Questionable);
+            post.Rating.IsQuestionable.Should().Be(true);
             post.Source.Should().Be("https://yurang92.booth.pm/items/621246");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -51,7 +51,6 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
             post.SampleUrl.Should().Be("https://files.yande.re/sample/5569d245d4c85921a0da173d87391862/yande.re%20408517%20sample%20cleavage%20dakimakura%20fate_grand_order%20kimono%20mash_kyrielight%20no_bra%20nopan%20open_shirt%20yuran.jpg");
             post.UploaderId.Id.Should().Be("25882");
             post.UploaderId.Name.Should().Be("Mr_GT");
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
             post.FileSizeInBytes.Should().Be(5455985);
             post.UgoiraFrameDelays.Should().BeEmpty();
         }
@@ -78,7 +77,6 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.Should().Be(Rating.Questionable);
             post.Source.Should().Be("https://yurang92.booth.pm/items/621246");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -87,7 +85,7 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
             post.SampleUrl.Should().Be("https://files.yande.re/sample/5569d245d4c85921a0da173d87391862/yande.re%20408517%20sample%20cleavage%20dakimakura%20fate_grand_order%20kimono%20mash_kyrielight%20no_bra%20nopan%20open_shirt%20yuran.jpg");
             post.UploaderId.Id.Should().Be("25882");
             post.UploaderId.Name.Should().Be("Mr_GT");
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
+            post.Rating.IsQuestionable.Should().Be(true);
             post.FileSizeInBytes.Should().Be(5455985);
             post.UgoiraFrameDelays.Should().BeEmpty();
 

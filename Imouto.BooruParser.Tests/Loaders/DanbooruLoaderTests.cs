@@ -81,8 +81,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             post.Parent!.Id.Should().Be("5775694");
             post.Parent!.Md5Hash.Should().Be("886823ace72390fe7a8926e2ffe3299d");
             post.Pools.Should().BeEmpty();
-            post.Rating.Should().Be(Rating.Safe);
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.Sensitive);
+            post.Rating.IsSensitive.Should().Be(true);
             post.Source.Should().Be("https://twitter.com/jewel_milk/status/1584877432959541250");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -508,17 +507,13 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var questionablePost = await loader.GetPostAsync(5026269);
             var explicitPost = await loader.GetPostAsync(236059);
 
-            generalPost.Rating.Should().Be(Rating.Safe);
-            generalPost.RatingSafeLevel.Should().Be(RatingSafeLevel.General);
+            generalPost.Rating.IsGeneral.Should().Be(true);
                 
-            sensitivePost.Rating.Should().Be(Rating.Safe);
-            sensitivePost.RatingSafeLevel.Should().Be(RatingSafeLevel.Sensitive);
+            sensitivePost.Rating.IsSensitive.Should().Be(true);
                 
-            questionablePost.Rating.Should().Be(Rating.Questionable);
-            questionablePost.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
+            questionablePost.Rating.IsQuestionable.Should().Be(true);
                 
-            explicitPost.Rating.Should().Be(Rating.Explicit);
-            explicitPost.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
+            explicitPost.Rating.IsExplicit.Should().Be(true);
         }
 
         [Fact]

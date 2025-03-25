@@ -37,8 +37,7 @@ public class Rule34LoaderTests : IClassFixture<Rule34ApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.Should().Be(Rating.Explicit);
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
+            post.Rating.IsExplicit.Should().Be(true);
             post.Source.Should().Be("");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -76,8 +75,7 @@ public class Rule34LoaderTests : IClassFixture<Rule34ApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.Should().Be(Rating.Explicit);
-            post.RatingSafeLevel.Should().Be(RatingSafeLevel.None);
+            post.Rating.IsExplicit.Should().Be(true);
             post.Source.Should().Be("");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
