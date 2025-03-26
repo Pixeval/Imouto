@@ -4,16 +4,12 @@ using Xunit;
 
 namespace Imouto.BooruParser.Tests.Loaders;
 
-public class Rule34LoaderTests : IClassFixture<Rule34ApiLoaderFixture>
+public class Rule34LoaderTests(Rule34ApiLoaderFixture loaderFixture) : IClassFixture<Rule34ApiLoaderFixture>
 {
-    private readonly Rule34ApiLoaderFixture _loaderFixture;
+    private readonly Rule34ApiLoaderFixture _loaderFixture = loaderFixture;
 
-    public Rule34LoaderTests(Rule34ApiLoaderFixture loaderFixture) => _loaderFixture = loaderFixture;
-
-    public class GetPostAsyncMethod : Rule34LoaderTests
+    public class GetPostAsyncMethod(Rule34ApiLoaderFixture loaderFixture) : Rule34LoaderTests(loaderFixture)
     {
-        public GetPostAsyncMethod(Rule34ApiLoaderFixture loaderFixture) : base(loaderFixture) { }
-
         [Fact]
         public async Task ShouldReturnPost()
         {
@@ -37,7 +33,7 @@ public class Rule34LoaderTests : IClassFixture<Rule34ApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.IsExplicit.Should().Be(true);
+            post.SafeRating.IsExplicit.Should().Be(true);
             post.Source.Should().Be("");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -75,7 +71,7 @@ public class Rule34LoaderTests : IClassFixture<Rule34ApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.IsExplicit.Should().Be(true);
+            post.SafeRating.IsExplicit.Should().Be(true);
             post.Source.Should().Be("");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -91,10 +87,8 @@ public class Rule34LoaderTests : IClassFixture<Rule34ApiLoaderFixture>
         }
     }
 
-    public class SearchAsyncMethod : Rule34LoaderTests
+    public class SearchAsyncMethod(Rule34ApiLoaderFixture loaderFixture) : Rule34LoaderTests(loaderFixture)
     {
-        public SearchAsyncMethod(Rule34ApiLoaderFixture loaderFixture) : base(loaderFixture) { }
-
         [Fact]
         public async Task SearchAsyncShouldFind()
         {
@@ -131,10 +125,8 @@ public class Rule34LoaderTests : IClassFixture<Rule34ApiLoaderFixture>
         }
     }
 
-    public class GetPostMetadataMethod : Rule34LoaderTests
+    public class GetPostMetadataMethod(Rule34ApiLoaderFixture fixture) : Rule34LoaderTests(fixture)
     {
-        public GetPostMetadataMethod(Rule34ApiLoaderFixture fixture) : base(fixture) { }
-
         [Fact]
         public async Task ShouldLoadNotes()
         {

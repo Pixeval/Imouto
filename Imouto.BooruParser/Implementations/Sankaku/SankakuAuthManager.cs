@@ -53,7 +53,7 @@ public class SankakuAuthManager : ISankakuAuthManager
     public async Task<IReadOnlyCollection<FlurlCookie>> GetSankakuChannelSessionAsync()
     {
         if (_options.Value.Login is null || _options.Value.Password is null)
-            return Array.Empty<FlurlCookie>();
+            return [];
 
         var found = _memoryCache.Get<IReadOnlyCollection<FlurlCookie>>(SessionKey);
         if (found != null)
@@ -99,8 +99,8 @@ public class SankakuAuthManager : ISankakuAuthManager
             .WithCookies(cookieJar)
             .PostJsonAsync(new
             {
-                login = login,
-                password = password,
+                login,
+                password,
                 browserInfo = "Chrome"
             });
         
@@ -110,8 +110,7 @@ public class SankakuAuthManager : ISankakuAuthManager
             .WithCookies(cookieJar)
             .PostJsonAsync(new
             {
-                login = login,
-                password = password,
+                login, password,
             })
             .ReceiveJson<SankakuTokenResponse>();
         
@@ -234,8 +233,8 @@ public class SankakuAuthManager : ISankakuAuthManager
             .WithCookies(cookieJar)
             .PostJsonAsync(new
             {
-                login = login,
-                password = password,
+                login,
+                password,
                 browserInfo = "Chrome"
             });
         
@@ -245,8 +244,7 @@ public class SankakuAuthManager : ISankakuAuthManager
             .WithCookies(cookieJar)
             .PostJsonAsync(new
             {
-                login = login,
-                password = password,
+                login, password,
             })
             .ReceiveJson<SankakuTokenResponse>();
         
@@ -282,7 +280,7 @@ public class SankakuAuthManager : ISankakuAuthManager
             .SetQueryParam("lang", "en")
             .PostJsonAsync(new
             {
-                code = code,
+                code,
                 client_id = "sankaku-web-app",
                 redirect_uri = "https://sankaku.app/sso/callback",
             })

@@ -76,25 +76,58 @@ public record PostPreview(string Id, string? Md5Hash, string Title, bool IsBanne
 /// </summary>
 public record Post(
     PostIdentity Id,
-    string? OriginalUrl,
-    string? SampleUrl,
-    string? PreviewUrl,
+    string OriginalUrl,
+    string SampleUrl,
+    string PreviewUrl,
     ExistState ExistState,
     DateTimeOffset PostedAt,
     Uploader UploaderId,
     string? Source,
     Size FileResolution,
     int FileSizeInBytes,
-    SafeRating Rating,
+    SafeRating SafeRating,
     IReadOnlyCollection<int> UgoiraFrameDelays,
     PostIdentity? Parent,
     IReadOnlyCollection<PostIdentity> ChildrenIds,
     IReadOnlyCollection<Pool> Pools,
     IReadOnlyCollection<Tag> Tags,
-    IReadOnlyCollection<Note> Notes)
+    IReadOnlyCollection<Note> Notes) : IArtworkInfo
 {
+    string IIdentityInfo.Id => Id.Id;
 
+    public string Platform => Id.Platform;
 
+    ILookup<ITagCategory, ITag> IArtworkInfo.Tags => Tags.ToLookup(t => t.Category, ITag (t) => t);
+
+    IReadOnlyList<IImageFrame> IArtworkInfo.Thumbnails => throw new NotImplementedException();
+
+    IReadOnlyDictionary<string, object> IArtworkInfo.AdditionalInfo => throw new NotImplementedException();
+
+    ImageType IArtworkInfo.ImageType => throw new NotImplementedException();
+
+    int IArtworkInfo.TotalFavorite => -1;
+
+    int IArtworkInfo.TotalView => -1;
+
+    bool IArtworkInfo.IsFavorite => false;
+
+    string IArtworkInfo.Description => throw new NotImplementedException();
+
+    public Uri WebsiteUri => new Uri(OriginalUrl);
+
+    DateTimeOffset IArtworkInfo.CreateDate => throw new NotImplementedException();
+
+    DateTimeOffset IArtworkInfo.UpdateDate => throw new NotImplementedException();
+
+    DateTimeOffset IArtworkInfo.ModifyDate => throw new NotImplementedException();
+
+    IPreloadableEnumerable<IUser> IArtworkInfo.Authors => throw new NotImplementedException();
+
+    IPreloadableEnumerable<IUser> IArtworkInfo.Uploaders => throw new NotImplementedException();
+
+    string IArtworkInfo.Title => "";
+
+    
 }
 
 public enum ExistState { Exist, MarkDeleted, Deleted }
@@ -105,9 +138,45 @@ public record Pool(string Id, string Name, int Position);
 
 public record Note(string Id, string Text, Position Point, Size Size);
 
-public record Tag(string Type, string Name);
+public record Tag(string Type, string Name) : ITag
+{
+    public ITagCategory Category => new TagCategory(Name);
 
-public record PostIdentity(string Id, string Md5Hash);
+    public string Description => "";
+}
+
+public record PostIdentity : IIdentityInfo
+{
+    public PostIdentity(string id, string md5Hash, PlatformType platform)
+    {
+        Id = id;
+        Md5Hash = md5Hash;
+        Platform = platform switch
+        {
+            PlatformType.Danbooru => IIdentityInfo.Danbooru,
+            PlatformType.Gelbooru => IIdentityInfo.Gelbooru,
+            PlatformType.Sankaku => IIdentityInfo.Sankaku,
+            PlatformType.Yandere => IIdentityInfo.Yandere,
+            PlatformType.Rule34 => IIdentityInfo.Rule34,
+            _ => throw new ArgumentOutOfRangeException(nameof(platform))
+        };
+    }
+
+    public string Platform { get; init; }
+
+    public string Id { get; init; }
+
+    public string Md5Hash { get; init; }
+
+    public enum PlatformType
+    {
+        Danbooru,
+        Gelbooru,
+        Sankaku,
+        Yandere,
+        Rule34
+    }
+}
 
 public record Uploader(string Id, string Name);
 

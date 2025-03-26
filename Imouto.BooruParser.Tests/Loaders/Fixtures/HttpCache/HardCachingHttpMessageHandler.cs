@@ -48,7 +48,6 @@ public class HardCachingHttpMessageHandler : DelegatingHandler
                 Content = new StringContent(value.Response),
                 StatusCode = value.Code,
                 RequestMessage = request,
-                Headers = {  },
                 Version = Version.Parse("1.1")
             };
         }
@@ -69,7 +68,6 @@ public class HardCachingHttpMessageHandler : DelegatingHandler
             Content = new StringContent(content),
             StatusCode = code,
             RequestMessage = request,
-            Headers = {  },
             Version = Version.Parse("1.1")
         };
     }

@@ -8,47 +8,41 @@ using Misaki;
 
 namespace Imouto.BooruParser.Implementations.Rule34;
 
-public class Rule34ApiLoader : IBooruApiLoader
+public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings> options)
+    : IBooruApiLoader
 {
     private const string HtmlBaseUrl = "https://rule34.xxx";
     private const string JsonBaseUrl = "https://api.rule34.xxx";
-    private readonly IFlurlClient _flurlHtmlClient;
-    private readonly IFlurlClient _flurlJsonClient;
-
-    public Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings> options)
-    {
-        _flurlHtmlClient = factory.GetForDomain(new Url(HtmlBaseUrl))
-            .WithHeader("Connection", "keep-alive")
-            .WithHeader("sec-ch-ua", "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"")
-            .WithHeader("sec-ch-ua-mobile", "?0")
-            .WithHeader("sec-ch-ua-platform", "\"Windows\"")
-            .WithHeader("DNT", "1")
-            .WithHeader("Upgrade-Insecure-Requests", "1")
-            .WithHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36")
-            .WithHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
-            .WithHeader("Sec-Fetch-Site", "none")
-            .WithHeader("Sec-Fetch-Mode", "navigate")
-            .WithHeader("Sec-Fetch-User", "?1")
-            .WithHeader("Sec-Fetch-Dest", "document")
-            .WithHeader("Accept-Language", "en")
-            .BeforeCall(_ => DelayWithThrottler(options));
-
-        _flurlJsonClient = factory.GetForDomain(new Url(JsonBaseUrl))
-            .WithHeader("Connection", "keep-alive")
-            .WithHeader("sec-ch-ua", "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"")
-            .WithHeader("sec-ch-ua-mobile", "?0")
-            .WithHeader("sec-ch-ua-platform", "\"Windows\"")
-            .WithHeader("DNT", "1")
-            .WithHeader("Upgrade-Insecure-Requests", "1")
-            .WithHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36")
-            .WithHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
-            .WithHeader("Sec-Fetch-Site", "none")
-            .WithHeader("Sec-Fetch-Mode", "navigate")
-            .WithHeader("Sec-Fetch-User", "?1")
-            .WithHeader("Sec-Fetch-Dest", "document")
-            .WithHeader("Accept-Language", "en")
-            .BeforeCall(_ => DelayWithThrottler(options));
-    }
+    private readonly IFlurlClient _flurlHtmlClient = factory.GetForDomain(new Url(HtmlBaseUrl))
+        .WithHeader("Connection", "keep-alive")
+        .WithHeader("sec-ch-ua", "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"")
+        .WithHeader("sec-ch-ua-mobile", "?0")
+        .WithHeader("sec-ch-ua-platform", "\"Windows\"")
+        .WithHeader("DNT", "1")
+        .WithHeader("Upgrade-Insecure-Requests", "1")
+        .WithHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36")
+        .WithHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+        .WithHeader("Sec-Fetch-Site", "none")
+        .WithHeader("Sec-Fetch-Mode", "navigate")
+        .WithHeader("Sec-Fetch-User", "?1")
+        .WithHeader("Sec-Fetch-Dest", "document")
+        .WithHeader("Accept-Language", "en")
+        .BeforeCall(_ => DelayWithThrottler(options));
+    private readonly IFlurlClient _flurlJsonClient = factory.GetForDomain(new Url(JsonBaseUrl))
+        .WithHeader("Connection", "keep-alive")
+        .WithHeader("sec-ch-ua", "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"")
+        .WithHeader("sec-ch-ua-mobile", "?0")
+        .WithHeader("sec-ch-ua-platform", "\"Windows\"")
+        .WithHeader("DNT", "1")
+        .WithHeader("Upgrade-Insecure-Requests", "1")
+        .WithHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36")
+        .WithHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
+        .WithHeader("Sec-Fetch-Site", "none")
+        .WithHeader("Sec-Fetch-Mode", "navigate")
+        .WithHeader("Sec-Fetch-User", "?1")
+        .WithHeader("Sec-Fetch-Dest", "document")
+        .WithHeader("Accept-Language", "en")
+        .BeforeCall(_ => DelayWithThrottler(options));
 
     public async Task<Post> GetPostAsync(string postId)
     {
@@ -84,7 +78,7 @@ public class Rule34ApiLoader : IBooruApiLoader
             {
                 page = "post",
                 s = "list",
-                md5 = md5
+                md5
             })
             .WithAutoRedirect(true)
             .GetHtmlDocumentAsync();
@@ -149,7 +143,7 @@ public class Rule34ApiLoader : IBooruApiLoader
     public async Task<SearchResult> GetPreviousPageAsync(SearchResult results)
     {
         if (results.PageNumber <= 0)
-            throw new ArgumentOutOfRangeException("PageNumber", results.PageNumber, null);
+            throw new ArgumentOutOfRangeException(nameof(results.PageNumber), results.PageNumber, null);
 
         var nextPage = results.PageNumber - 1;
 
@@ -189,12 +183,7 @@ public class Rule34ApiLoader : IBooruApiLoader
         => throw new NotSupportedException("Rule34 does not support history");
 
     private static PostIdentity? GetParent(Rule34Post post)
-        => post.ParentId != 0 ? new PostIdentity(post.ParentId.ToString(), string.Empty) : null;
-
-    /// <remarks>
-    /// Haven't found any post with them
-    /// </remarks>
-    private static IReadOnlyCollection<PostIdentity> GetChildren() => Array.Empty<PostIdentity>();
+        => post.ParentId is not 0 ? new PostIdentity(post.ParentId.ToString(), "", PostIdentity.PlatformType.Rule34) : null;
 
     /// <remarks>
     /// Sample: https://rule34.xxx/index.php?page=post&amp;s=view&amp;id=6204314
@@ -202,7 +191,7 @@ public class Rule34ApiLoader : IBooruApiLoader
     private static IReadOnlyCollection<Note> GetNotes(Rule34Post? post, HtmlDocument postHtml)
     {
         if (post?.HasNotes != true)
-            return Array.Empty<Note>();
+            return [];
 
         
         var boxes = postHtml.DocumentNode.SelectNodes("//*[@id='note-container']/*[@class='note-box']");
@@ -230,9 +219,9 @@ public class Rule34ApiLoader : IBooruApiLoader
 
                     return new Note(id.ToString(), text, point, size);
                 })
-            : Enumerable.Empty<Note>();
+            : [];
 
-        return notes.ToList();
+        return [.. notes];
         
         static int GetSizeInt(string number) => (int)(Convert.ToDouble(number) + 0.5);
         
@@ -240,7 +229,7 @@ public class Rule34ApiLoader : IBooruApiLoader
     }
 
     private static IReadOnlyCollection<Tag> GetTags(HtmlDocument post) 
-        => post.DocumentNode
+        => [.. post.DocumentNode
             .SelectSingleNode("//*[@id='tag-sidebar']")
             .SelectNodes("li")
             .Where(x => x.Attributes["class"]?.Value.StartsWith("tag-type-") == true)
@@ -250,8 +239,7 @@ public class Rule34ApiLoader : IBooruApiLoader
                 var name = x.SelectNodes("a")[1].InnerText;
 
                 return new Tag(type, name);
-            })
-            .ToList();
+            })];
 
     /// <summary>
     /// Auth isn't supported right now.
@@ -263,10 +251,9 @@ public class Rule34ApiLoader : IBooruApiLoader
             await Throttler.Get("rule34").UseAsync(delay);
     }
 
-
     private static Post CreatePost(Rule34Post post, HtmlDocument postHtml) 
         => new(
-            new PostIdentity(post.Id.ToString(), post.Hash),
+            new PostIdentity(post.Id.ToString(), post.Hash, PostIdentity.PlatformType.Rule34),
             post.FileUrl,
             !string.IsNullOrWhiteSpace(post.SampleUrl) ? post.SampleUrl : post.FileUrl,
             post.PreviewUrl,
@@ -277,10 +264,10 @@ public class Rule34ApiLoader : IBooruApiLoader
             new Size(post.Width, post.Height),
             -1,
             SafeRating.Parse(post.Rating),
-            Array.Empty<int>(),
+            [],
             GetParent(post),
-            GetChildren(),
-            Array.Empty<Pool>(),
+            [],
+            [],
             GetTags(postHtml),
             GetNotes(post, postHtml));
 }

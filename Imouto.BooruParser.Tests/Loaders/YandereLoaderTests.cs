@@ -5,19 +5,12 @@ using Xunit;
 
 namespace Imouto.BooruParser.Tests.Loaders;
 
-public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
+public class YandereLoaderTests(YandereApiLoaderFixture loaderFixture) : IClassFixture<YandereApiLoaderFixture>
 {
-    private readonly YandereApiLoaderFixture _loaderFixture;
+    private readonly YandereApiLoaderFixture _loaderFixture = loaderFixture;
 
-    public YandereLoaderTests(YandereApiLoaderFixture loaderFixture) => _loaderFixture = loaderFixture;
-
-    public class GetPostAsyncMethod : YandereLoaderTests
+    public class GetPostAsyncMethod(YandereApiLoaderFixture loaderFixture) : YandereLoaderTests(loaderFixture)
     {
-        public GetPostAsyncMethod(YandereApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldReturnPost()
         {
@@ -36,12 +29,12 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
             {
                 postTag.Name.Should().NotBeNullOrWhiteSpace();
                 postTag.Type.Should().NotBeNullOrWhiteSpace();
-                postTag.Type.Should().BeOneOf(new[] { "general", "copyright", "character", "circle", "artist" });
+                postTag.Type.Should().BeOneOf("general", "copyright", "character", "circle", "artist");
             }
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.IsQuestionable.Should().Be(true);
+            post.SafeRating.IsQuestionable.Should().Be(true);
             post.Source.Should().Be("https://yurang92.booth.pm/items/621246");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -84,20 +77,15 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
             post.SampleUrl.Should().Be("https://files.yande.re/sample/5569d245d4c85921a0da173d87391862/yande.re%20408517%20sample%20cleavage%20dakimakura%20fate_grand_order%20kimono%20mash_kyrielight%20no_bra%20nopan%20open_shirt%20yuran.jpg");
             post.UploaderId.Id.Should().Be("25882");
             post.UploaderId.Name.Should().Be("Mr_GT");
-            post.Rating.IsQuestionable.Should().Be(true);
+            post.SafeRating.IsQuestionable.Should().Be(true);
             post.FileSizeInBytes.Should().Be(5455985);
             post.UgoiraFrameDelays.Should().BeEmpty();
 
         }
     }
 
-    public class SearchAsyncMethod : YandereLoaderTests
+    public class SearchAsyncMethod(YandereApiLoaderFixture loaderFixture) : YandereLoaderTests(loaderFixture)
     {
-        public SearchAsyncMethod(YandereApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldFind()
         {
@@ -134,13 +122,8 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
         }
     }
 
-    public class LoadNotesHistoryAsyncMethod : YandereLoaderTests
+    public class LoadNotesHistoryAsyncMethod(YandereApiLoaderFixture loaderFixture) : YandereLoaderTests(loaderFixture)
     {
-        public LoadNotesHistoryAsyncMethod(YandereApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldLoadNotesHistory()
         {
@@ -174,24 +157,19 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
         }
     }
 
-    public class GetTagHistoryPageAsyncMethod : YandereLoaderTests
+    public class GetTagHistoryPageAsyncMethod(YandereApiLoaderFixture loaderFixture) : YandereLoaderTests(loaderFixture)
     {
-        public GetTagHistoryPageAsyncMethod(YandereApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldLoadTagsHistoryToDate()
         {
             var loader = _loaderFixture.GetLoader();
 
-            var result = await loader.GetTagHistoryToDateTimeAsync(DateTime.Now.AddHours(-1)).ToListAsync();
+            var result = await loader.GetTagHistoryToDateTimeAsync(DateTimeOffset.Now.AddHours(-1)).ToListAsync();
 
             result.Should().NotBeEmpty();
-            result.First().HistoryId.Should().BeGreaterThan(0);
-            result.First().PostId.Should().NotBeEmpty();
-            result.First().UpdatedAt.Should().BeAfter(DateTime.Now.AddHours(-2));
+            result[0].HistoryId.Should().BeGreaterThan(0);
+            result[0].PostId.Should().NotBeEmpty();
+            result[0].UpdatedAt.Should().BeAfter(DateTimeOffset.Now.AddHours(-2));
         }
 
         [Fact]
@@ -252,13 +230,8 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
         }
     }
 
-    public class GetPopularPostsAsyncMethod : YandereLoaderTests
+    public class GetPopularPostsAsyncMethod(YandereApiLoaderFixture loaderFixture) : YandereLoaderTests(loaderFixture)
     {
-        public GetPopularPostsAsyncMethod(YandereApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldLoadPopularForDay()
         {
@@ -293,13 +266,8 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
         }
     }
 
-    public class LoadPostMetadataAsyncMethod : YandereLoaderTests
+    public class LoadPostMetadataAsyncMethod(YandereApiLoaderFixture fixture) : YandereLoaderTests(fixture)
     {
-        public LoadPostMetadataAsyncMethod(YandereApiLoaderFixture fixture)
-            : base(fixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldLoadParentsAndChildren()
         {
@@ -383,13 +351,8 @@ public class YandereLoaderTests : IClassFixture<YandereApiLoaderFixture>
         }
     }
 
-    public class FavoritePostAsyncMethod : YandereLoaderTests
+    public class FavoritePostAsyncMethod(YandereApiLoaderFixture loaderFixture) : YandereLoaderTests(loaderFixture)
     {
-        public FavoritePostAsyncMethod(YandereApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldFavoritePost()
         {

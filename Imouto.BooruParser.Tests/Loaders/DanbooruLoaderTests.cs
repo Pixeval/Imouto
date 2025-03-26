@@ -19,14 +19,11 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
         _gelbooruApiLoaderFixture = gelbooruApiLoaderFixture;
     }
 
-    public class GetPostAsyncMethod : DanbooruLoaderTests
+    public class GetPostAsyncMethod(
+        DanbooruApiLoaderFixture loaderFixture,
+        GelbooruApiLoaderFixture gelbooruApiLoaderFixture)
+        : DanbooruLoaderTests(loaderFixture, gelbooruApiLoaderFixture)
     {
-        public GetPostAsyncMethod(
-            DanbooruApiLoaderFixture loaderFixture,
-            GelbooruApiLoaderFixture gelbooruApiLoaderFixture) : base(loaderFixture, gelbooruApiLoaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldDownloadPostMedia()
         {
@@ -74,14 +71,14 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             {
                 postTag.Name.Should().NotBeNullOrWhiteSpace();
                 postTag.Type.Should().NotBeNullOrWhiteSpace();
-                postTag.Type.Should().BeOneOf(new[] { "meta", "general", "copyright", "character", "circle", "artist" });
+                postTag.Type.Should().BeOneOf("meta", "general", "copyright", "character", "circle", "artist");
             }
             
             post.Parent.Should().NotBeNull();
             post.Parent!.Id.Should().Be("5775694");
             post.Parent!.Md5Hash.Should().Be("886823ace72390fe7a8926e2ffe3299d");
             post.Pools.Should().BeEmpty();
-            post.Rating.IsSensitive.Should().Be(true);
+            post.SafeRating.IsSensitive.Should().Be(true);
             post.Source.Should().Be("https://twitter.com/jewel_milk/status/1584877432959541250");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -95,13 +92,9 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
         }
     }
     
-    public class LoadSearchResultAsyncMethod : DanbooruLoaderTests
+    public class LoadSearchResultAsyncMethod(DanbooruApiLoaderFixture loaderFixture)
+        : DanbooruLoaderTests(loaderFixture)
     {
-        public LoadSearchResultAsyncMethod(DanbooruApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-    
         [Fact]
         public async Task ShouldFind()
         {
@@ -156,13 +149,9 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
         }
     }
 
-    public class LoadNotesHistoryAsyncMethod : DanbooruLoaderTests
+    public class LoadNotesHistoryAsyncMethod(DanbooruApiLoaderFixture loaderFixture)
+        : DanbooruLoaderTests(loaderFixture)
     {
-        public LoadNotesHistoryAsyncMethod(DanbooruApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-    
         [Fact]
         public async Task ShouldGetUpToDateTime()
         {
@@ -200,13 +189,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             result.DistinctBy(x => x.HistoryId).Should().HaveCount(result.Count);
         }
     }
-    public class LoadTagHistory : DanbooruLoaderTests
+    public class LoadTagHistory(DanbooruApiLoaderFixture loaderFixture) : DanbooruLoaderTests(loaderFixture)
     {
-        public LoadTagHistory(DanbooruApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-    
         [Fact]
         public async Task ShouldGetUpToDateTime()
         {
@@ -316,13 +300,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
         }
     }
     
-    public class LoadPopularAsyncMethod : DanbooruLoaderTests
+    public class LoadPopularAsyncMethod(DanbooruApiLoaderFixture loaderFixture) : DanbooruLoaderTests(loaderFixture)
     {
-        public LoadPopularAsyncMethod(DanbooruApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-    
         [Fact]
         public async Task ShouldLoadPopularForDay()
         {
@@ -363,13 +342,9 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
         }
     }
 
-    public class LoadPostMetadataAsyncMethod : DanbooruLoaderTests
+    public class LoadPostMetadataAsyncMethod(DanbooruApiLoaderFixture loaderFixture)
+        : DanbooruLoaderTests(loaderFixture)
     {
-        public LoadPostMetadataAsyncMethod(DanbooruApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldLoadParentsAndChildren()
         {
@@ -411,7 +386,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
 
             post.Tags.Count.Should().BeGreaterThan(30);
             post.ChildrenIds.Count.Should().Be(2);
-            post.ChildrenIds.First().Should().Be(new PostIdentity("5318896", "46dda085dc9c60dd4380ed7b4433aa41"));
+            post.ChildrenIds.First().Should().Be(new PostIdentity("5318896", "46dda085dc9c60dd4380ed7b4433aa41", PostIdentity.PlatformType.Danbooru));
             post.Parent.Should().BeNull();
         }
             
@@ -507,13 +482,13 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var questionablePost = await loader.GetPostAsync(5026269);
             var explicitPost = await loader.GetPostAsync(236059);
 
-            generalPost.Rating.IsGeneral.Should().Be(true);
+            generalPost.SafeRating.IsGeneral.Should().Be(true);
                 
-            sensitivePost.Rating.IsSensitive.Should().Be(true);
+            sensitivePost.SafeRating.IsSensitive.Should().Be(true);
                 
-            questionablePost.Rating.IsQuestionable.Should().Be(true);
+            questionablePost.SafeRating.IsQuestionable.Should().Be(true);
                 
-            explicitPost.Rating.IsExplicit.Should().Be(true);
+            explicitPost.SafeRating.IsExplicit.Should().Be(true);
         }
 
         [Fact]
@@ -589,13 +564,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
         }
     }
 
-    public class FavoritePostAsyncMethod : DanbooruLoaderTests
+    public class FavoritePostAsyncMethod(DanbooruApiLoaderFixture loaderFixture) : DanbooruLoaderTests(loaderFixture)
     {
-        public FavoritePostAsyncMethod(DanbooruApiLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-    
         [Fact]
         public async Task ShouldFavoritePost()
         {

@@ -9,15 +9,13 @@ using Misaki;
 
 namespace Imouto.BooruParser.Implementations.Gelbooru;
 
-public class GelbooruApiLoader : IBooruApiLoader
+public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSettings> options)
+    : IBooruApiLoader
 {
     private const string BaseUrl = "https://gelbooru.com/";
-    private readonly IFlurlClient _flurlClient;
-
-    public GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSettings> options)
-        => _flurlClient = factory
-            .GetForDomain(new Url(BaseUrl))
-            .BeforeCall(_ => DelayWithThrottler(options));
+    private readonly IFlurlClient _flurlClient = factory
+        .GetForDomain(new Url(BaseUrl))
+        .BeforeCall(_ => DelayWithThrottler(options));
 
     public async Task<Post> GetPostAsync(string postId)
     {
@@ -54,7 +52,7 @@ public class GelbooruApiLoader : IBooruApiLoader
             {
                 page = "post",
                 s = "list",
-                md5 = md5
+                md5
             })
             .WithAutoRedirect(true)
             .GetHtmlDocumentAsync();
@@ -119,7 +117,7 @@ public class GelbooruApiLoader : IBooruApiLoader
     public async Task<SearchResult> GetPreviousPageAsync(SearchResult results)
     {
         if (results.PageNumber <= 0)
-            throw new ArgumentOutOfRangeException("PageNumber", results.PageNumber, null);
+            throw new ArgumentOutOfRangeException(nameof(results.PageNumber), results.PageNumber, null);
 
         var nextPage = results.PageNumber - 1;
 
@@ -162,7 +160,7 @@ public class GelbooruApiLoader : IBooruApiLoader
     /// Parent is always 0.
     /// </remarks>
     private static PostIdentity? GetParent(GelbooruPost post)
-        => post.ParentId != 0 ? new PostIdentity(post.ParentId.ToString(), string.Empty) : null;
+        => post.ParentId is not 0 ? new PostIdentity(post.ParentId.ToString(), "", PostIdentity.PlatformType.Gelbooru) : null;
 
     /// <remarks>
     /// Haven't found any post with them
@@ -192,7 +190,7 @@ public class GelbooruApiLoader : IBooruApiLoader
                 return new Note(id.ToString(), text, point, size);
             }) ?? [];
 
-        return notes.ToList();
+        return [.. notes];
         
         static int GetSizeInt(string number) => (int)(Convert.ToDouble(number) + 0.5);
         
@@ -200,18 +198,17 @@ public class GelbooruApiLoader : IBooruApiLoader
     }
 
     private static IReadOnlyCollection<Tag> GetTags(HtmlDocument post) 
-        => post.DocumentNode
+        => [.. post.DocumentNode
             .SelectSingleNode("//*[@id='tag-list']")
             .SelectNodes("li")
             .Where(x => x.Attributes["class"]?.Value.StartsWith("tag-type-") == true)
             .Select(x =>
             {
-                var type = x.Attributes["class"].Value.Split('-').Last();
+                var type = x.Attributes["class"].Value.Split('-')[^1];
                 var name = x.SelectSingleNode("a").InnerHtml;
 
                 return new Tag(type, name);
-            })
-            .ToList();
+            })];
 
     /// <summary>
     /// Auth isn't supported right now.
@@ -223,21 +220,19 @@ public class GelbooruApiLoader : IBooruApiLoader
             await Throttler.Get("gelbooru").UseAsync(delay);
     }
 
-    private static DateTimeOffset ExtractDate(GelbooruPost post)
-    {
+    private static DateTimeOffset ExtractDate(GelbooruPost post) =>
         // Sat Oct 22 02:03:36 -0500 2022
-        return DateTimeOffset.ParseExact(
+        DateTimeOffset.ParseExact(
             post.CreatedAt,
             "ddd MMM dd HH:mm:ss zzz yyyy",
             CultureInfo.InvariantCulture);
-    }
 
     private static Post CreatePost(GelbooruPost post, HtmlDocument postHtml) 
         => new(
-            new PostIdentity(post.Id.ToString(), post.Md5),
+            new PostIdentity(post.Id.ToString(), post.Md5, PostIdentity.PlatformType.Gelbooru),
             post.FileUrl,
-            !string.IsNullOrWhiteSpace(post.SampleUrl) ? post.SampleUrl : post.FileUrl,
-            post.PreviewUrl,
+            string.IsNullOrWhiteSpace(post.SampleUrl) ? post.FileUrl : post.SampleUrl,
+            post.PreviewUrl ?? post.FileUrl,
             ExistState.Exist,
             ExtractDate(post),
             new Uploader(post.CreatorId.ToString(), post.Owner.Replace('_', ' ')),
@@ -255,7 +250,7 @@ public class GelbooruApiLoader : IBooruApiLoader
     private static Post? CreatePost(HtmlDocument postHtml)
     {
         var idString = postHtml.DocumentNode.SelectSingleNode("//head/link[@rel='canonical']")
-            ?.Attributes["href"]?.Value?.Split('=')?.Last();
+            ?.Attributes["href"]?.Value?.Split('=')[^1];
 
         if (idString == null)
             return null;
@@ -263,7 +258,7 @@ public class GelbooruApiLoader : IBooruApiLoader
         var id = int.Parse(idString);
         
         var url = postHtml.DocumentNode.SelectSingleNode("//head/meta[@property='og:image']").Attributes["content"].Value;
-        var md5 = url.Split('/').Last().Split('.').First();
+        var md5 = url.Split('/')[^1].Split('.')[0];
         
         var dateString = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Posted: ')]/text()[1]").InnerText[8..];
         var date = new DateTimeOffset(DateTime.ParseExact(dateString, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), TimeSpan.FromHours(-5));
@@ -273,12 +268,12 @@ public class GelbooruApiLoader : IBooruApiLoader
         var source = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Source: ')]/a[1]")?.Attributes["href"].Value;
         
         var sizeString = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Size: ')]/text()").InnerText;
-        var size = sizeString.Split(':').Last().Trim().Split('x').Select(int.Parse).ToList();
+        var size = sizeString.Split(':')[^1].Trim().Split('x').Select(int.Parse).ToList();
         
-        var rating = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Rating: ')]/text()").InnerText.Split(' ').Last().ToLower();
+        var rating = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Rating: ')]/text()").InnerText.Split(' ')[^1].ToLower();
         
         return new(
-            new PostIdentity(id.ToString(), md5),
+            new PostIdentity(id.ToString(), md5, PostIdentity.PlatformType.Gelbooru),
             url,
             url,
             url,

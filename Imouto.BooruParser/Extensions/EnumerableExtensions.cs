@@ -14,11 +14,11 @@ public static class EnumerableExtensions
         
         while (iterator.MoveNext())
         {
-            item1 = i == 0 ? iterator.Current : item1;
-            item2 = i == 1 ? iterator.Current : item2;
+            item1 = i is 0 ? iterator.Current : item1;
+            item2 = i is 1 ? iterator.Current : item2;
             i++;
 
-            if (i == 2)
+            if (i is 2)
             {
                 yield return selector(item1, item2);
                 i = 0;

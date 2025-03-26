@@ -12,7 +12,7 @@ public class YandereApiLoaderFixture
     private readonly bool _enableCache = true;
 
     private readonly IOptions<YandereSettings> _authorizedOptions = Options.Create(
-        new YandereSettings()
+        new YandereSettings
         {
             PasswordHash = "5eedf880498cac52bbfc8386150682d54174fab0",
             Login = "testuser1",

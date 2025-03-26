@@ -10,19 +10,12 @@ namespace Imouto.BooruParser.Tests.Loaders;
 // Comment this line to enable tests
 // using FactAttribute = System.Runtime.CompilerServices.CompilerGeneratedAttribute;
 
-public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
+public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixture<SankakuLoaderFixture>
 {
-    private readonly SankakuLoaderFixture _loaderFixture;
+    private readonly SankakuLoaderFixture _loaderFixture = loaderFixture;
 
-    public SankakuLoaderTests(SankakuLoaderFixture loaderFixture) => _loaderFixture = loaderFixture;
-
-    public class GetPostAsyncMethod : SankakuLoaderTests
+    public class GetPostAsyncMethod(SankakuLoaderFixture loaderFixture) : SankakuLoaderTests(loaderFixture)
     {
-        public GetPostAsyncMethod(SankakuLoaderFixture loaderFixture) 
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldReturnPostWithoutCredentials()
         {
@@ -59,7 +52,7 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
             post.Parent!.Id.Should().Be("PVaD8oPQ7ab");
             post.Parent!.Md5Hash.Should().Be("8f37e824ec321d96f0e149d77ee5d21d");
             post.Pools.Should().HaveCount(2);
-            post.Rating.IsExplicit.Should().Be(true);
+            post.SafeRating.IsExplicit.Should().Be(true);
             post.Source.Should().Be(null);
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -98,7 +91,7 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
             post.Parent!.Id.Should().Be("PVaD8oPQ7ab");
             post.Parent!.Md5Hash.Should().Be("8f37e824ec321d96f0e149d77ee5d21d");
             post.Pools.Should().HaveCount(2);
-            post.Rating.IsExplicit.Should().Be(true);
+            post.SafeRating.IsExplicit.Should().Be(true);
             post.Source.Should().Be(null);
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -134,7 +127,7 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().HaveCount(0);
-            post.Rating.IsExplicit.Should().Be(true);
+            post.SafeRating.IsExplicit.Should().Be(true);
             post.Source.Should().Be(null);
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -168,13 +161,8 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
         }
     }
         
-    public class SearchAsyncMethod : SankakuLoaderTests
+    public class SearchAsyncMethod(SankakuLoaderFixture loaderFixture) : SankakuLoaderTests(loaderFixture)
     {
-        public SearchAsyncMethod(SankakuLoaderFixture loaderFixture) 
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldFind()
         {
@@ -214,13 +202,8 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
         }
     }
 
-    public class LoadNotesHistoryAsyncMethod : SankakuLoaderTests
+    public class LoadNotesHistoryAsyncMethod(SankakuLoaderFixture loaderFixture) : SankakuLoaderTests(loaderFixture)
     {
-        public LoadNotesHistoryAsyncMethod(SankakuLoaderFixture loaderFixture) 
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldLoadNotesHistory()
         {
@@ -231,13 +214,9 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
         }
     }
 
-    public class GetTagHistoryFirstPageAsyncMethod : SankakuLoaderTests
+    public class GetTagHistoryFirstPageAsyncMethod(SankakuLoaderFixture loaderFixture)
+        : SankakuLoaderTests(loaderFixture)
     {
-        public GetTagHistoryFirstPageAsyncMethod(SankakuLoaderFixture loaderFixture) 
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public void ShouldThrowWithoutCredentials()
         {
@@ -259,13 +238,9 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
         }
     }
 
-    public class GetTagHistoryToDateTimeAsyncMethod : SankakuLoaderTests
+    public class GetTagHistoryToDateTimeAsyncMethod(SankakuLoaderFixture loaderFixture)
+        : SankakuLoaderTests(loaderFixture)
     {
-        public GetTagHistoryToDateTimeAsyncMethod(SankakuLoaderFixture loaderFixture) 
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public void ShouldNotLoadTagsHistoryToDateWithoutCredentials()
         {
@@ -287,13 +262,9 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
         }
     }
 
-    public class GetTagHistoryFromIdToPresentAsyncMethod : SankakuLoaderTests
+    public class GetTagHistoryFromIdToPresentAsyncMethod(SankakuLoaderFixture loaderFixture)
+        : SankakuLoaderTests(loaderFixture)
     {
-        public GetTagHistoryFromIdToPresentAsyncMethod(SankakuLoaderFixture loaderFixture) 
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldLoadTagsHistoryFromIdWithCredentials()
         {
@@ -323,13 +294,9 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
         }
     }
 
-    public class GetPopularPostsAsyncMethod : SankakuLoaderTests
+    public class GetPopularPostsAsyncMethod(SankakuLoaderFixture sankakuLoaderFixture)
+        : SankakuLoaderTests(sankakuLoaderFixture)
     {
-        public GetPopularPostsAsyncMethod(SankakuLoaderFixture sankakuLoaderFixture)
-            : base(sankakuLoaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldLoadPopularForDay()
         {
@@ -361,13 +328,9 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
         }
     }
 
-    public class LoadPostMetadataAsyncMethod : SankakuLoaderTests
+    public class LoadPostMetadataAsyncMethod(SankakuLoaderFixture sankakuLoaderFixture)
+        : SankakuLoaderTests(sankakuLoaderFixture)
     {
-        public LoadPostMetadataAsyncMethod(SankakuLoaderFixture sankakuLoaderFixture)
-            : base(sankakuLoaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldLoadParentsAndChildren()
         {
@@ -389,7 +352,7 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
 
             post.ChildrenIds.Should().HaveCount(11);
             post.ChildrenIds.Distinct().Should().HaveCount(post.ChildrenIds.Count);
-            post.ChildrenIds.First().Should().Be(new PostIdentity("G8r63AvjYRq", "0f91fb08969e93042106a9f5ed233c3b"));
+            post.ChildrenIds.First().Should().Be(new PostIdentity("G8r63AvjYRq", "0f91fb08969e93042106a9f5ed233c3b", PostIdentity.PlatformType.Sankaku));
 
             foreach (var postChildrenId in post.ChildrenIds)
             {
@@ -458,13 +421,8 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
         }
     }
     
-    public class FavoritePostAsyncMethod : SankakuLoaderTests
+    public class FavoritePostAsyncMethod(SankakuLoaderFixture loaderFixture) : SankakuLoaderTests(loaderFixture)
     {
-        public FavoritePostAsyncMethod(SankakuLoaderFixture loaderFixture)
-            : base(loaderFixture)
-        {
-        }
-
         [Fact]
         public async Task ShouldFavoritePost()
         {
@@ -473,11 +431,11 @@ public class SankakuLoaderTests : IClassFixture<SankakuLoaderFixture>
         }
     }
 
-    private static string[] SankakuTagTypes()
-    {
-        return new [] {"meta", "general", "copyright", "character", "circle", "artist", "medium", "genre",
+    private static string[] SankakuTagTypes() =>
+    [
+        "meta", "general", "copyright", "character", "circle", "artist", "medium", "genre",
 
-            // new
-            "activity", "anatomy", "fashion", "pose", "role", "object", "substance", "setting", "automatic" };
-    }
+        // new
+        "activity", "anatomy", "fashion", "pose", "role", "object", "substance", "setting", "automatic"
+    ];
 }

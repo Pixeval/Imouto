@@ -50,7 +50,7 @@ public static class BooruApiLoaderTagHistoryExtensions
             {
                 page = await loader.GetTagHistoryPageAsync(new SearchToken($"{predictedPage++}"), limit, ct);
                 tries--;
-            } while (!page.Results.Any() && tries > 0);
+            } while (page.Results.Count is 0 && tries > 0);
             
             if (page.Results.All(x => x.HistoryId > afterHistoryId))
                 throw new Exception("Prediction failed");
@@ -94,17 +94,19 @@ public static class BooruApiLoaderTagHistoryExtensions
     {
         SearchToken? searchToken = null;
         HistorySearchResult<TagHistoryEntry> page;
-        do
+        while (true)
         {
             page = await loader.GetTagHistoryPageAsync(searchToken, limit, ct);
             searchToken = page.NextToken;
 
             foreach (var tagsHistoryEntry in page.Results)
-                yield return tagsHistoryEntry;
+                if (tagsHistoryEntry.UpdatedAt >= upToDateTime)
+                    yield return tagsHistoryEntry;
+                else
+                    yield break;
 
-            if (!page.Results.Any())
+            if (page.Results.Count is 0)
                 break;
-
-        } while (page.Results.Last().UpdatedAt >= upToDateTime);
+        }
     }
 }

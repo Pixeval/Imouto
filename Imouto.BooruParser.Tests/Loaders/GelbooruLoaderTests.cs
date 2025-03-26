@@ -4,16 +4,12 @@ using Xunit;
 
 namespace Imouto.BooruParser.Tests.Loaders;
 
-public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
+public class GelbooruLoaderTests(GelbooruApiLoaderFixture loaderFixture) : IClassFixture<GelbooruApiLoaderFixture>
 {
-    private readonly GelbooruApiLoaderFixture _loaderFixture;
+    private readonly GelbooruApiLoaderFixture _loaderFixture = loaderFixture;
 
-    public GelbooruLoaderTests(GelbooruApiLoaderFixture loaderFixture) => _loaderFixture = loaderFixture;
-
-    public class GetPostAsyncMethod : GelbooruLoaderTests
+    public class GetPostAsyncMethod(GelbooruApiLoaderFixture loaderFixture) : GelbooruLoaderTests(loaderFixture)
     {
-        public GetPostAsyncMethod(GelbooruApiLoaderFixture loaderFixture) : base(loaderFixture) { }
-
         [Fact]
         public async Task ShouldReturnPost()
         {
@@ -37,7 +33,7 @@ public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.IsSensitive.Should().Be(true);
+            post.SafeRating.IsSensitive.Should().Be(true);
             post.Source.Should().Be("https://twitter.com/sian_sasaland/status/1583461715777585154");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -75,7 +71,7 @@ public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.IsSensitive.Should().Be(true);
+            post.SafeRating.IsSensitive.Should().Be(true);
             post.Source.Should().Be("https://twitter.com/sian_sasaland/status/1583461715777585154");
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
@@ -111,10 +107,8 @@ public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
         }
     }
 
-    public class SearchAsyncMethod : GelbooruLoaderTests
+    public class SearchAsyncMethod(GelbooruApiLoaderFixture loaderFixture) : GelbooruLoaderTests(loaderFixture)
     {
-        public SearchAsyncMethod(GelbooruApiLoaderFixture loaderFixture) : base(loaderFixture) { }
-
         [Fact]
         public async Task SearchAsyncShouldFind()
         {
@@ -151,10 +145,8 @@ public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
         }
     }
 
-    public class GetPostMetadataMethod : GelbooruLoaderTests
+    public class GetPostMetadataMethod(GelbooruApiLoaderFixture fixture) : GelbooruLoaderTests(fixture)
     {
-        public GetPostMetadataMethod(GelbooruApiLoaderFixture fixture) : base(fixture) { }
-
         [Fact]
         public async Task ShouldLoadNotes()
         {
@@ -219,7 +211,7 @@ public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.IsExplicit.Should().Be(true);
+            post.SafeRating.IsExplicit.Should().Be(true);
             post.Source.Should().BeNull();
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.MarkDeleted);
@@ -257,7 +249,7 @@ public class GelbooruLoaderTests : IClassFixture<GelbooruApiLoaderFixture>
             
             post.Parent.Should().BeNull();
             post.Pools.Should().BeEmpty();
-            post.Rating.IsExplicit.Should().Be(true);
+            post.SafeRating.IsExplicit.Should().Be(true);
             post.Source.Should().BeNull();
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.MarkDeleted);

@@ -18,7 +18,7 @@ namespace Imouto.BooruParser.Implementations.Yandere;
 /// tags with type 729673
 /// notes 729673
 /// extensions for tags and notes
-public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
+public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSettings> options) : IBooruApiLoader, IBooruApiAccessor
 {
     private static readonly Regex NotePositionRegex = new(
             "width[:\\s]*(?<width>\\d+.{0,1}\\d*)px.*height[:\\s]*(?<height>\\d+.{0,1}\\d*)px.*top[:\\s]*(?<top>\\d+.{0,1}\\d*)px.*left[:\\s]*(?<left>\\d+.{0,1}\\d*)px",
@@ -26,12 +26,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
     
     private const string BaseUrl = "https://yande.re";
 
-    private readonly IFlurlClient _flurlClient;
-
-    public YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSettings> options)
-    {
-        _flurlClient = factory.GetForDomain(new Url(BaseUrl)).BeforeCall(x => SetAuthParameters(x, options));
-    }
+    private readonly IFlurlClient _flurlClient = factory.GetForDomain(new Url(BaseUrl)).BeforeCall(x => SetAuthParameters(x, options));
 
     public async Task<Post> GetPostAsync(string postId)
     {
@@ -54,7 +49,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
             .SetQueryParam("tags", $"md5:{md5} holds:all")
             .GetJsonAsync<IReadOnlyCollection<YanderePost>>();
 
-        if (!posts.Any())
+        if (posts.Count is 0)
             return null;
         var post = posts.First();
 
@@ -74,9 +69,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
             .SetQueryParam("tags", tags)
             .GetJsonAsync<IReadOnlyCollection<YanderePost>>();
 
-        return new SearchResult(posts
-            .Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.Tags, false, false))
-            .ToList(), tags, 1);
+        return new SearchResult([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.Tags, false, false))], tags, 1);
     }
 
     public async Task<SearchResult> GetNextPageAsync(SearchResult results)
@@ -88,20 +81,19 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
             .SetQueryParam("page", nextPage)
             .GetJsonAsync<IReadOnlyCollection<YanderePost>>();
 
-        return new SearchResult(posts
+        return new SearchResult([.. posts
             .Select(x => new PostPreview(
                 x.Id.ToString(), 
                 x.Md5, 
                 x.Tags,
                 false,
-                false))
-            .ToList(), results.SearchTags, nextPage);
+                false))], results.SearchTags, nextPage);
     }
 
     public async Task<SearchResult> GetPreviousPageAsync(SearchResult results)
     {
         if (results.PageNumber <= 1)
-            throw new ArgumentOutOfRangeException("PageNumber", results.PageNumber, null);
+            throw new ArgumentOutOfRangeException(nameof(results.PageNumber), results.PageNumber, null);
 
         var nextPage = results.PageNumber - 1;
 
@@ -110,14 +102,13 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
             .SetQueryParam("page", nextPage)
             .GetJsonAsync<IReadOnlyCollection<YanderePost>>();
 
-        return new SearchResult(posts
+        return new SearchResult([.. posts
             .Select(x => new PostPreview(
                 x.Id.ToString(),
                 x.Md5,
                 x.Tags,
                 false,
-                false))
-            .ToList(), results.SearchTags, nextPage);
+                false))], results.SearchTags, nextPage);
     }
 
     public async Task<SearchResult> GetPopularPostsAsync(PopularType type)
@@ -135,12 +126,8 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
             .SetQueryParam("period", period)
             .GetJsonAsync<IReadOnlyCollection<YanderePost>>();
 
-        return new SearchResult(posts
-            .Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.Tags, false, false))
-            .ToList(), "popular", 1);
+        return new SearchResult([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.Tags, false, false))], "popular", 1);
     }
-
-
     public async Task<HistorySearchResult<TagHistoryEntry>> GetTagHistoryPageAsync(
         SearchToken? token,
         int limit = 100,
@@ -181,7 +168,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
                     x.id,
                     new DateTimeOffset(date, TimeSpan.Zero),
                     postId.ToString(),
-                    parentId == null ? null : parentId.ToString(),
+                    parentId?.ToString(),
                     parentChanged);
             }) ?? [];
 
@@ -191,7 +178,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
             _ => "2"
         };
 
-        return new HistorySearchResult<TagHistoryEntry>(entries.ToList(), new SearchToken(nextPage));
+        return new HistorySearchResult<TagHistoryEntry>([.. entries], new SearchToken(nextPage));
     }
 
     public async Task<HistorySearchResult<NoteHistoryEntry>> GetNoteHistoryPageAsync(
@@ -227,13 +214,11 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
         return new HistorySearchResult<NoteHistoryEntry>(entries, new SearchToken(nextPage));
     }
 
-    public async Task FavoritePostAsync(string postId)
-    {
+    public async Task FavoritePostAsync(string postId) =>
         await _flurlClient.Request("post", "vote.json")
             .PostMultipartAsync(content => content
                 .Add("id", new StringContent(postId))
                 .Add("score", new StringContent("3")));
-    }
 
     private async Task<PostIdentity?> GetPostIdentityAsync(int? postId)
     {
@@ -251,7 +236,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
 
         var post = posts.First();
 
-        return new PostIdentity(post.Id.ToString(), post.Md5);
+        return new PostIdentity(post.Id.ToString(), post.Md5, PostIdentity.PlatformType.Yandere);
     }
 
     private async Task<IReadOnlyCollection<PostIdentity>> GetChildrenAsync(
@@ -264,14 +249,14 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
             .Select(x => int.Parse(x.InnerHtml))
             .ToArray() ?? [];
 
-        if (!childrenIds.Any())
+        if (childrenIds.Length is 0)
             return [];
 
         var childrenTasks = childrenIds.Select(GetPostIdentityAsync).ToList();
 
         await Task.WhenAll(childrenTasks);
 
-        return childrenTasks.Select(x => x.Result).ToList();
+        return [.. childrenTasks.Select(x => x.Result)];
     }
 
     private static ExistState GetExistState(HtmlDocument postHtml)
@@ -302,7 +287,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
             .Select(x => GetPoolForPostAsync(x.id, postId))
             .ToList();
         await Task.WhenAll(tasks);
-        return tasks.Select(x => x.Result).ToList();
+        return [.. tasks.Select(x => x.Result)];
     }
 
     private async Task<Pool> GetPoolForPostAsync(int poolId, int postId)
@@ -315,12 +300,12 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
         return new Pool(
             pool.Id.ToString(),
             pool.Name.Replace('_', ' '),
-            Array.IndexOf(pool.Posts.Select(x => x.Id).ToArray(), postId));
+            Array.IndexOf([.. pool.Posts.Select(x => x.Id)], postId));
     }
 
     private static IReadOnlyCollection<Note> GetNotes(YanderePost post, HtmlDocument postHtml)
     {
-        if (post.LastNotedAt == 0)
+        if (post.LastNotedAt is 0)
             return [];
 
         var notes = postHtml.DocumentNode
@@ -345,16 +330,15 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
                 return new Note(id.ToString(), text, point, size);
             }) ?? [];
 
-        return notes.ToList();
+        return [.. notes];
         
         static int GetSizeInt(string number) => (int)(Convert.ToDouble(number) + 0.5);
         
         static int GetPositionInt(string number) => (int)Math.Ceiling(Convert.ToDouble(number) - 0.5);
     }
 
-    private static IReadOnlyCollection<Tag> GetTags(HtmlDocument postHtml)
-    {
-        return postHtml.DocumentNode
+    private static IReadOnlyCollection<Tag> GetTags(HtmlDocument postHtml) =>
+        [.. postHtml.DocumentNode
             .SelectSingleNode("//*[@id='tag-sidebar']")
             .SelectNodes("li")
             .Select(x =>
@@ -364,9 +348,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
                 var name = aNode.InnerHtml;
 
                 return new Tag(type, name);
-            })
-            .ToList();
-    }
+            })];
 
     private static async Task SetAuthParameters(FlurlCall call, IOptions<YandereSettings> options)
     {
@@ -383,7 +365,7 @@ public class YandereApiLoader : IBooruApiLoader, IBooruApiAccessor
 
     private async Task<Post> GetPost(string postId, YanderePost post, HtmlDocument postHtml)
         => new(
-            new PostIdentity(postId, post.Md5),
+            new PostIdentity(postId, post.Md5, PostIdentity.PlatformType.Yandere),
             post.FileUrl,
             post.SampleUrl ?? post.JpegUrl,
             post.JpegUrl,
