@@ -6,5 +6,5 @@ public interface ISankakuAuthManager
 {
     ValueTask<string?> GetTokenAsync();
 
-    Task<IReadOnlyCollection<FlurlCookie>> GetSankakuChannelSessionAsync();
+    Task<IReadOnlyList<FlurlCookie>> GetSankakuChannelSessionAsync();
 }

@@ -1,6 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text.Json.Serialization;
-using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Imouto.BooruParser.Extensions;
@@ -28,7 +27,7 @@ public class SankakuAuthManager : ISankakuAuthManager
         _memoryCache = memoryCache;
         _options = options;
         _factory = factory;
-        _flurlClient = factory.GetForDomain(new Url(BaseUrl));
+        _flurlClient = factory.GetForDomain(new(BaseUrl));
     }
 
     public async ValueTask<string?> GetTokenAsync()
@@ -50,22 +49,21 @@ public class SankakuAuthManager : ISankakuAuthManager
         return accessToken;
     }
 
-    public async Task<IReadOnlyCollection<FlurlCookie>> GetSankakuChannelSessionAsync()
+    public async Task<IReadOnlyList<FlurlCookie>> GetSankakuChannelSessionAsync()
     {
         if (_options.Value.Login is null || _options.Value.Password is null)
             return [];
 
-        var found = _memoryCache.Get<IReadOnlyCollection<FlurlCookie>>(SessionKey);
+        var found = _memoryCache.Get<IReadOnlyList<FlurlCookie>>(SessionKey);
         if (found != null)
             return found;
-        
-        var factory = _factory;
+
         var login = _options.Value.Login;
         var password = _options.Value.Password;
         
         var cookieJar = new CookieJar();
         
-        var loginClient = factory.GetForDomain("https://login.sankakucomplex.com")
+        var loginClient = _factory.GetForDomain("https://login.sankakucomplex.com")
             .WithHeader("sec-ch-ua", "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"")
             .WithHeader("sec-ch-ua-mobile", "?0")
             .WithHeader("sec-ch-ua-platform", "\"Windows\"")
@@ -133,7 +131,7 @@ public class SankakuAuthManager : ISankakuAuthManager
                 state = "lang=en&theme=black",
             });
 
-        _memoryCache.Set(SessionKey, interactionResponses[2].Cookies as IReadOnlyCollection<FlurlCookie>);
+        _memoryCache.Set(SessionKey, interactionResponses[2].Cookies as IReadOnlyList<FlurlCookie>);
         return interactionResponses[2].Cookies;
     }
 
@@ -176,13 +174,12 @@ public class SankakuAuthManager : ISankakuAuthManager
 
     private async Task<Tokens> SankakuFullLoginAsync()
     {
-        var factory = _factory;
         var login = _options.Value.Login;
         var password = _options.Value.Password;
         
         var cookieJar = new CookieJar();
         
-        var loginClient = factory.GetForDomain("https://login.sankakucomplex.com")
+        var loginClient = _factory.GetForDomain("https://login.sankakucomplex.com")
             .WithHeader("sec-ch-ua", "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"")
             .WithHeader("sec-ch-ua-mobile", "?0")
             .WithHeader("sec-ch-ua-platform", "\"Windows\"")
@@ -196,7 +193,7 @@ public class SankakuAuthManager : ISankakuAuthManager
             .WithHeader("Sec-Fetch-Dest", "document")
             .WithHeader("Accept-Language", "en");
         
-        var capiClient = factory.GetForDomain("https://capi-v2.sankakucomplex.com")
+        var capiClient = _factory.GetForDomain("https://capi-v2.sankakucomplex.com")
             .WithHeader("sec-ch-ua", "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"")
             .WithHeader("sec-ch-ua-mobile", "?0")
             .WithHeader("sec-ch-ua-platform", "\"Windows\"")

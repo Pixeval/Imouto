@@ -7,7 +7,7 @@ namespace Imouto.BooruParser.Implementations;
 
 public static class BooruApiLoaderTagHistoryExtensions
 {
-    public static async Task<IReadOnlyCollection<TagHistoryEntry>> GetTagHistoryFirstPageAsync(
+    public static async Task<IReadOnlyList<TagHistoryEntry>> GetTagHistoryFirstPageAsync(
         this IBooruApiLoader loader,
         int limit = 100,
         CancellationToken ct = default)
@@ -18,7 +18,7 @@ public static class BooruApiLoaderTagHistoryExtensions
 
     public static async IAsyncEnumerable<TagHistoryEntry> GetTagHistoryFromIdToPresentAsync(
         this IBooruApiLoader loader, 
-        int afterHistoryId,
+        long afterHistoryId,
         int limit = 100,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
@@ -48,19 +48,19 @@ public static class BooruApiLoaderTagHistoryExtensions
             var tries = 10;
             do
             {
-                page = await loader.GetTagHistoryPageAsync(new SearchToken($"{predictedPage++}"), limit, ct);
+                page = await loader.GetTagHistoryPageAsync(new($"{predictedPage++}"), limit, ct);
                 tries--;
             } while (page.Results.Count is 0 && tries > 0);
             
             if (page.Results.All(x => x.HistoryId > afterHistoryId))
-                throw new Exception("Prediction failed");
+                throw new("Prediction failed");
 
             // execution
             var searchToken = new SearchToken($"{predictedPage--}");
             do
             {
                 page = await loader.GetTagHistoryPageAsync(searchToken, limit, ct);
-                searchToken = new SearchToken($"{predictedPage--}");
+                searchToken = new($"{predictedPage--}");
 
                 foreach (var tagsHistoryEntry in page.Results)
                     yield return tagsHistoryEntry;

@@ -1,4 +1,3 @@
-using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using HtmlAgilityPack;
@@ -12,8 +11,10 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
     : IBooruApiLoader
 {
     private const string HtmlBaseUrl = "https://rule34.xxx";
+
     private const string JsonBaseUrl = "https://api.rule34.xxx";
-    private readonly IFlurlClient _flurlHtmlClient = factory.GetForDomain(new Url(HtmlBaseUrl))
+
+    private readonly IFlurlClient _flurlHtmlClient = factory.GetForDomain(new(HtmlBaseUrl))
         .WithHeader("Connection", "keep-alive")
         .WithHeader("sec-ch-ua", "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"")
         .WithHeader("sec-ch-ua-mobile", "?0")
@@ -28,7 +29,8 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
         .WithHeader("Sec-Fetch-Dest", "document")
         .WithHeader("Accept-Language", "en")
         .BeforeCall(_ => DelayWithThrottler(options));
-    private readonly IFlurlClient _flurlJsonClient = factory.GetForDomain(new Url(JsonBaseUrl))
+
+    private readonly IFlurlClient _flurlJsonClient = factory.GetForDomain(new(JsonBaseUrl))
         .WithHeader("Connection", "keep-alive")
         .WithHeader("sec-ch-ua", "\"Chromium\";v=\"106\", \"Google Chrome\";v=\"106\", \"Not;A=Brand\";v=\"99\"")
         .WithHeader("sec-ch-ua-mobile", "?0")
@@ -65,9 +67,9 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
             .GetJsonAsync<Rule34Post[]>();
         var post = postJson?.FirstOrDefault();
         
-        return post != null 
-            ? CreatePost(post, postHtml) 
-            : null!;
+        return post is null 
+            ? null! 
+            : CreatePost(post, postHtml);
     }
 
     public async Task<Post?> GetPostByMd5Async(string md5)
@@ -111,7 +113,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
             .SetQueryParam("pid", 0)
             .GetJsonAsync<Rule34Post[]>();
 
-        return new SearchResult(postJson?
+        return new(postJson?
             .Select(x => new PostPreview(x.Id.ToString(), x.Hash, x.Tags, false, false))
             .ToArray() ?? [], tags, 0);
     }
@@ -130,7 +132,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
             .SetQueryParam("pid", nextPage)
             .GetJsonAsync<Rule34Post[]>();
 
-        return new SearchResult(postJson?
+        return new(postJson?
             .Select(x => new PostPreview(
                 x.Id.ToString(),
                 x.Hash,
@@ -157,7 +159,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
             .SetQueryParam("pid", nextPage)
             .GetJsonAsync<Rule34Post[]>();
 
-        return new SearchResult(postJson?
+        return new(postJson?
             .Select(x => new PostPreview(
                 x.Id.ToString(),
                 x.Hash,
@@ -182,17 +184,13 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
         CancellationToken ct = default)
         => throw new NotSupportedException("Rule34 does not support history");
 
-    private static PostIdentity? GetParent(Rule34Post post)
-        => post.ParentId is not 0 ? new PostIdentity(post.ParentId.ToString(), "", PostIdentity.PlatformType.Rule34) : null;
-
     /// <remarks>
     /// Sample: https://rule34.xxx/index.php?page=post&amp;s=view&amp;id=6204314
     /// </remarks>
-    private static IReadOnlyCollection<Note> GetNotes(Rule34Post? post, HtmlDocument postHtml)
+    private static IReadOnlyList<Note> GetNotes(Rule34Post? post, HtmlDocument postHtml)
     {
         if (post?.HasNotes != true)
             return [];
-
         
         var boxes = postHtml.DocumentNode.SelectNodes("//*[@id='note-container']/*[@class='note-box']");
         var bodies = postHtml.DocumentNode.SelectNodes("//*[@id='note-container']/*[@class='note-body']");
@@ -204,7 +202,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
                     var body = x.Second;
 
                     var boxData = box.Attributes["style"].Value.Split(';')
-                        .ToDictionary(x => x.Split(':').First().Trim(), x => x.Split(':').Last().Trim());
+                        .ToDictionary(y => y.Split(':').First().Trim(), z => z.Split(':').Last().Trim());
 
                     var height = boxData["height"].Trim('p', 'x');
                     var width = boxData["width"].Trim('p', 'x');
@@ -228,7 +226,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
         static int GetPositionInt(string number) => (int)Math.Ceiling(Convert.ToDouble(number) - 0.5);
     }
 
-    private static IReadOnlyCollection<Tag> GetTags(HtmlDocument post) 
+    private static IReadOnlyList<Tag> GetTags(HtmlDocument post) 
         => [.. post.DocumentNode
             .SelectSingleNode("//*[@id='tag-sidebar']")
             .SelectNodes("li")
@@ -251,23 +249,24 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
             await Throttler.Get("rule34").UseAsync(delay);
     }
 
-    private static Post CreatePost(Rule34Post post, HtmlDocument postHtml) 
-        => new(
-            new PostIdentity(post.Id.ToString(), post.Hash, PostIdentity.PlatformType.Rule34),
+    private static Post CreatePost(Rule34Post post, HtmlDocument postHtml)
+    {
+        var postIdentity = new PostIdentity(post.Id.ToString(), post.Hash, PlatformType.Rule34);
+        return new(
+            postIdentity,
             post.FileUrl,
-            !string.IsNullOrWhiteSpace(post.SampleUrl) ? post.SampleUrl : post.FileUrl,
+            string.IsNullOrWhiteSpace(post.SampleUrl) ? null : post.SampleUrl,
             post.PreviewUrl,
             ExistState.Exist,
             DateTimeOffset.FromUnixTimeSeconds(post.Change),
-            new Uploader("-1", post.Owner.Replace('_', ' ')),
+            new("-1", post.Owner.Replace('_', ' '), PlatformType.Rule34),
             post.Source,
-            new Size(post.Width, post.Height),
-            -1,
+            new(post.Width, post.Height),
+            0,
             SafeRating.Parse(post.Rating),
-            [],
-            GetParent(post),
-            [],
-            [],
             GetTags(postHtml),
-            GetNotes(post, postHtml));
+            GetNotes(post, postHtml),
+            postIdentity.TryFork(post.ParentId, "")
+        );
+    }
 }

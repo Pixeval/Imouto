@@ -14,7 +14,7 @@ public record Rule34Post(
     [property: JsonPropertyName("image")] string Image,
     [property: JsonPropertyName("change")] int Change,
     [property: JsonPropertyName("owner")] string Owner,
-    [property: JsonPropertyName("parent_id")] int ParentId,
+    [property: JsonPropertyName("parent_id")] long ParentId,
     [property: JsonPropertyName("rating")] string Rating,
     [property: JsonPropertyName("sample")] bool Sample,
     [property: JsonPropertyName("sample_height")] int SampleHeight,

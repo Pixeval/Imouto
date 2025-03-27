@@ -43,7 +43,7 @@ public class HardCachingHttpMessageHandler : DelegatingHandler
         var key = await GetKeyAsync(request);
         if (Cache.TryGetValue(key, out var value))
         {
-            return new HttpResponseMessage
+            return new()
             {
                 Content = new StringContent(value.Response),
                 StatusCode = value.Code,
@@ -60,10 +60,10 @@ public class HardCachingHttpMessageHandler : DelegatingHandler
         
         var content = await result.Content!.ReadAsStringAsync(ct);
 
-        Cache.TryAdd(key, new CacheEntry(content, code));
+        Cache.TryAdd(key, new(content, code));
         SaveCache();
         
-        return new HttpResponseMessage
+        return new()
         {
             Content = new StringContent(content),
             StatusCode = code,

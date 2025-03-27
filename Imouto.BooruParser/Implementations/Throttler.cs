@@ -6,7 +6,7 @@ public class Throttler
 {
     private static readonly ConcurrentDictionary<string, Throttler> Throttlers = new();
 
-    public static Throttler Get(string key) => Throttlers.GetOrAdd(key, _ => new Throttler());
+    public static Throttler Get(string key) => Throttlers.GetOrAdd(key, _ => new());
 
     private readonly SemaphoreSlim _locker = new(1);
     private DateTimeOffset _lastAccess = DateTimeOffset.MinValue;

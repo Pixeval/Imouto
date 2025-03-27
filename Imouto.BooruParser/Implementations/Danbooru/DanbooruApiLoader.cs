@@ -1,4 +1,3 @@
-using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Imouto.BooruParser.Extensions;
@@ -10,8 +9,8 @@ namespace Imouto.BooruParser.Implementations.Danbooru;
 public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSettings> options) : IBooruApiLoader, IBooruApiAccessor
 {
     private const string BaseUrl = "https://danbooru.donmai.us";
-    private readonly IFlurlClient _flurlClient = factory.GetForDomain(new Url(BaseUrl)).BeforeCall(x => SetAuthParameters(x, options));
-    private readonly string _botUserAgent = options.Value.BotUserAgent ?? throw new Exception("UserAgent is required to make api calls");
+    private readonly IFlurlClient _flurlClient = factory.GetForDomain(new(BaseUrl)).BeforeCall(x => SetAuthParameters(x, options));
+    private readonly string _botUserAgent = options.Value.BotUserAgent ?? throw new("UserAgent is required to make api calls");
 
     public async Task<Post> GetPostAsync(string postId)
     {
@@ -20,24 +19,27 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
             .WithUserAgent(_botUserAgent)
             .GetJsonAsync<DanbooruPost>();
 
-        return new Post(
-            new PostIdentity(postId, post.Md5, PostIdentity.PlatformType.Danbooru),
+        var postIdentity = new PostIdentity(postId, post.Md5, PlatformType.Danbooru);
+        return new(
+            postIdentity,
             post.FileUrl,
-            post.LargeFileUrl ?? post.PreviewFileUrl,
+            post.LargeFileUrl,
             post.PreviewFileUrl,
             post.IsBanned || post.IsDeleted ? ExistState.MarkDeleted : ExistState.Exist,
             post.CreatedAt.ToUniversalTime(),
-            new Uploader(post.UploaderId.ToString(), post.Uploader.Name.Replace('_', ' ')),
+            new(post.UploaderId.ToString(), post.Uploader.Name.Replace('_', ' '), PlatformType.Danbooru),
             post.Source,
-            new Size(post.ImageWidth, post.ImageHeight),
+            new(post.ImageWidth, post.ImageHeight),
             post.FileSize,
             SafeRating.Parse(post.Rating),
-            GetUgoiraMetadata(post),
-            GetParent(post),
-            GetChildren(post),
-            await GetPoolsAsync(post.Id),
             GetTags(post),
-            GetNotes(post));
+            GetNotes(post),
+            postIdentity.TryFork(post.ParentId, post.Parent?.Md5))
+        {
+            UgoiraFrameDelays = GetUgoiraMetadata(post),
+            ChildrenIds = GetChildren(post),
+            PoolsGetter = GetPoolsAsync,
+        };
     }
 
     public async Task<Post?> GetPostByMd5Async(string md5)
@@ -46,30 +48,33 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
             .SetQueryParam("only", "id,tag_string_artist,tag_string_character,tag_string_copyright,pools,tag_string_general,tag_string_meta,parent_id,md5,file_url,large_file_url,preview_file_url,file_ext,last_noted_at,is_banned,is_deleted,created_at,uploader_id,source,image_width,image_height,file_size,rating,media_metadata[metadata],parent[id,md5],children[id,md5],notes[id,x,y,width,height,body],uploader[id,name]")
             .SetQueryParam("tags", $"md5:{md5}")
             .WithUserAgent(_botUserAgent)
-            .GetJsonAsync<IReadOnlyCollection<DanbooruPost>>();
+            .GetJsonAsync<IReadOnlyList<DanbooruPost>>();
 
         if (posts.Count is 0)
             return null;
 
-        var post = posts.First();
-        return new Post(
-            new PostIdentity(post.Id.ToString(), post.Md5, PostIdentity.PlatformType.Danbooru),
+        var post = posts[0];
+        var postIdentity = new PostIdentity(post.Id.ToString(), post.Md5, PlatformType.Danbooru);
+        return new(
+            postIdentity,
             post.FileUrl,
-            post.LargeFileUrl ?? post.PreviewFileUrl,
+            post.LargeFileUrl,
             post.PreviewFileUrl,
             post.IsBanned || post.IsDeleted ? ExistState.MarkDeleted : ExistState.Exist,
             post.CreatedAt,
-            new Uploader(post.UploaderId.ToString(), post.Uploader.Name.Replace('_', ' ')),
+            new(post.UploaderId.ToString(), post.Uploader.Name.Replace('_', ' '), PlatformType.Danbooru),
             post.Source,
-            new Size(post.ImageWidth, post.ImageHeight),
+            new(post.ImageWidth, post.ImageHeight),
             post.FileSize,
             SafeRating.Parse(post.Rating),
-            GetUgoiraMetadata(post),
-            GetParent(post),
-            GetChildren(post),
-            await GetPoolsAsync(post.Id),
             GetTags(post),
-            GetNotes(post));
+            GetNotes(post),
+            postIdentity.TryFork(post.ParentId, post.Parent?.Md5))
+        {
+            UgoiraFrameDelays = GetUgoiraMetadata(post),
+            ChildrenIds = GetChildren(post),
+            PoolsGetter = GetPoolsAsync,
+        };
     }
 
     public async Task<SearchResult> SearchAsync(string tags)
@@ -79,9 +84,9 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
             .SetQueryParam("page", 1)
             .SetQueryParam("only", "id,md5,tag_string,is_banned,is_deleted")
             .WithUserAgent(_botUserAgent)
-            .GetJsonAsync<IReadOnlyCollection<DanbooruPostPreview>>();
+            .GetJsonAsync<IReadOnlyList<DanbooruPostPreview>>();
 
-        return new SearchResult([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.TagString, x.IsBanned, x.IsDeleted))], tags, 1);
+        return new([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.TagString, x.IsBanned, x.IsDeleted))], tags, 1);
     }
 
     public async Task<SearchResult> GetNextPageAsync(SearchResult results)
@@ -93,9 +98,9 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
             .SetQueryParam("page", nextPage)
             .SetQueryParam("only", "id,md5,tag_string,is_banned,is_deleted")
             .WithUserAgent(_botUserAgent)
-            .GetJsonAsync<IReadOnlyCollection<DanbooruPostPreview>>();
+            .GetJsonAsync<IReadOnlyList<DanbooruPostPreview>>();
 
-        return new SearchResult([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.TagString, x.IsBanned, x.IsDeleted))], results.SearchTags, nextPage);
+        return new([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.TagString, x.IsBanned, x.IsDeleted))], results.SearchTags, nextPage);
     }
 
     public async Task<SearchResult> GetPreviousPageAsync(SearchResult results)
@@ -110,9 +115,9 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
             .SetQueryParam("page", nextPage)
             .SetQueryParam("only", "id,md5,tag_string,is_banned,is_deleted")
             .WithUserAgent(_botUserAgent)
-            .GetJsonAsync<IReadOnlyCollection<DanbooruPostPreview>>();
+            .GetJsonAsync<IReadOnlyList<DanbooruPostPreview>>();
 
-        return new SearchResult([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.TagString, x.IsBanned, x.IsDeleted))], results.SearchTags, nextPage);
+        return new([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.TagString, x.IsBanned, x.IsDeleted))], results.SearchTags, nextPage);
     }
 
     public async Task<SearchResult> GetPopularPostsAsync(PopularType type)
@@ -130,9 +135,9 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
             .SetQueryParam("scale", scale)
             .SetQueryParam("only", "id,md5,tag_string,is_banned,is_deleted")
             .WithUserAgent(_botUserAgent)
-            .GetJsonAsync<IReadOnlyCollection<DanbooruPostPreview>>();
+            .GetJsonAsync<IReadOnlyList<DanbooruPostPreview>>();
 
-        return new SearchResult([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.TagString, x.IsBanned, x.IsDeleted))], "popular",1);
+        return new([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.TagString, x.IsBanned, x.IsDeleted))], "popular",1);
     }
 
     public async Task<HistorySearchResult<TagHistoryEntry>> GetTagHistoryPageAsync(
@@ -148,7 +153,7 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
 
         var found = await request
             .WithUserAgent(_botUserAgent)
-            .GetJsonAsync<IReadOnlyCollection<DanbooruTagsHistoryEntry>>(cancellationToken: ct);
+            .GetJsonAsync<IReadOnlyList<DanbooruTagsHistoryEntry>>(cancellationToken: ct);
 
         if (found.Count is 0)
             return new([], null);
@@ -173,7 +178,7 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
             _ => "2"
         };
 
-        return new(entries, new SearchToken(nextPage));
+        return new(entries, new(nextPage));
     }
 
     public async Task<HistorySearchResult<NoteHistoryEntry>> GetNoteHistoryPageAsync(
@@ -184,12 +189,12 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
         var request = _flurlClient.Request("note_versions.json")
             .SetQueryParam("limit", limit);
         
-        if (token != null)
+        if (token is not null)
             request = request.SetQueryParam("page", token.Page);
 
         var found = await request
             .WithUserAgent(_botUserAgent)
-            .GetJsonAsync<IReadOnlyCollection<DanbooruNotesHistoryEntry>>(cancellationToken: ct);
+            .GetJsonAsync<IReadOnlyList<DanbooruNotesHistoryEntry>>(cancellationToken: ct);
 
         if (found.Count is 0)
             return new([], null);
@@ -207,7 +212,7 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
             _ => "2"
         };
 
-        return new(entries, new SearchToken(nextPage));
+        return new(entries, new(nextPage));
     }
 
     public async Task FavoritePostAsync(string postId) =>
@@ -216,40 +221,37 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
             .WithUserAgent(_botUserAgent)
             .PostAsync();
 
-    private static PostIdentity? GetParent(DanbooruPost post)
-        => post.Parent != null ? new PostIdentity(post.Parent.Id.ToString(), post.Parent.Md5, PostIdentity.PlatformType.Danbooru) : null;
+    private static IReadOnlyList<PostIdentity> GetChildren(DanbooruPost post)
+        => [.. post.Children.Select(x => new PostIdentity(x.Id.ToString(), x.Md5, PlatformType.Danbooru))];
 
-    private static IReadOnlyCollection<PostIdentity> GetChildren(DanbooruPost post)
-        => [.. post.Children.Select(x => new PostIdentity(x.Id.ToString(), x.Md5, PostIdentity.PlatformType.Danbooru))];
-
-    private static IReadOnlyCollection<int> GetUgoiraMetadata(DanbooruPost post)
+    private static IReadOnlyList<int>? GetUgoiraMetadata(DanbooruPost post)
     {
-        if (post.FileExt != "zip")
-            return [];
-
-        return post.MediaMetadata.Metadata.UgoiraFrameDelays ?? [];
+        return post.FileExt is "zip" ? post.MediaMetadata.Metadata.UgoiraFrameDelays : null;
     }
 
-    private async Task<IReadOnlyCollection<Pool>> GetPoolsAsync(int postId)
+    private async Task<IReadOnlyList<Pool>> GetPoolsAsync(Post post)
     {
+        var postId = post.Id.Id;
         var pools = await _flurlClient.Request("pools.json")
             .SetQueryParam("search[post_tags_match]", $"id:{postId}")
             .SetQueryParam("only", "id,name,post_ids")
             .WithUserAgent(_botUserAgent)
-            .GetJsonAsync<IReadOnlyCollection<DanbooruPool>>();
+            .GetJsonAsync<IReadOnlyList<DanbooruPool>>();
 
-        return [.. pools.Select(x => new Pool(x.Id.ToString(), x.Name, Array.IndexOf(x.PostIds, postId)))];
+        var pId = long.Parse(postId);
+
+        return [.. pools.Select(x => new Pool(x.Id.ToString(), x.Name, Array.IndexOf(x.PostIds, pId)))];
     }
 
-    private static IReadOnlyCollection<Note> GetNotes(DanbooruPost post)
+    private static IReadOnlyList<Note> GetNotes(DanbooruPost post)
     {
-        if (post.LastNotedAt == null)
+        if (post.LastNotedAt is null)
             return [];
 
-        return [.. post.Notes.Select(x => new Note(x.Id.ToString(), x.Body, new Position(x.Y, x.X), new Size(x.Width, x.Height)))];
+        return [.. post.Notes.Select(x => new Note(x.Id.ToString(), x.Body, new(x.Y, x.X), new(x.Width, x.Height)))];
     }
 
-    private static IReadOnlyCollection<Tag> GetTags(DanbooruPost post)
+    private static IReadOnlyList<Tag> GetTags(DanbooruPost post)
         => [.. post.TagStringArtist.Split(' ').Select(x => (Type: "artist", Tag: x))
             .Union(post.TagStringCharacter.Split(' ').Select(x => (Type: "character", Tag: x)))
             .Union(post.TagStringCopyright.Split(' ').Select(x => (Type: "copyright", Tag: x)))

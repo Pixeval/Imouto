@@ -1,6 +1,5 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using HtmlAgilityPack;
@@ -26,7 +25,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
     
     private const string BaseUrl = "https://yande.re";
 
-    private readonly IFlurlClient _flurlClient = factory.GetForDomain(new Url(BaseUrl)).BeforeCall(x => SetAuthParameters(x, options));
+    private readonly IFlurlClient _flurlClient = factory.GetForDomain(new(BaseUrl)).BeforeCall(x => SetAuthParameters(x, options));
 
     public async Task<Post> GetPostAsync(string postId)
     {
@@ -39,7 +38,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
             .Request("post", "show", postId)
             .GetHtmlDocumentAsync();
 
-        return await GetPost(postId, post, postHtml);
+        return GetPost(postId, post, postHtml);
     }
 
     public async Task<Post?> GetPostByMd5Async(string md5)
@@ -47,17 +46,17 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         // https://yande.re/post.json?tags=md5%3Ae6500b62d4003a5f4ba226d3a665c25a
         var posts = await _flurlClient.Request("post.json")
             .SetQueryParam("tags", $"md5:{md5} holds:all")
-            .GetJsonAsync<IReadOnlyCollection<YanderePost>>();
+            .GetJsonAsync<IReadOnlyList<YanderePost>>();
 
         if (posts.Count is 0)
             return null;
-        var post = posts.First();
+        var post = posts[0];
 
         var postHtml = await _flurlClient
             .Request("post", "show", post.Id)
             .GetHtmlDocumentAsync();
 
-        return await GetPost(post.Id.ToString(), post, postHtml);
+        return GetPost(post.Id.ToString(), post, postHtml);
     }
 
     /// <summary>
@@ -67,9 +66,9 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
     {
         var posts = await _flurlClient.Request("post.json")
             .SetQueryParam("tags", tags)
-            .GetJsonAsync<IReadOnlyCollection<YanderePost>>();
+            .GetJsonAsync<IReadOnlyList<YanderePost>>();
 
-        return new SearchResult([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.Tags, false, false))], tags, 1);
+        return new([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.Tags, false, false))], tags, 1);
     }
 
     public async Task<SearchResult> GetNextPageAsync(SearchResult results)
@@ -79,9 +78,9 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         var posts = await _flurlClient.Request("post.json")
             .SetQueryParam("tags", results.SearchTags)
             .SetQueryParam("page", nextPage)
-            .GetJsonAsync<IReadOnlyCollection<YanderePost>>();
+            .GetJsonAsync<IReadOnlyList<YanderePost>>();
 
-        return new SearchResult([.. posts
+        return new([.. posts
             .Select(x => new PostPreview(
                 x.Id.ToString(), 
                 x.Md5, 
@@ -100,9 +99,9 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         var posts = await _flurlClient.Request("post.json")
             .SetQueryParam("tags", results.SearchTags)
             .SetQueryParam("page", nextPage)
-            .GetJsonAsync<IReadOnlyCollection<YanderePost>>();
+            .GetJsonAsync<IReadOnlyList<YanderePost>>();
 
-        return new SearchResult([.. posts
+        return new([.. posts
             .Select(x => new PostPreview(
                 x.Id.ToString(),
                 x.Md5,
@@ -124,9 +123,9 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         // https://yande.re/post/popular_recent.json?period=1w
         var posts = await _flurlClient.Request("post", "popular_recent.json")
             .SetQueryParam("period", period)
-            .GetJsonAsync<IReadOnlyCollection<YanderePost>>();
+            .GetJsonAsync<IReadOnlyList<YanderePost>>();
 
-        return new SearchResult([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.Tags, false, false))], "popular", 1);
+        return new([.. posts.Select(x => new PostPreview(x.Id.ToString(), x.Md5, x.Tags, false, false))], "popular", 1);
     }
     public async Task<HistorySearchResult<TagHistoryEntry>> GetTagHistoryPageAsync(
         SearchToken? token,
@@ -148,7 +147,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
                 var data = x.SelectNodes("td");
                 return (id, data);
             })
-            .Where(x => x.data[0].InnerHtml == "Post")
+            .Where(x => x.data[0].InnerHtml is "Post")
             .Select(x =>
             {
                 var data = x.data;
@@ -158,7 +157,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
                 int? parentId = null;
                 var parentChanged = false;
                 var parentNodes = data[5].SelectNodes("span/a");
-                if (parentNodes?.Count == 1)
+                if (parentNodes?.Count is 1)
                 {
                     parentId = int.Parse(parentNodes.First().InnerText);
                     parentChanged = true;
@@ -166,7 +165,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
 
                 return new TagHistoryEntry(
                     x.id,
-                    new DateTimeOffset(date, TimeSpan.Zero),
+                    new(date, TimeSpan.Zero),
                     postId.ToString(),
                     parentId?.ToString(),
                     parentChanged);
@@ -178,7 +177,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
             _ => "2"
         };
 
-        return new HistorySearchResult<TagHistoryEntry>([.. entries], new SearchToken(nextPage));
+        return new([.. entries], new(nextPage));
     }
 
     public async Task<HistorySearchResult<NoteHistoryEntry>> GetNoteHistoryPageAsync(
@@ -211,7 +210,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
             _ => "2"
         };
 
-        return new HistorySearchResult<NoteHistoryEntry>(entries, new SearchToken(nextPage));
+        return new(entries, new(nextPage));
     }
 
     public async Task FavoritePostAsync(string postId) =>
@@ -219,14 +218,6 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
             .PostMultipartAsync(content => content
                 .Add("id", new StringContent(postId))
                 .Add("score", new StringContent("3")));
-
-    private async Task<PostIdentity?> GetPostIdentityAsync(int? postId)
-    {
-        if (postId == null)
-            return null;
-
-        return await GetPostIdentityAsync(postId.Value);
-    }
 
     private async Task<PostIdentity> GetPostIdentityAsync(int postId)
     {
@@ -236,27 +227,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
 
         var post = posts.First();
 
-        return new PostIdentity(post.Id.ToString(), post.Md5, PostIdentity.PlatformType.Yandere);
-    }
-
-    private async Task<IReadOnlyCollection<PostIdentity>> GetChildrenAsync(
-        HtmlDocument postHtml)
-    {
-        var childrenIds = postHtml.DocumentNode
-            .SelectNodes("//*[@id='post-view']/div[@class='status-notice']")
-            ?.FirstOrDefault(x => x.InnerHtml.Contains("child post"))
-            ?.SelectNodes("a").Where(x => x.Attributes["href"]?.Value.Contains("/post/show/") ?? false)
-            .Select(x => int.Parse(x.InnerHtml))
-            .ToArray() ?? [];
-
-        if (childrenIds.Length is 0)
-            return [];
-
-        var childrenTasks = childrenIds.Select(GetPostIdentityAsync).ToList();
-
-        await Task.WhenAll(childrenTasks);
-
-        return [.. childrenTasks.Select(x => x.Result)];
+        return new(post.Id.ToString(), post.Md5, PlatformType.Yandere);
     }
 
     private static ExistState GetExistState(HtmlDocument postHtml)
@@ -268,42 +239,20 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         return isDeleted ? ExistState.MarkDeleted : ExistState.Exist;
     }
 
-    private async Task<IReadOnlyCollection<Pool>> GetPoolsAsync(int postId, HtmlDocument postHtml)
-    {
-        var pools = postHtml.DocumentNode
-            .SelectNodes("//*[@id='post-view']/div[@class='status-notice']")
-            ?.Where(x => (x.Attributes["id"]?.Value)?[..4] == "pool")
-            .Select(x =>
-            {
-                var id = int.Parse(x.Attributes["id"].Value[4..]);
-                var aNodes = x.SelectNodes("div/p/a");
-                var poolNode = aNodes.Last(y => y.Attributes["href"].Value[..5] == "/pool");
-                var  name = poolNode.InnerHtml;
-
-                return (id, name);
-            }) ?? [];
-        
-        var tasks = pools
-            .Select(x => GetPoolForPostAsync(x.id, postId))
-            .ToList();
-        await Task.WhenAll(tasks);
-        return [.. tasks.Select(x => x.Result)];
-    }
-
-    private async Task<Pool> GetPoolForPostAsync(int poolId, int postId)
+    private async Task<Pool> GetPoolForPostAsync(long poolId, long postId)
     {
         // https://yande.re/pool/show.json?id={id}
         var pool = await _flurlClient.Request("pool", "show.json")
             .SetQueryParam("id", poolId)
             .GetJsonAsync<YanderePool>();
 
-        return new Pool(
+        return new(
             pool.Id.ToString(),
             pool.Name.Replace('_', ' '),
             Array.IndexOf([.. pool.Posts.Select(x => x.Id)], postId));
     }
 
-    private static IReadOnlyCollection<Note> GetNotes(YanderePost post, HtmlDocument postHtml)
+    private static IReadOnlyList<Note> GetNotes(YanderePost post, HtmlDocument postHtml)
     {
         if (post.LastNotedAt is 0)
             return [];
@@ -337,7 +286,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         static int GetPositionInt(string number) => (int)Math.Ceiling(Convert.ToDouble(number) - 0.5);
     }
 
-    private static IReadOnlyCollection<Tag> GetTags(HtmlDocument postHtml) =>
+    private static IReadOnlyList<Tag> GetTags(HtmlDocument postHtml) =>
         [.. postHtml.DocumentNode
             .SelectSingleNode("//*[@id='tag-sidebar']")
             .SelectNodes("li")
@@ -363,23 +312,68 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
             await Throttler.Get("Yandere").UseAsync(delay);
     }
 
-    private async Task<Post> GetPost(string postId, YanderePost post, HtmlDocument postHtml)
-        => new(
-            new PostIdentity(postId, post.Md5, PostIdentity.PlatformType.Yandere),
+    private Post GetPost(string postId, YanderePost post, HtmlDocument postHtml)
+    {
+        var postIdentity = new PostIdentity(postId, post.Md5, PlatformType.Yandere);
+        return new(
+            postIdentity,
             post.FileUrl,
-            post.SampleUrl ?? post.JpegUrl,
+            post.SampleUrl,
             post.JpegUrl,
             GetExistState(postHtml),
             DateTimeOffset.FromUnixTimeSeconds(post.CreatedAt),
-            new Uploader(post.CreatorId?.ToString() ?? "-1", post.Author),
+            new(post.CreatorId?.ToString() ?? "-1", post.Author, PlatformType.Yandere),
             post.Source,
-            new Size(post.Width, post.Height),
+            new(post.Width, post.Height),
             post.FileSize,
             SafeRating.Parse(post.Rating),
-            [],
-            await GetPostIdentityAsync(post.ParentId),
-            await GetChildrenAsync(postHtml),
-            await GetPoolsAsync(post.Id, postHtml),
             GetTags(postHtml),
-            GetNotes(post, postHtml));
+            GetNotes(post, postHtml),
+            postIdentity.TryFork(post.ParentId, ""))
+        {
+            ChildrenIdsGetter = GetChildrenAsync,
+            PoolsGetter = GetPoolsAsync
+        };
+
+        async Task<IReadOnlyList<PostIdentity>> GetChildrenAsync(Post p)
+        {
+            var childrenIds = postHtml.DocumentNode
+                .SelectNodes("//*[@id='post-view']/div[@class='status-notice']")
+                ?.FirstOrDefault(x => x.InnerHtml.Contains("child post"))
+                ?.SelectNodes("a").Where(x => x.Attributes["href"]?.Value.Contains("/post/show/") ?? false)
+                .Select(x => int.Parse(x.InnerHtml))
+                .ToArray() ?? [];
+
+            if (childrenIds.Length is 0)
+                return [];
+
+            var childrenTasks = childrenIds.Select(GetPostIdentityAsync).ToList();
+
+            await Task.WhenAll(childrenTasks);
+
+            return [.. childrenTasks.Select(x => x.Result)];
+        }
+
+        async Task<IReadOnlyList<Pool>> GetPoolsAsync(Post p)
+        {
+            var pools = postHtml.DocumentNode
+                .SelectNodes("//*[@id='post-view']/div[@class='status-notice']")
+                ?.Where(x => x.Attributes["id"]?.Value?[..4] == "pool")
+                .Select(x =>
+                {
+                    var id = int.Parse(x.Attributes["id"].Value[4..]);
+                    var aNodes = x.SelectNodes("div/p/a");
+                    var poolNode = aNodes.Last(y => y.Attributes["href"].Value[..5] == "/pool");
+                    var name = poolNode.InnerHtml;
+
+                    return (id, name);
+                }) ?? [];
+
+            var tasks = pools
+                .Select(x => GetPoolForPostAsync(x.id, post.Id))
+                .ToList();
+            await Task.WhenAll(tasks);
+            return [.. tasks.Select(x => x.Result)];
+        }
+    }
 }

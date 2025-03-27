@@ -32,20 +32,18 @@ public class GelbooruLoaderTests(GelbooruApiLoaderFixture loaderFixture) : IClas
             }
             
             post.Parent.Should().BeNull();
-            post.Pools.Should().BeEmpty();
             post.SafeRating.IsSensitive.Should().Be(true);
             post.Source.Should().Be("https://twitter.com/sian_sasaland/status/1583461715777585154");
-            post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
             post.FileResolution.Should().Be(new Size(1003, 1416));
-            post.PostedAt.Should().Be(new DateTimeOffset(2022, 10, 22, 7, 3, 36, TimeSpan.Zero));
-            post.SampleUrl.Should().Be("https://img3.gelbooru.com/images/89/e4/89e42789d4ef991e25dab050627c9ef2.jpeg");
-            post.UploaderId.Id.Should().Be("44282");
-            post.UploaderId.Name.Should().Be("jojosstand");
+            post.CreateDate.Should().Be(new(2022, 10, 22, 7, 3, 36, TimeSpan.Zero));
+            post.PreviewUrl.Should().Be("https://img3.gelbooru.com/thumbnails/89/e4/thumbnail_89e42789d4ef991e25dab050627c9ef2.jpg");
+            post.Uploader.Id.Should().Be("44282");
+            post.Uploader.Name.Should().Be("jojosstand");
             
             // isn't supported in gelbooru
-            post.FileSizeInBytes.Should().Be(-1);
-            post.UgoiraFrameDelays.Should().BeEmpty();
+            post.ByteSize.Should().Be(0);
+            post.UgoiraFrameDelays.Should().BeNull();
         }
 
         [Fact]
@@ -56,7 +54,7 @@ public class GelbooruLoaderTests(GelbooruApiLoaderFixture loaderFixture) : IClas
             var post = await loader.GetPostByMd5Async("89e42789d4ef991e25dab050627c9ef2");
 
             post.Should().NotBeNull();
-            post!.OriginalUrl.Should().Be("https://img3.gelbooru.com/images/89/e4/89e42789d4ef991e25dab050627c9ef2.jpeg");
+            post.OriginalUrl.Should().Be("https://img3.gelbooru.com/images/89/e4/89e42789d4ef991e25dab050627c9ef2.jpeg");
             post.Id.GetIntId().Should().Be(7837194);
             post.Id.Md5Hash.Should().Be("89e42789d4ef991e25dab050627c9ef2");
             post.Notes.Should().BeEmpty();
@@ -70,20 +68,20 @@ public class GelbooruLoaderTests(GelbooruApiLoaderFixture loaderFixture) : IClas
             }
             
             post.Parent.Should().BeNull();
-            post.Pools.Should().BeEmpty();
+            post.Pools.Should().BeNull();
+            post.PoolsGetter.Should().BeNull();
             post.SafeRating.IsSensitive.Should().Be(true);
             post.Source.Should().Be("https://twitter.com/sian_sasaland/status/1583461715777585154");
-            post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
             post.FileResolution.Should().Be(new Size(1003, 1416));
-            post.PostedAt.Should().Be(new DateTimeOffset(2022, 10, 22, 7, 3, 36, TimeSpan.Zero));
-            post.SampleUrl.Should().Be("https://img3.gelbooru.com/images/89/e4/89e42789d4ef991e25dab050627c9ef2.jpeg");
-            post.UploaderId.Id.Should().Be("44282");
-            post.UploaderId.Name.Should().Be("jojosstand");
+            post.CreateDate.Should().Be(new(2022, 10, 22, 7, 3, 36, TimeSpan.Zero));
+            post.PreviewUrl.Should().Be("https://img3.gelbooru.com/thumbnails/89/e4/thumbnail_89e42789d4ef991e25dab050627c9ef2.jpg");
+            post.Uploader.Id.Should().Be("44282");
+            post.Uploader.Name.Should().Be("jojosstand");
             
             // isn't supported in gelbooru
-            post.FileSizeInBytes.Should().Be(-1);
-            post.UgoiraFrameDelays.Should().BeEmpty();
+            post.ByteSize.Should().Be(0);
+            post.UgoiraFrameDelays.Should().BeNull();
         }
         
         [Fact]
@@ -156,10 +154,10 @@ public class GelbooruLoaderTests(GelbooruApiLoaderFixture loaderFixture) : IClas
 
             post.Notes.Should().HaveCount(4);
             
-            post.Notes.First().Id.Should().Be("588208");
-            post.Notes.First().Text.Should().Be("Copied 3 notes from post #5780559.");
-            post.Notes.First().Point.Should().Be(new Position(0, 0));
-            post.Notes.First().Size.Should().Be(new Size(0, 0));
+            post.Notes[0].Id.Should().Be("588208");
+            post.Notes[0].Text.Should().Be("Copied 3 notes from post #5780559.");
+            post.Notes[0].Point.Should().Be(new Position(0, 0));
+            post.Notes[0].Size.Should().Be(new Size(0, 0));
             
             post.Notes.ElementAt(1).Id.Should().Be("588209");
             post.Notes.ElementAt(1).Text.Should().Be("Vaginal opening");
@@ -216,13 +214,13 @@ public class GelbooruLoaderTests(GelbooruApiLoaderFixture loaderFixture) : IClas
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.MarkDeleted);
             post.FileResolution.Should().Be(new Size(2244, 3541));
-            post.PostedAt.Should().Be(new DateTimeOffset(2022, 10, 23, 7, 20, 31, TimeSpan.FromHours(-5)));
+            post.CreateDate.Should().Be(new(2022, 10, 23, 7, 20, 31, TimeSpan.FromHours(-5)));
             post.SampleUrl.Should().Be("https://img3.gelbooru.com//images/b9/b9/b9b933c1835d043ec38cbefbe78554eb.png");
-            post.UploaderId.Id.Should().Be("-1");
-            post.UploaderId.Name.Should().Be("oniii-chan");
+            post.Uploader.Id.Should().Be("-1");
+            post.Uploader.Name.Should().Be("oniii-chan");
             
             // isn't supported in gelbooru
-            post.FileSizeInBytes.Should().Be(-1);
+            post.ByteSize.Should().Be(0);
             post.UgoiraFrameDelays.Should().BeEmpty();
         }
         
@@ -234,7 +232,7 @@ public class GelbooruLoaderTests(GelbooruApiLoaderFixture loaderFixture) : IClas
             var post = await loader.GetPostByMd5Async("b9b933c1835d043ec38cbefbe78554eb");
 
             post.Should().NotBeNull();
-            post!.OriginalUrl.Should().Be("https://img3.gelbooru.com//images/b9/b9/b9b933c1835d043ec38cbefbe78554eb.png");
+            post.OriginalUrl.Should().Be("https://img3.gelbooru.com//images/b9/b9/b9b933c1835d043ec38cbefbe78554eb.png");
             post.Id.GetIntId().Should().Be(7841638);
             post.Id.Md5Hash.Should().Be("b9b933c1835d043ec38cbefbe78554eb");
             post.Notes.Should().BeEmpty();
@@ -254,13 +252,13 @@ public class GelbooruLoaderTests(GelbooruApiLoaderFixture loaderFixture) : IClas
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.MarkDeleted);
             post.FileResolution.Should().Be(new Size(2244, 3541));
-            post.PostedAt.Should().Be(new DateTimeOffset(2022, 10, 23, 7, 20, 31, TimeSpan.FromHours(-5)));
+            post.CreateDate.Should().Be(new(2022, 10, 23, 7, 20, 31, TimeSpan.FromHours(-5)));
             post.SampleUrl.Should().Be("https://img3.gelbooru.com//images/b9/b9/b9b933c1835d043ec38cbefbe78554eb.png");
-            post.UploaderId.Id.Should().Be("-1");
-            post.UploaderId.Name.Should().Be("oniii-chan");
+            post.Uploader.Id.Should().Be("-1");
+            post.Uploader.Name.Should().Be("oniii-chan");
             
             // isn't supported in gelbooru
-            post.FileSizeInBytes.Should().Be(-1);
+            post.ByteSize.Should().Be(0);
             post.UgoiraFrameDelays.Should().BeEmpty();
         }
     }

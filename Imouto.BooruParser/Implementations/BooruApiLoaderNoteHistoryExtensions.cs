@@ -6,7 +6,7 @@ namespace Imouto.BooruParser.Implementations;
 
 public static class BooruApiLoaderNoteHistoryExtensions
 {
-    public static async Task<IReadOnlyCollection<NoteHistoryEntry>> GetNoteHistoryFirstPageAsync(
+    public static async Task<IReadOnlyList<NoteHistoryEntry>> GetNoteHistoryFirstPageAsync(
         this IBooruApiLoader loader,
         int limit = 100,
         CancellationToken ct = default)
@@ -16,8 +16,8 @@ public static class BooruApiLoaderNoteHistoryExtensions
     }
 
     public static async IAsyncEnumerable<NoteHistoryEntry> GetNoteHistoryFromIdToPresentAsync(
-        this IBooruApiLoader loader, 
-        int afterHistoryId,
+        this IBooruApiLoader loader,
+        long afterHistoryId,
         int limit = 100,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
@@ -56,6 +56,6 @@ public static class BooruApiLoaderNoteHistoryExtensions
             foreach (var historyEntry in page.Results)
                 yield return historyEntry;
 
-        } while (page.Results.Last().UpdatedAt >= upToDateTime);
+        } while (page.Results[^1].UpdatedAt >= upToDateTime);
     }
 }

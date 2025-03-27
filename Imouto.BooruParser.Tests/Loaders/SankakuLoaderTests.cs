@@ -58,11 +58,11 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             post.ExistState.Should().Be(ExistState.Exist);
             post.FileResolution.Width.Should().Be(756);
             post.FileResolution.Height.Should().Be(1052);
-            post.PostedAt.Should().Be(new DateTimeOffset(2017, 12, 18, 21, 22, 21, 0, TimeSpan.Zero));
+            post.CreateDate.Should().Be(new(2017, 12, 18, 21, 22, 21, 0, TimeSpan.Zero));
             post.SampleUrl.Should().StartWith("https://v.sankakucomplex.com/data/de/aa/deaac52a6b001b6953db90a09f7629f7.jpg");
-            post.UploaderId.Id.Should().Be("8yrx2mEgME6");
-            post.UploaderId.Name.Should().Be("Domestikun");
-            post.FileSizeInBytes.Should().Be(617163);
+            post.Uploader.Id.Should().Be("8yrx2mEgME6");
+            post.Uploader.Name.Should().Be("Domestikun");
+            post.ByteSize.Should().Be(617163);
             post.UgoiraFrameDelays.Should().BeEmpty();
         }
 
@@ -96,11 +96,11 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
             post.FileResolution.Should().Be(new Size(756, 1052));
-            post.PostedAt.Should().Be(new DateTimeOffset(2017, 12, 18, 21, 22, 21, 0, TimeSpan.Zero));
+            post.CreateDate.Should().Be(new(2017, 12, 18, 21, 22, 21, 0, TimeSpan.Zero));
             post.SampleUrl.Should().StartWith("https://v.sankakucomplex.com/data/de/aa/deaac52a6b001b6953db90a09f7629f7.jpg");
-            post.UploaderId.Id.Should().Be("8yrx2mEgME6");
-            post.UploaderId.Name.Should().Be("Domestikun");
-            post.FileSizeInBytes.Should().Be(617163);
+            post.Uploader.Id.Should().Be("8yrx2mEgME6");
+            post.Uploader.Name.Should().Be("Domestikun");
+            post.ByteSize.Should().Be(617163);
             post.UgoiraFrameDelays.Should().BeEmpty();
         }
         
@@ -132,11 +132,11 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             post.ChildrenIds.Should().BeEmpty();
             post.ExistState.Should().Be(ExistState.Exist);
             post.FileResolution.Should().Be(new Size(1644, 1862));
-            post.PostedAt.Should().Be(new DateTimeOffset(2023, 09, 29, 5, 54, 09, 0, TimeSpan.Zero));
+            post.CreateDate.Should().Be(new(2023, 09, 29, 5, 54, 09, 0, TimeSpan.Zero));
             post.SampleUrl.Should().StartWith("https://v.sankakucomplex.com/data/dc/9d/dc9da74597ecd47b2848fb4d68fce77a.mp4");
-            post.UploaderId.Id.Should().Be("YoMB0X4BrOv");
-            post.UploaderId.Name.Should().Be("Just_some_guy");
-            post.FileSizeInBytes.Should().Be(22152413);
+            post.Uploader.Id.Should().Be("YoMB0X4BrOv");
+            post.Uploader.Name.Should().Be("Just_some_guy");
+            post.ByteSize.Should().Be(22152413);
             post.UgoiraFrameDelays.Should().BeEmpty();
         }
         
@@ -272,7 +272,7 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             var firstTagHistoryPage = await loader.GetTagHistoryFirstPageAsync();
             firstTagHistoryPage.Should().NotBeEmpty();
 
-            var notesHistory = await loader.GetTagHistoryFromIdToPresentAsync(firstTagHistoryPage.Last().HistoryId).ToListAsync();
+            var notesHistory = await loader.GetTagHistoryFromIdToPresentAsync(firstTagHistoryPage[^1].HistoryId).ToListAsync();
 
             notesHistory.Should().NotBeEmpty();
         }
@@ -285,7 +285,7 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             firstTagHistoryPage.Should().NotBeEmpty();
 
             var tagsHistory = await loader
-                .GetTagHistoryFromIdToPresentAsync(firstTagHistoryPage.Last().HistoryId - 100)
+                .GetTagHistoryFromIdToPresentAsync(firstTagHistoryPage[^1].HistoryId - 100)
                 .ToListAsync();
 
             tagsHistory.Should().NotBeEmpty();
@@ -339,8 +339,13 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             var post = await loader.GetPostAsync("8JaGzJm6oML");
 
             post.Tags.Count.Should().BeGreaterThan(30);
-            post.ChildrenIds.Count.Should().NotBe(0);
             post.Parent!.Id.Should().NotBeEmpty();
+
+            if (post.ChildrenIdsGetter is not null)
+            {
+                var childrenIds = await post.ChildrenIdsGetter(post);
+                childrenIds.Count.Should().NotBe(0);
+            }
         }
 
         [Fact]
@@ -352,7 +357,7 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
 
             post.ChildrenIds.Should().HaveCount(11);
             post.ChildrenIds.Distinct().Should().HaveCount(post.ChildrenIds.Count);
-            post.ChildrenIds.First().Should().Be(new PostIdentity("G8r63AvjYRq", "0f91fb08969e93042106a9f5ed233c3b", PostIdentity.PlatformType.Sankaku));
+            post.ChildrenIds[0].Should().Be(new PostIdentity("G8r63AvjYRq", "0f91fb08969e93042106a9f5ed233c3b", PlatformType.Sankaku));
 
             foreach (var postChildrenId in post.ChildrenIds)
             {
@@ -372,7 +377,12 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
 
             // no longer empty, but inaccessible
             // and now empty again
-            post.ChildrenIds.Count.Should().Be(0);
+
+            if (post.ChildrenIdsGetter is not null)
+            {
+                var childrenIds = await post.ChildrenIdsGetter(post);
+                childrenIds.Count.Should().Be(0);
+            }
         }
 
         [Fact]
@@ -382,27 +392,31 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
 
             var post = await loader.GetPostAsync("6ea46lYb5R3");
 
-            post.Notes.Count.Should().Be(4);
+            if (post.NotesGetter is null)
+                return;
+
+            var notes = await post.NotesGetter(post);
+            notes.Count.Should().Be(4);
+
+            notes.ElementAt(0).Id.Should().Be("9krZZB36rg8");
+            notes.ElementAt(0).Text.Should().Be("Wishes to be a slave");
+            notes.ElementAt(0).Size.Should().Be(new Size(620, 280));
+            notes.ElementAt(0).Point.Should().Be(new Position(646, 92));
             
-            post.Notes.ElementAt(0).Id.Should().Be("9krZZB36rg8");
-            post.Notes.ElementAt(0).Text.Should().Be("Wishes to be a slave");
-            post.Notes.ElementAt(0).Size.Should().Be(new Size(620, 280));
-            post.Notes.ElementAt(0).Point.Should().Be(new Position(646, 92));
+            notes.ElementAt(1).Id.Should().Be("b8aJE5AlM2L");
+            notes.ElementAt(1).Text.Should().Be("H cup\nHuge breasts <3");
+            notes.ElementAt(1).Size.Should().Be(new Size(574, 434));
+            notes.ElementAt(1).Point.Should().Be(new Position(475, 2229));
             
-            post.Notes.ElementAt(1).Id.Should().Be("b8aJE5AlM2L");
-            post.Notes.ElementAt(1).Text.Should().Be("H cup\nHuge breasts <3");
-            post.Notes.ElementAt(1).Size.Should().Be(new Size(574, 434));
-            post.Notes.ElementAt(1).Point.Should().Be(new Position(475, 2229));
+            notes.ElementAt(2).Id.Should().Be("8yrxeXqvRE6");
+            notes.ElementAt(2).Text.Should().Be("Slutty voice <3");
+            notes.ElementAt(2).Size.Should().Be(new Size(550, 224));
+            notes.ElementAt(2).Point.Should().Be(new Position(84, 2171));
             
-            post.Notes.ElementAt(2).Id.Should().Be("8yrxeXqvRE6");
-            post.Notes.ElementAt(2).Text.Should().Be("Slutty voice <3");
-            post.Notes.ElementAt(2).Size.Should().Be(new Size(550, 224));
-            post.Notes.ElementAt(2).Point.Should().Be(new Position(84, 2171));
-            
-            post.Notes.ElementAt(3).Id.Should().Be("6Qa8bwAjR9A");
-            post.Notes.ElementAt(3).Text.Should().Be("Vulgar\nOrgasm face <3");
-            post.Notes.ElementAt(3).Size.Should().Be(new Size(563, 311));
-            post.Notes.ElementAt(3).Point.Should().Be(new Position(60, 118));
+            notes.ElementAt(3).Id.Should().Be("6Qa8bwAjR9A");
+            notes.ElementAt(3).Text.Should().Be("Vulgar\nOrgasm face <3");
+            notes.ElementAt(3).Size.Should().Be(new Size(563, 311));
+            notes.ElementAt(3).Point.Should().Be(new Position(60, 118));
         }
             
         [Fact]

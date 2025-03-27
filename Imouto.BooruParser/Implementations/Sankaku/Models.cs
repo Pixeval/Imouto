@@ -25,7 +25,7 @@ public record SankakuPost(
     [property: JsonPropertyName("file_url")] string FileUrl,
     [property: JsonPropertyName("width")] int Width,
     [property: JsonPropertyName("height")] int Height,
-    [property: JsonPropertyName("file_size")] int FileSize,
+    [property: JsonPropertyName("file_size")] ulong FileSize,
     [property: JsonPropertyName("created_at")] SankakuDateTime CreatedAt,
     [property: JsonPropertyName("has_children")] bool HasChildren,
     [property: JsonPropertyName("has_notes")] bool HasNotes,
