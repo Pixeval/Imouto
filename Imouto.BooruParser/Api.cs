@@ -89,7 +89,7 @@ public class Post(
     SafeRating safeRating,
     IReadOnlyList<Tag> tags,
     IReadOnlyList<Note>? notes,
-    PostIdentity? parentId = null) : IArtworkInfo, ISingleImage
+    PostIdentity? parentId = null) : ISingleImage
 {
     string IIdentityInfo.Id => Id.Id;
 
@@ -98,7 +98,7 @@ public class Post(
     ILookup<ITagCategory, ITag> IArtworkInfo.Tags => Tags.ToLookup(t => t.Category, ITag (t) => t);
 
     [field: AllowNull, MaybeNull]
-    IReadOnlyList<IImageFrame> IArtworkInfo.Thumbnails => field ??= ((Func<IReadOnlyList<IImageFrame>>)(() =>
+    IReadOnlyCollection<IImageFrame> IArtworkInfo.Thumbnails => field ??= ((Func<IReadOnlyCollection<IImageFrame>>)(() =>
     {
         var temp = new List<IImageFrame>();
         if (SampleUrl is not null)
@@ -214,6 +214,8 @@ public record Tag(string Type, string Name) : ITag
     public ITagCategory Category => new TagCategory(Name);
 
     public string Description => "";
+
+    public string TranslatedName { get; init; } = "";
 }
 
 public record PostIdentity(string Id, string Md5Hash, PlatformType PlatformType) : IIdentityInfo
@@ -283,7 +285,7 @@ public class Uploader(string id, string name, PlatformType platform) : IUser
         _ => throw new ArgumentOutOfRangeException(nameof(platform))
     });
 
-    public IReadOnlyList<IImageFrame> Avatar => [];
+    public IReadOnlyCollection<IImageFrame> Avatar => [];
 
     public IReadOnlyDictionary<string, Uri> ContactInformation => new Dictionary<string, Uri>();
 
