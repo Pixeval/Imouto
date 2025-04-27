@@ -11,6 +11,7 @@ namespace Imouto.BooruParser.Implementations.Gelbooru;
 public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSettings> options)
     : IBooruApiLoader
 {
+    public string Platform => IPlatformInfo.Gelbooru;
     private const string BaseUrl = "https://gelbooru.com/";
     private readonly IFlurlClient _flurlClient = factory
         .GetForDomain(new(BaseUrl))

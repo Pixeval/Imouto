@@ -8,9 +8,10 @@ namespace Imouto.BooruParser.Implementations.Danbooru;
 
 public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSettings> options) : IBooruApiLoader, IBooruApiAccessor
 {
+    public string Platform => IPlatformInfo.Danbooru;
     private const string BaseUrl = "https://danbooru.donmai.us";
     private readonly IFlurlClient _flurlClient = factory.GetForDomain(new(BaseUrl)).BeforeCall(x => SetAuthParameters(x, options));
-    private readonly string _botUserAgent = options.Value.BotUserAgent ?? throw new("UserAgent is required to make api calls");
+    private readonly string _botUserAgent = options.Value.BotUserAgent ?? "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36";
 
     public async Task<Post> GetPostAsync(string postId)
     {
@@ -215,11 +216,16 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
         return new(entries, new(nextPage));
     }
 
-    public async Task FavoritePostAsync(string postId) =>
+    public async Task<bool> PostFavoriteAsync(string postId, bool favorite)
+    {
+        if (!favorite)
+            throw new NotSupportedException(favorite.ToString());
         await _flurlClient.Request("favorites.json")
             .SetQueryParam("post_id", postId)
             .WithUserAgent(_botUserAgent)
             .PostAsync();
+        return true;
+    }
 
     private static IReadOnlyList<PostIdentity> GetChildren(DanbooruPost post)
         => [.. post.Children.Select(x => new PostIdentity(x.Id.ToString(), x.Md5, PlatformType.Danbooru))];

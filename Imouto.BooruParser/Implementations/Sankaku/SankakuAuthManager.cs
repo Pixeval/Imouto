@@ -5,11 +5,13 @@ using Flurl.Http.Configuration;
 using Imouto.BooruParser.Extensions;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Misaki;
 
 namespace Imouto.BooruParser.Implementations.Sankaku;
 
 public class SankakuAuthManager : ISankakuAuthManager
 {
+    public string Platform => IPlatformInfo.Sankaku;
     private const string TokensKey = "sankaku_complex_tokens";
     private const string SessionKey = "sankaku_complex_session";
     private const string BaseUrl = "https://sankakuapi.com/";

@@ -1,4 +1,6 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Imouto.BooruParser.Implementations.Sankaku;
 using Misaki;
 
@@ -19,7 +21,7 @@ public static class BooruApiLoaderExtensions
         if (loader is SankakuApiLoader)
             throw new InvalidOperationException("Sankaku doesn't support fav post by int id");
 
-        return loader.FavoritePostAsync(postId.ToString());
+        return loader.PostFavoriteAsync(postId.ToString(), true);
     }
 
     public static int GetIntId(this PostIdentity postIdentity)
@@ -31,8 +33,11 @@ public static class BooruApiLoaderExtensions
     }
 }
 
-public interface IBooruApiLoader
+public interface IBooruApiLoader : IGetArtworkService
 {
+    async Task<IArtworkInfo> IGetArtworkService.GetArtworkAsync(string id)
+        => await GetPostAsync(id);
+
     Task<Post> GetPostAsync(string postId);
 
     Task<Post?> GetPostByMd5Async(string md5);
@@ -56,10 +61,7 @@ public interface IBooruApiLoader
         CancellationToken ct = default);
 }
 
-public interface IBooruApiAccessor
-{
-    Task FavoritePostAsync(string postId);
-}
+public interface IBooruApiAccessor : IPostFavoriteService;
 
 /// <param name="Page">For danbooru: b{lowest-history-id-on-current-page}</param>
 public record SearchToken(string Page);
@@ -89,14 +91,18 @@ public class Post(
     SafeRating safeRating,
     IReadOnlyList<Tag> tags,
     IReadOnlyList<Note>? notes,
-    PostIdentity? parentId = null) : ISingleImage
+    PostIdentity? parentId = null) : ISingleImage, ISerializable
 {
+    [JsonIgnore]
     string IIdentityInfo.Id => Id.Id;
 
-    public string Platform => Id.Platform;
+    [JsonIgnore]
+    string IPlatformInfo.Platform => Id.Platform;
 
+    [JsonIgnore]
     ILookup<ITagCategory, ITag> IArtworkInfo.Tags => Tags.ToLookup(t => t.Category, ITag (t) => t);
 
+    [JsonIgnore]
     [field: AllowNull, MaybeNull]
     IReadOnlyCollection<IImageFrame> IArtworkInfo.Thumbnails => field ??= ((Func<IReadOnlyCollection<IImageFrame>>)(() =>
     {
@@ -108,27 +114,35 @@ public class Post(
         return temp;
     }))();
 
+    [JsonIgnore]
     IReadOnlyDictionary<string, object> IArtworkInfo.AdditionalInfo => new Dictionary<string, object>();
 
     /// <summary>
     /// TODO: 是否会有gif格式的图片？
     /// </summary>
+    [JsonIgnore]
     ImageType IArtworkInfo.ImageType => UgoiraFrameDelays is null
         ? ChildrenIds is null 
             ? ImageType.SingleImage
             : ImageType.ImageSet
         : ImageType.SingleAnimatedImage;
 
+    [JsonIgnore]
     int IArtworkInfo.TotalFavorite => -1;
 
+    [JsonIgnore]
     int IArtworkInfo.TotalView => -1;
 
+    [JsonIgnore]
     bool IArtworkInfo.IsFavorite => false;
 
+    [JsonIgnore]
     public bool IsAiGenerated => false;
 
+    [JsonIgnore]
     string IArtworkInfo.Description => "";
 
+    [JsonIgnore]
     public Uri WebsiteUri => new(Id.PlatformType switch
     {
         PlatformType.Danbooru => "https://danbooru.donmai.us/posts/" + Id.Id,
@@ -139,22 +153,31 @@ public class Post(
         _ => throw new ArgumentOutOfRangeException(nameof(Id.PlatformType))
     });
 
-    public Uri AppUri => throw new NotImplementedException();
+    [JsonIgnore]
+    public Uri AppUri => new Uri($"pixeval://{Id.PlatformType}/{Id.Id}");
 
+    [JsonIgnore]
     public DateTimeOffset UpdateDate => CreateDate;
 
+    [JsonIgnore]
     DateTimeOffset IArtworkInfo.ModifyDate => CreateDate;
 
+    [JsonIgnore]
     IPreloadableList<IUser> IArtworkInfo.Authors => [];
 
+    [JsonIgnore]
     IPreloadableList<IUser> IArtworkInfo.Uploaders => [Uploader];
 
+    [JsonIgnore]
     string IArtworkInfo.Title => "";
 
+    [JsonIgnore]
     int IImageSize.Width => FileResolution.Width;
 
+    [JsonIgnore]
     int IImageSize.Height => FileResolution.Height;
 
+    [JsonIgnore]
     Uri IImageFrame.ImageUri => new(OriginalUrl);
 
     public PostIdentity Id { get; } = id;
@@ -189,12 +212,15 @@ public class Post(
 
     public IReadOnlyList<PostIdentity>? ChildrenIds { get; init; } 
 
-    public IReadOnlyList<Pool>? Pools { get; init; } 
+    public IReadOnlyList<Pool>? Pools { get; init; }
 
+    [JsonIgnore]
     public Func<Post, Task<IReadOnlyList<PostIdentity>>>? ChildrenIdsGetter { get => SwapReturn(ref field); init; }
 
+    [JsonIgnore]
     public Func<Post, Task<IReadOnlyList<Pool>>>? PoolsGetter { get => SwapReturn(ref field); init; }
 
+    [JsonIgnore]
     public Func<Post, Task<IReadOnlyList<Note>>>? NotesGetter { get => SwapReturn(ref field); init; }
 
     private static T? SwapReturn<T>(ref T? field) where T : class
@@ -204,7 +230,15 @@ public class Post(
         return temp;
     }
 
+    [JsonIgnore]
     public int SetIndex => -1;
+
+    public string Serialize() => JsonSerializer.Serialize(this, typeof(Post), PostJsonSerializerContext.Default);
+
+    public static ISerializable Deserialize(string data) => (Post) JsonSerializer.Deserialize(data, typeof(Post), PostJsonSerializerContext.Default)!;
+
+    [JsonIgnore]
+    public string SerializeKey => typeof(Post).FullName!;
 }
 
 public enum ExistState { Exist, MarkDeleted, Deleted }
@@ -217,7 +251,7 @@ public record Note(string Id, string Text, Position Point, Size Size);
 
 public record Tag(string Type, string Name) : ITag
 {
-    public ITagCategory Category => new TagCategory(Name);
+    public ITagCategory Category => new TagCategory(Type);
 
     public string Description => "";
 
@@ -291,7 +325,7 @@ public class Uploader(string id, string name, PlatformType platform) : IUser
         _ => throw new ArgumentOutOfRangeException(nameof(platform))
     });
 
-    public Uri AppUri => throw new NotImplementedException();
+    public Uri AppUri => new("pixeval://empty");
 
     public IReadOnlyCollection<IImageFrame> Avatar => [];
 
@@ -316,3 +350,6 @@ public record TagHistoryEntry(
     bool ParentChanged);
 
 public record NoteHistoryEntry(long HistoryId, string PostId, DateTimeOffset UpdatedAt);
+
+[JsonSerializable(typeof(Post))]
+public partial class PostJsonSerializerContext : JsonSerializerContext;

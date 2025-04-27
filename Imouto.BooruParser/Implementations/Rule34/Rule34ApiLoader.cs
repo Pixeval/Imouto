@@ -10,6 +10,8 @@ namespace Imouto.BooruParser.Implementations.Rule34;
 public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings> options)
     : IBooruApiLoader
 {
+    public string Platform => IPlatformInfo.Rule34;
+
     private const string HtmlBaseUrl = "https://rule34.xxx";
 
     private const string JsonBaseUrl = "https://api.rule34.xxx";

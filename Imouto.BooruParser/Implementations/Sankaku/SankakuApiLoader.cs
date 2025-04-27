@@ -10,6 +10,7 @@ namespace Imouto.BooruParser.Implementations.Sankaku;
 
 public class SankakuApiLoader : IBooruApiLoader, IBooruApiAccessor
 {
+    public string Platform => IPlatformInfo.Sankaku;
     private const string ApiBaseUrl = "https://sankakuapi.com/";
     private const string HtmlBaseUrl = "https://chan.sankakucomplex.com/";
 
@@ -261,11 +262,16 @@ public class SankakuApiLoader : IBooruApiLoader, IBooruApiAccessor
         return new(entries, new(nextPage));
     }
 
-    public async Task FavoritePostAsync(string postId) =>
+    public async Task<bool> PostFavoriteAsync(string postId, bool favorite)
+    {
+        if (!favorite)
+            throw new NotSupportedException(favorite.ToString());
         // https://capi-v2.sankakucomplex.com/posts/30879033/favorite?lang=en
         await _flurlClient.Request("posts", postId, "favorite")
             .SetQueryParam("lang", "en")
             .PostAsync();
+        return true;
+    }
 
     private async Task<PostIdentity?> GetPostIdentityAsync(string? postId)
     {

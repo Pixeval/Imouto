@@ -19,6 +19,8 @@ namespace Imouto.BooruParser.Implementations.Yandere;
 /// extensions for tags and notes
 public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSettings> options) : IBooruApiLoader, IBooruApiAccessor
 {
+    public string Platform => IPlatformInfo.Yandere;
+
     private static readonly Regex NotePositionRegex = new(
             "width[:\\s]*(?<width>\\d+.{0,1}\\d*)px.*height[:\\s]*(?<height>\\d+.{0,1}\\d*)px.*top[:\\s]*(?<top>\\d+.{0,1}\\d*)px.*left[:\\s]*(?<left>\\d+.{0,1}\\d*)px",
             RegexOptions.Compiled);
@@ -213,11 +215,16 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         return new(entries, new(nextPage));
     }
 
-    public async Task FavoritePostAsync(string postId) =>
+    public async Task<bool> PostFavoriteAsync(string postId, bool favorite)
+    {
+        if (!favorite)
+            throw new NotSupportedException(favorite.ToString());
         await _flurlClient.Request("post", "vote.json")
             .PostMultipartAsync(content => content
                 .Add("id", new StringContent(postId))
                 .Add("score", new StringContent("3")));
+        return true;
+    }
 
     private async Task<PostIdentity> GetPostIdentityAsync(int postId)
     {
