@@ -139,13 +139,15 @@ public class Post(
         _ => throw new ArgumentOutOfRangeException(nameof(Id.PlatformType))
     });
 
+    public Uri AppUri => throw new NotImplementedException();
+
     public DateTimeOffset UpdateDate => CreateDate;
 
     DateTimeOffset IArtworkInfo.ModifyDate => CreateDate;
 
-    IPreloadableEnumerable<IUser> IArtworkInfo.Authors => [];
+    IPreloadableList<IUser> IArtworkInfo.Authors => [];
 
-    IPreloadableEnumerable<IUser> IArtworkInfo.Uploaders => [Uploader];
+    IPreloadableList<IUser> IArtworkInfo.Uploaders => [Uploader];
 
     string IArtworkInfo.Title => "";
 
@@ -201,6 +203,8 @@ public class Post(
         field = null;
         return temp;
     }
+
+    public int SetIndex => -1;
 }
 
 public enum ExistState { Exist, MarkDeleted, Deleted }
@@ -286,6 +290,8 @@ public class Uploader(string id, string name, PlatformType platform) : IUser
         PlatformType.Rule34 => "https://rule34.xxx/index.php?page=account&s=profile&uname=" + name,
         _ => throw new ArgumentOutOfRangeException(nameof(platform))
     });
+
+    public Uri AppUri => throw new NotImplementedException();
 
     public IReadOnlyCollection<IImageFrame> Avatar => [];
 
