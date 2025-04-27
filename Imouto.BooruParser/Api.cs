@@ -125,6 +125,8 @@ public class Post(
 
     bool IArtworkInfo.IsFavorite => false;
 
+    public bool IsAiGenerated => false;
+
     string IArtworkInfo.Description => "";
 
     public Uri WebsiteUri => new(Id.PlatformType switch

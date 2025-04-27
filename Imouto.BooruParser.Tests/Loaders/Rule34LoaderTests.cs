@@ -38,7 +38,7 @@ public class Rule34LoaderTests(Rule34ApiLoaderFixture loaderFixture) : IClassFix
             post.ChildrenIds.Should().BeNull();
             post.ExistState.Should().Be(ExistState.Exist);
             post.FileResolution.Should().Be(new Size(1920, 1440));
-            post.CreateDate.Should().Be(new(2025, 1, 4, 15, 32, 54, TimeSpan.Zero));
+            post.CreateDate.Should().Be(new DateTimeOffset(2025, 4, 8, 16, 34, 42, TimeSpan.Zero));
             post.SampleUrl.Should().Be("https://api-cdn.rule34.xxx/images/7492/42936037bc650b4d38bc9f6df355b0f1.jpg");
             post.Uploader.Name.Should().Be("nebushad");
             
@@ -56,7 +56,7 @@ public class Rule34LoaderTests(Rule34ApiLoaderFixture loaderFixture) : IClassFix
             var post = await loader.GetPostByMd5Async("42936037bc650b4d38bc9f6df355b0f1");
 
             post.Should().NotBeNull();
-            post!.OriginalUrl.Should().Be("https://api-cdn-mp4.rule34.xxx/images/7492/42936037bc650b4d38bc9f6df355b0f1.mp4");
+            post.OriginalUrl.Should().Be("https://api-cdn-mp4.rule34.xxx/images/7492/42936037bc650b4d38bc9f6df355b0f1.mp4");
             post.Id.GetIntId().Should().Be(8548333);
             post.Id.Md5Hash.Should().Be("42936037bc650b4d38bc9f6df355b0f1");
             post.Notes.Should().BeEmpty();
@@ -76,7 +76,7 @@ public class Rule34LoaderTests(Rule34ApiLoaderFixture loaderFixture) : IClassFix
             post.ChildrenIds.Should().BeNull();
             post.ExistState.Should().Be(ExistState.Exist);
             post.FileResolution.Should().Be(new Size(1920, 1440));
-            post.CreateDate.Should().Be(new(2025, 1, 4, 15, 32, 54, TimeSpan.Zero));
+            post.CreateDate.Should().Be(new DateTimeOffset(2025, 4, 8, 16, 34, 42, TimeSpan.Zero));
             post.SampleUrl.Should().Be("https://api-cdn.rule34.xxx/images/7492/42936037bc650b4d38bc9f6df355b0f1.jpg");
             post.Uploader.Name.Should().Be("nebushad");
             

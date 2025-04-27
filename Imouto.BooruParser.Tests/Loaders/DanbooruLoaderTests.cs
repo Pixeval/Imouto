@@ -547,7 +547,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var post = await loader.GetPostByMd5Async("fcf0c189e898edcb316ea0b61096c622");
             
             post.Should().NotBeNull();
-            post!.Id.GetIntId().Should().Be(5766237);
+            post.Id.GetIntId().Should().Be(5766237);
             post.OriginalUrl.Should().NotBeNullOrWhiteSpace();
         }
 
@@ -559,7 +559,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var restrictedPost = await loader.GetPostByMd5Async("b9b933c1835d043ec38cbefbe78554eb");
 
             restrictedPost.Should().NotBeNull();
-            restrictedPost!.Id.GetIntId().Should().Be(5767795);
+            restrictedPost.Id.GetIntId().Should().Be(5767795);
             restrictedPost.OriginalUrl.Should().BeNull();
             restrictedPost.Tags.Should().NotBeEmpty();
         }

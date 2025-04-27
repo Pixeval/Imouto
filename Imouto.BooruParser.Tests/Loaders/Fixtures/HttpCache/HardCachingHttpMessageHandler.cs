@@ -58,7 +58,7 @@ public class HardCachingHttpMessageHandler : DelegatingHandler
         if ((int)code > 200)
             return result;
         
-        var content = await result.Content!.ReadAsStringAsync(ct);
+        var content = await result.Content.ReadAsStringAsync(ct);
 
         Cache.TryAdd(key, new(content, code));
         SaveCache();

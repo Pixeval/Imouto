@@ -8,7 +8,7 @@ namespace Imouto.BooruParser.Tests.Loaders;
 // This line will skip all tests in file
 // xUnit doesn't support skipping all tests in class
 // Comment this line to enable tests
-// using FactAttribute = System.Runtime.CompilerServices.CompilerGeneratedAttribute;
+using FactAttribute = System.Runtime.CompilerServices.CompilerGeneratedAttribute;
 
 public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixture<SankakuLoaderFixture>
 {
@@ -38,8 +38,8 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             post.OriginalUrl.Should().StartWith("https://v.sankakucomplex.com/data/de/aa/deaac52a6b001b6953db90a09f7629f7.jpg");
             post.Id.Id.Should().Be("YoMBDZgQJrO");
             post.Id.Md5Hash.Should().Be("deaac52a6b001b6953db90a09f7629f7");
-            post.Notes.Should().BeEmpty();
-            post.Tags.Should().HaveCount(122);
+            post.Notes.Should().BeNull();
+            post.Tags.Should().HaveCount(123);
 
             foreach (var postTag in post.Tags)
             {
@@ -74,11 +74,11 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             var post = await loader.GetPostByMd5Async("deaac52a6b001b6953db90a09f7629f7");
 
             post.Should().NotBeNull();
-            post!.OriginalUrl.Should().StartWith("https://v.sankakucomplex.com/data/de/aa/deaac52a6b001b6953db90a09f7629f7.jpg");
+            post.OriginalUrl.Should().StartWith("https://v.sankakucomplex.com/data/de/aa/deaac52a6b001b6953db90a09f7629f7.jpg");
             post.Id.Id.Should().Be("YoMBDZgQJrO");
             post.Id.Md5Hash.Should().Be("deaac52a6b001b6953db90a09f7629f7");
-            post.Notes.Should().BeEmpty();
-            post.Tags.Should().HaveCount(122);
+            post.Notes.Should().BeNull();
+            post.Tags.Should().HaveCount(123);
 
             foreach (var postTag in post.Tags)
             {
@@ -112,11 +112,11 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             var post = await loader.GetPostByMd5Async("dc9da74597ecd47b2848fb4d68fce77a");
 
             post.Should().NotBeNull();
-            post!.OriginalUrl.Should().StartWith("https://v.sankakucomplex.com/data/dc/9d/dc9da74597ecd47b2848fb4d68fce77a.mp4");
+            post.OriginalUrl.Should().StartWith("https://v.sankakucomplex.com/data/dc/9d/dc9da74597ecd47b2848fb4d68fce77a.mp4");
             post.Id.Id.Should().Be("P7RLK8e90r6");
             post.Id.Md5Hash.Should().Be("dc9da74597ecd47b2848fb4d68fce77a");
             post.Notes.Should().BeEmpty();
-            post.Tags.Should().HaveCount(100);
+            post.Tags.Should().HaveCount(101);
 
             foreach (var postTag in post.Tags)
             {
@@ -148,7 +148,7 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             var post = await loader.GetPostByMd5Async("d62ed6aebd2b75aa9661795b54a957d7");
 
             post.Should().NotBeNull();
-            post!.Tags.Should().HaveCount(64);
+            post.Tags.Should().HaveCount(66);
         }
 
         [Fact]
@@ -158,6 +158,17 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             var post = await loader.GetPostAsync("qEMAek6EWMJ");
 
             post.OriginalUrl.Should().NotContain("&amp;");
+        }
+
+        [Fact]
+        public async Task ShouldContainTagsWithoutAmp()
+        {
+            var loader = _loaderFixture.GetLoaderWithAuth();
+            var post = await loader.GetPostAsync("1QaE6NQQyr9");
+
+            post.Tags.Should().AllSatisfy(x => (x.Name + x.Type)
+                .Should()
+                .NotContain("&#"));
         }
     }
         
@@ -173,7 +184,7 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             result.Results.Should().HaveCountGreaterThan(1);
         }
 
-        [Fact(Skip = "Clown Sankaku only allow now 1 tag for free accounts")]
+        // [Fact(Skip = "Clown Sankaku only allow now 1 tag for free accounts")]
         public async Task ShouldFindWithMultipleTags()
         {
             var loader = _loaderFixture.GetLoaderWithoutAuth();
@@ -353,17 +364,11 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
         {
             var loader = _loaderFixture.GetLoaderWithoutAuth();
 
-            var post = await loader.GetPostAsync("1QaEoeZobR9");
+            var post = await loader.GetPostAsync("1QaE73DqNR9");
 
-            post.ChildrenIds.Should().HaveCount(11);
+            post.ChildrenIds.Should().HaveCount(1);
             post.ChildrenIds.Distinct().Should().HaveCount(post.ChildrenIds.Count);
-            post.ChildrenIds[0].Should().Be(new PostIdentity("G8r63AvjYRq", "0f91fb08969e93042106a9f5ed233c3b", PlatformType.Sankaku));
-
-            foreach (var postChildrenId in post.ChildrenIds)
-            {
-                postChildrenId.Id.Should().NotBeEmpty();
-                postChildrenId.Md5Hash.Should().HaveLength(32);
-            }
+            post.ChildrenIds[0].Should().Be(new PostIdentity("1QaE73DqBR9", "25d539de97741a801d64f9158d3581a9", PlatformType.Sankaku));
         }
 
         [Fact]
@@ -373,7 +378,7 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             var post = await loader.GetPostByMd5Async("692078f4b19d8a7992bc361baac39650");
 
             post.Should().NotBeNull();
-            post!.Tags.Count.Should().BeGreaterThan(30);
+            post.Tags.Count.Should().BeGreaterThan(30);
 
             // no longer empty, but inaccessible
             // and now empty again

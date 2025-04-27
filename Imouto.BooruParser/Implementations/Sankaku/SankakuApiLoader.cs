@@ -1,3 +1,5 @@
+using System.Net;
+using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Imouto.BooruParser.Extensions;
@@ -8,7 +10,7 @@ namespace Imouto.BooruParser.Implementations.Sankaku;
 
 public class SankakuApiLoader : IBooruApiLoader, IBooruApiAccessor
 {
-    private const string ApiBaseUrl = "https://capi-v2.sankakucomplex.com/";
+    private const string ApiBaseUrl = "https://sankakuapi.com/";
     private const string HtmlBaseUrl = "https://chan.sankakucomplex.com/";
 
     private readonly IFlurlClient _flurlClient;
@@ -319,7 +321,7 @@ public class SankakuApiLoader : IBooruApiLoader, IBooruApiAccessor
         var notes = await _flurlClient.Request("posts", post.Id, "notes")
             .GetJsonAsync<IReadOnlyList<SankakuNote>>();
         
-        return [.. notes.Select(x => new Note(x.Id, x.Body, new(x.Y, x.X), new(x.Width, x.Height)))];
+        return [.. notes.Select(x => new Note(x.Id, WebUtility.HtmlDecode(x.Body), new(x.Y, x.X), new(x.Width, x.Height)))];
     }
 
     private async Task<IReadOnlyList<Tag>> GetTagsAsync(SankakuPost post)
@@ -338,10 +340,10 @@ public class SankakuApiLoader : IBooruApiLoader, IBooruApiAccessor
                 return (Type: type, Tag: tag);
             });
 
-            return [.. tags.Select(x => new Tag(x.Type, x.Tag.Replace('_', ' ').ToLowerInvariant()))];
+            return [.. tags.Select(x => new Tag(WebUtility.HtmlDecode(x.Type), WebUtility.HtmlDecode(x.Tag).Replace('_', ' ').ToLowerInvariant()))];
         }
         
-        return [.. post.Tags.Select(x => new Tag(GetTagType(x.Type), x.TagName.Replace('_', ' ').ToLowerInvariant()))];
+        return [.. post.Tags.Select(x => new Tag(GetTagType(x.Type), WebUtility.HtmlDecode(x.TagName).Replace('_', ' ').ToLowerInvariant()))];
     }
 
     private static string GetTagType(int type) 
