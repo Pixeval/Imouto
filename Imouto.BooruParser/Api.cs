@@ -174,12 +174,6 @@ public class Post(
     public Uri AppUri => new Uri($"pixeval://{Id.PlatformType}/{Id.Id}");
 
     [JsonIgnore]
-    public DateTimeOffset UpdateDate => CreateDate;
-
-    [JsonIgnore]
-    DateTimeOffset IArtworkInfo.ModifyDate => CreateDate;
-
-    [JsonIgnore]
     IPreloadableList<IUser> IArtworkInfo.Authors => [];
 
     [JsonIgnore]
@@ -342,7 +336,7 @@ public class Uploader(string id, string name, PlatformType platform) : IUser
         _ => throw new ArgumentOutOfRangeException(nameof(platform))
     });
 
-    public Uri AppUri => new("pixeval://empty");
+    public Uri? AppUri => null;
 
     public IReadOnlyCollection<IImageFrame> Avatar => [];
 
