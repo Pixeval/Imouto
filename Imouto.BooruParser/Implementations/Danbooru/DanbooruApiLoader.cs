@@ -11,7 +11,7 @@ public class DanbooruApiLoader(IFlurlClientCache factory, IOptions<DanbooruSetti
     public string Platform => IPlatformInfo.Danbooru;
     private const string BaseUrl = "https://danbooru.donmai.us";
     private readonly IFlurlClient _flurlClient = factory.GetForDomain(new(BaseUrl)).BeforeCall(x => SetAuthParameters(x, options));
-    private readonly string _botUserAgent = options.Value.BotUserAgent ?? "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36";
+    private readonly string _botUserAgent = options.Value.BotUserAgent ?? "gdl/1.24.5";
 
     public async Task<Post> GetPostAsync(string postId)
     {

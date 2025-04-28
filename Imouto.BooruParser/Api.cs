@@ -107,10 +107,24 @@ public class Post(
     IReadOnlyCollection<IImageFrame> IArtworkInfo.Thumbnails => field ??= ((Func<IReadOnlyCollection<IImageFrame>>)(() =>
     {
         var temp = new List<IImageFrame>();
-        if (SampleUrl is not null)
-            temp.Add(new ImageFrame { ImageUri = new(SampleUrl) });
         if (PreviewUrl is not null)
-            temp.Add(new ImageFrame { ImageUri = new(PreviewUrl) });
+            temp.Add(new ImageFrame(
+                IImageSize.Uniform(this, id.PlatformType switch
+                {
+                    PlatformType.Danbooru => 180,
+                    PlatformType.Gelbooru or PlatformType.Rule34 => 250,
+                    PlatformType.Yandere => 300,
+                    PlatformType.Sankaku => 600
+                })) { ImageUri = new Uri(PreviewUrl) });
+        if (SampleUrl is not null)
+            temp.Add(new ImageFrame(
+                id.PlatformType is PlatformType.Yandere
+                    ? IImageSize.Uniform(this, 1500)
+                    : IImageSize.FixWidth(this, id.PlatformType switch
+                    {
+                        PlatformType.Danbooru or PlatformType.Gelbooru or PlatformType.Rule34 => 850,
+                        PlatformType.Sankaku => 2000
+                    })) { ImageUri = new Uri(SampleUrl) });
         return temp;
     }))();
 
@@ -118,14 +132,17 @@ public class Post(
     IReadOnlyDictionary<string, object> IArtworkInfo.AdditionalInfo => new Dictionary<string, object>();
 
     /// <summary>
-    /// TODO: 是否会有gif格式的图片？
+    /// TODO: 是否会有gif格式的图片？实现IImageSet
     /// </summary>
     [JsonIgnore]
-    ImageType IArtworkInfo.ImageType => UgoiraFrameDelays is null
-        ? ChildrenIds is null 
+    ImageType IArtworkInfo.ImageType => ImageType.SingleImage;
+    /*
+    UgoiraFrameDelays is null
+        ? ChildrenIds is null
             ? ImageType.SingleImage
             : ImageType.ImageSet
         : ImageType.SingleAnimatedImage;
+    */
 
     [JsonIgnore]
     int IArtworkInfo.TotalFavorite => -1;

@@ -20,6 +20,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddBooruParsers(this IServiceCollection services)
     {
         return services.AddSingleton<IFlurlClientCache>(_ => new FlurlClientCache())
+            .AddKeyedSingleton<IDownloadHttpClientService, DanbooruImageDownloader>(IPlatformInfo.Danbooru)
             .AddKeyedSingleton<IDownloadHttpClientService, GeneralImageDownloader>(IPlatformInfo.All)
             .AddKeyedSingleton<IGetArtworkService, DanbooruApiLoader>(IPlatformInfo.Danbooru)
             .Configure<DanbooruSettings>(_ => { })
@@ -54,6 +55,23 @@ public class GeneralImageDownloader : IDownloadHttpClientService
         ];
         foreach (var item in ua) 
             client.DefaultRequestHeaders.UserAgent.Add(item);
+        return client;
+    });
+
+    public HttpClient GetApiClient() => _HttpClient.Value;
+
+    public HttpClient GetImageDownloadClient() => _HttpClient.Value;
+}
+
+
+public class DanbooruImageDownloader : IDownloadHttpClientService
+{
+    public string Platform => IPlatformInfo.All;
+
+    private static readonly Lazy<HttpClient> _HttpClient = new(() =>
+    {
+        var client = new HttpClient();
+        client.DefaultRequestHeaders.UserAgent.Add(new("gdl", "1.24.5"));
         return client;
     });
 
