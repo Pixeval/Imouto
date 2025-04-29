@@ -1,5 +1,4 @@
 using System.Net;
-using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Imouto.BooruParser.Extensions;
