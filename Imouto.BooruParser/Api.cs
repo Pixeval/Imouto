@@ -77,21 +77,21 @@ public record PostPreview(string Id, string? Md5Hash, string Title, bool IsBanne
 /// <summary>
 /// OriginalUrl, SampleUrl and PostIdentity.Md5 are nulls when post is banned
 /// </summary>
-public class Post(
-    PostIdentity id,
-    string originalUrl,
-    string? sampleUrl,
-    string? previewUrl,
-    ExistState existState,
-    DateTimeOffset createDate,
-    Uploader uploader,
-    string? source,
-    Size fileResolution,
-    ulong byteSize,
-    SafeRating safeRating,
-    IReadOnlyList<Tag> tags,
-    IReadOnlyList<Note>? notes,
-    PostIdentity? parentId = null) : ISingleImage, ISerializable
+public record Post(
+    PostIdentity Id,
+    string OriginalUrl,
+    string? SampleUrl,
+    string? PreviewUrl,
+    ExistState ExistState,
+    DateTimeOffset CreateDate,
+    Uploader Uploader,
+    string? Source,
+    Size FileResolution,
+    ulong ByteSize,
+    SafeRating SafeRating,
+    IReadOnlyList<Tag> Tags,
+    IReadOnlyList<Note>? Notes,
+    PostIdentity? Parent = null) : ISingleImage, ISerializable
 {
     [JsonIgnore]
     string IIdentityInfo.Id => Id.Id;
@@ -109,7 +109,7 @@ public class Post(
         var temp = new List<IImageFrame>();
         if (PreviewUrl is not null)
             temp.Add(new ImageFrame(
-                IImageSize.Uniform(this, id.PlatformType switch
+                IImageSize.Uniform(this, Id.PlatformType switch
                 {
                     PlatformType.Danbooru => 180,
                     PlatformType.Gelbooru or PlatformType.Rule34 => 250,
@@ -118,9 +118,9 @@ public class Post(
                 })) { ImageUri = new Uri(PreviewUrl) });
         if (SampleUrl is not null)
             temp.Add(new ImageFrame(
-                id.PlatformType is PlatformType.Yandere
+                Id.PlatformType is PlatformType.Yandere
                     ? IImageSize.Uniform(this, 1500)
-                    : IImageSize.FixWidth(this, id.PlatformType switch
+                    : IImageSize.FixWidth(this, Id.PlatformType switch
                     {
                         PlatformType.Danbooru or PlatformType.Gelbooru or PlatformType.Rule34 => 850,
                         PlatformType.Sankaku => 2000
@@ -191,34 +191,6 @@ public class Post(
     [JsonIgnore]
     Uri IImageFrame.ImageUri => new(OriginalUrl);
 
-    public PostIdentity Id { get; } = id;
-
-    public string OriginalUrl { get; } = originalUrl;
-
-    public string? SampleUrl { get; } = sampleUrl;
-
-    public string? PreviewUrl { get; } = previewUrl;
-
-    public ExistState ExistState { get; } = existState;
-
-    public DateTimeOffset CreateDate { get; } = createDate;
-
-    public Uploader Uploader { get; } = uploader;
-
-    public string? Source { get; } = source;
-
-    public Size FileResolution { get; } = fileResolution;
-
-    public ulong ByteSize { get; } = byteSize;
-
-    public SafeRating SafeRating { get; } = safeRating;
-
-    public IReadOnlyList<Tag> Tags { get; } = tags;
-
-    public PostIdentity? Parent { get; } = parentId;
-
-    public IReadOnlyList<Note>? Notes { get; } = notes;
-
     public IReadOnlyList<int>? UgoiraFrameDelays { get; init; }
 
     public IReadOnlyList<PostIdentity>? ChildrenIds { get; init; } 
@@ -262,15 +234,19 @@ public record Note(string Id, string Text, Position Point, Size Size);
 
 public record Tag(string Type, string Name) : ITag
 {
+    [JsonIgnore]
     public ITagCategory Category => new TagCategory(Type);
 
+    [JsonIgnore]
     public string Description => "";
 
+    [JsonIgnore]
     public string TranslatedName { get; init; } = "";
 }
 
 public record PostIdentity(string Id, string Md5Hash, PlatformType PlatformType) : IIdentityInfo
 {
+    [JsonIgnore]
     public string Platform { get; } = PlatformType.GetString();
 
     public PostIdentity Fork(string id, string md5Hash) => new(id, md5Hash, PlatformType);
@@ -320,33 +296,35 @@ public static class PlatformTypeHelper
         };
 }
 
-public class Uploader(string id, string name, PlatformType platform) : IUser
+public record Uploader(string Id, string Name, PlatformType Platform) : IUser
 {
-    public string Platform { get; } = platform.GetString();
+    string IPlatformInfo.Platform => Platform.GetString();
 
+    [JsonIgnore]
     public string Description => "";
 
-    public Uri WebsiteUri { get; } = new(platform switch
+    [JsonIgnore]
+    public Uri WebsiteUri { get; } = new(Platform switch
     {
-        PlatformType.Danbooru => "https://danbooru.donmai.us/users/" + id,
-        PlatformType.Gelbooru => "https://gelbooru.com/index.php?page=account&s=profile&id=" + id,
-        PlatformType.Sankaku => "https://chan.sankakucomplex.com/users/"+ name,
-        PlatformType.Yandere => "https://yande.re/user/show/" + id,
-        PlatformType.Rule34 => "https://rule34.xxx/index.php?page=account&s=profile&uname=" + name,
-        _ => throw new ArgumentOutOfRangeException(nameof(platform))
+        PlatformType.Danbooru => "https://danbooru.donmai.us/users/" + Id,
+        PlatformType.Gelbooru => "https://gelbooru.com/index.php?page=account&s=profile&id=" + Id,
+        PlatformType.Sankaku => "https://chan.sankakucomplex.com/users/"+ Name,
+        PlatformType.Yandere => "https://yande.re/user/show/" + Id,
+        PlatformType.Rule34 => "https://rule34.xxx/index.php?page=account&s=profile&uname=" + Name,
+        _ => throw new ArgumentOutOfRangeException(nameof(Platform))
     });
 
+    [JsonIgnore]
     public Uri? AppUri => null;
 
+    [JsonIgnore]
     public IReadOnlyCollection<IImageFrame> Avatar => [];
 
+    [JsonIgnore]
     public IReadOnlyDictionary<string, Uri> ContactInformation => new Dictionary<string, Uri>();
 
+    [JsonIgnore]
     public IReadOnlyDictionary<string, object> AdditionalInfo => new Dictionary<string, object>();
-
-    public string Id { get; } = id;
-
-    public string Name { get; } = name;
 }
 
 public record struct Position(int Top, int Left);
@@ -362,5 +340,12 @@ public record TagHistoryEntry(
 
 public record NoteHistoryEntry(long HistoryId, string PostId, DateTimeOffset UpdatedAt);
 
+[JsonSerializable(typeof(Size))]
+[JsonSerializable(typeof(Position))]
+[JsonSerializable(typeof(Uploader))]
+[JsonSerializable(typeof(PostIdentity))]
+[JsonSerializable(typeof(Pool))]
+[JsonSerializable(typeof(Tag))]
+[JsonSerializable(typeof(Note))]
 [JsonSerializable(typeof(Post))]
 public partial class PostJsonSerializerContext : JsonSerializerContext;
