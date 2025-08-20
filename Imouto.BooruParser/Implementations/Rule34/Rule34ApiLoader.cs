@@ -236,7 +236,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
             .Select(x =>
             {
                 var type = x.Attributes["class"].Value.Split(' ').First().Split('-').Last();
-                var name = x.SelectNodes("a")[1].InnerText;
+                var name = x.SelectNodes("a")![1].InnerText;
 
                 return new Tag(type, name);
             })];

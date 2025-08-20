@@ -146,7 +146,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
             ?.Select(x =>
             {
                 var id = int.Parse(x.Attributes["id"].Value[1..]);
-                var data = x.SelectNodes("td");
+                var data = x.SelectNodes("td")!;
                 return (id, data);
             })
             .Where(x => x.data[0].InnerHtml is "Post")
@@ -195,11 +195,11 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         var pageHtml = await request.GetHtmlDocumentAsync(cancellationToken: ct);
 
         var entries = pageHtml.DocumentNode
-            .SelectNodes("//*[@id='content']/table/tbody/tr")
+            .SelectNodes("//*[@id='content']/table/tbody/tr")!
             .Select(x =>
             {
-                var postId = int.Parse(x.SelectNodes("td")[1].SelectSingleNode("a").InnerHtml);
-                var dateString = x.SelectNodes("td")[5].InnerHtml;
+                var postId = int.Parse(x.SelectNodes("td")![1].SelectSingleNode("a")!.InnerHtml);
+                var dateString = x.SelectNodes("td")![5].InnerHtml;
                 var date = DateTime.ParseExact(dateString, "MM/dd/yy", CultureInfo.InvariantCulture);
 
                 return new NoteHistoryEntry(-1, postId.ToString(), date);

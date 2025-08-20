@@ -1,4 +1,5 @@
-using FluentAssertions;
+using AwesomeAssertions;
+using Imouto.BooruParser.Extensions;
 using Imouto.BooruParser.Implementations;
 using Imouto.BooruParser.Tests.Loaders.Fixtures;
 using Xunit;
@@ -446,7 +447,7 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
         public async Task ShouldFavoritePost()
         {
             var api = _loaderFixture.GetAccessorWithAuth();
-            await api.FavoritePostAsync("YoMBDZgQJrO");
+            await api.PostFavoriteAsync("YoMBDZgQJrO", true);
         }
     }
 

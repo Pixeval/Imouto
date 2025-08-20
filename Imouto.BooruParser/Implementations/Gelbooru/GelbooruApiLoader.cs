@@ -20,7 +20,7 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
     public async Task<Post> GetPostAsync(string postId)
     {
         // https://gelbooru.com/index.php?page=post&s=view&id=
-        var postHtml = await _flurlClient.Request("index.php")
+        var postHtml = await Request()
             .SetQueryParams(new
             {
                 page = "post",
@@ -30,7 +30,7 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
             .GetHtmlDocumentAsync();
         
         // https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=1&id=
-        var postJson = await _flurlClient.Request("index.php")
+        var postJson = await Request()
             .SetQueryParams(new
             {
                 page = "dapi", s = "post", q = "index", json = 1, limit = 1, id = postId
@@ -47,7 +47,7 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
     public async Task<Post?> GetPostByMd5Async(string md5)
     {
         // https://gelbooru.com/index.php?page=post&s=list&md5=
-        var postHtml = await _flurlClient.Request("index.php")
+        var postHtml = await Request()
             .SetQueryParams(new
             {
                 page = "post",
@@ -58,7 +58,7 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
             .GetHtmlDocumentAsync();
         
         // https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=1&md5=
-        var postJson = await _flurlClient.Request("index.php")
+        var postJson = await Request()
             .SetQueryParams(new
             {
                 page = "dapi", s = "post", q = "index", json = 1, limit = 1, tags = $"md5:{md5}"
@@ -75,7 +75,7 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
     public async Task<SearchResult> SearchAsync(string tags)
     {
         // https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=20&tags=1girl
-        var postJson = await _flurlClient.Request("index.php")
+        var postJson = await Request()
             .SetQueryParam("page", "dapi")
             .SetQueryParam("s", "post")
             .SetQueryParam("q", "index")
@@ -94,7 +94,7 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
     {
         var nextPage = results.PageNumber + 1;
 
-        var postJson = await _flurlClient.Request("index.php")
+        var postJson = await Request()
             .SetQueryParam("page", "dapi")
             .SetQueryParam("s", "post")
             .SetQueryParam("q", "index")
@@ -121,7 +121,7 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
 
         var nextPage = results.PageNumber - 1;
 
-        var postJson = await _flurlClient.Request("index.php")
+        var postJson = await Request()
             .SetQueryParam("page", "dapi")
             .SetQueryParam("s", "post")
             .SetQueryParam("q", "index")
@@ -140,6 +140,11 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
                 false))
             .ToArray() ?? [], results.SearchTags, nextPage);
     }
+
+    private IFlurlRequest Request()
+        => _flurlClient.Request("index.php")
+            .AppendQueryParam("api_key", options.Value.ApiKey)
+            .AppendQueryParam("user_id", options.Value.UserId);
 
     public Task<SearchResult> GetPopularPostsAsync(PopularType type)
         => throw new NotSupportedException("Gelbooru does not support popularity charts");
@@ -188,13 +193,13 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
 
     private static IReadOnlyList<Tag> GetTags(HtmlDocument post) 
         => [.. post.DocumentNode
-            .SelectSingleNode("//*[@id='tag-list']")
-            .SelectNodes("li")
+            .SelectSingleNode("//*[@id='tag-list']")!
+            .SelectNodes("li")!
             .Where(x => x.Attributes["class"]?.Value.StartsWith("tag-type-") == true)
             .Select(x =>
             {
                 var type = x.Attributes["class"].Value.Split('-')[^1];
-                var name = x.SelectSingleNode("a").InnerHtml;
+                var name = x.SelectSingleNode("a")!.InnerHtml;
 
                 return new Tag(type, name);
             })];
@@ -244,20 +249,20 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
         
         var id = int.Parse(idString);
         
-        var url = postHtml.DocumentNode.SelectSingleNode("//head/meta[@property='og:image']").Attributes["content"].Value;
+        var url = postHtml.DocumentNode.SelectSingleNode("//head/meta[@property='og:image']")!.Attributes["content"].Value;
         var md5 = url.Split('/')[^1].Split('.')[0];
         
-        var dateString = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Posted: ')]/text()[1]").InnerText[8..];
+        var dateString = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Posted: ')]/text()[1]")!.InnerText[8..];
         var date = new DateTimeOffset(DateTime.ParseExact(dateString, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), TimeSpan.FromHours(-5));
         
         var uploader = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Posted: ')]/a/text()")?.InnerText ?? "Anonymous";
         
         var source = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Source: ')]/a[1]")?.Attributes["href"].Value;
         
-        var sizeString = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Size: ')]/text()").InnerText;
+        var sizeString = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Size: ')]/text()")!.InnerText;
         var size = sizeString.Split(':')[^1].Trim().Split('x').Select(int.Parse).ToList();
         
-        var rating = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Rating: ')]/text()").InnerText.Split(' ')[^1].ToLower();
+        var rating = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Rating: ')]/text()")!.InnerText.Split(' ')[^1].ToLower();
 
         return new(
             new(id.ToString(), md5, PlatformType.Gelbooru),
