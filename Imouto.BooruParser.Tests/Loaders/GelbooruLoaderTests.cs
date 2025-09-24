@@ -1,6 +1,5 @@
 using AwesomeAssertions;
 using Imouto.BooruParser.Tests.Loaders.Fixtures;
-using Xunit;
 
 namespace Imouto.BooruParser.Tests.Loaders;
 

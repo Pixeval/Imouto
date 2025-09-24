@@ -9,18 +9,23 @@ public class YandereApiLoaderFixture
 {
     private IBooruApiLoader? _loader;
     private IBooruApiAccessor? _apiAccessor;
-    private readonly bool _enableCache = true;
+    private readonly bool _enableCache = false;
 
     private readonly IOptions<YandereSettings> _authorizedOptions = Options.Create(
         new YandereSettings
         {
             PasswordHash = "5eedf880498cac52bbfc8386150682d54174fab0",
             Login = "testuser1",
-            PauseBetweenRequestsInMs = 0
+            PauseBetweenRequestsInMs = 0,
+            BotUserAgent = "UnitTestBot/1.0"
         });
-    
-    private readonly IOptions<YandereSettings> _options 
-        = Options.Create(new YandereSettings { PauseBetweenRequestsInMs = 0 });
+
+    private readonly IOptions<YandereSettings> _options
+        = Options.Create(new YandereSettings
+        {
+            PauseBetweenRequestsInMs = 0,
+            BotUserAgent = "UnitTestBot/1.0"
+        });
 
     private IFlurlClientCache Factory =>
         _enableCache
@@ -28,6 +33,8 @@ public class YandereApiLoaderFixture
             : new FlurlClientCache();
 
     public IBooruApiLoader GetLoader() => _loader ??= new YandereApiLoader(Factory, _options);
+
+    public IBooruApiLoader GetLoaderWithAuth() => _loader ??= new YandereApiLoader(Factory, _options);
 
     public IBooruApiAccessor GetApiAccessorWithAuth()
         => _apiAccessor ??= new YandereApiLoader(Factory, _authorizedOptions);

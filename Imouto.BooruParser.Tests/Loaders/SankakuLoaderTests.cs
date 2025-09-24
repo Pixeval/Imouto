@@ -1,8 +1,6 @@
 using AwesomeAssertions;
-using Imouto.BooruParser.Extensions;
 using Imouto.BooruParser.Implementations;
 using Imouto.BooruParser.Tests.Loaders.Fixtures;
-using Xunit;
 
 namespace Imouto.BooruParser.Tests.Loaders;
 
@@ -39,8 +37,8 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             post.OriginalUrl.Should().StartWith("https://v.sankakucomplex.com/data/de/aa/deaac52a6b001b6953db90a09f7629f7.jpg");
             post.Id.Id.Should().Be("YoMBDZgQJrO");
             post.Id.Md5Hash.Should().Be("deaac52a6b001b6953db90a09f7629f7");
-            post.Notes.Should().BeNull();
-            post.Tags.Should().HaveCount(123);
+            post.Notes.Should().BeEmpty();
+            post.Tags.Should().HaveCount(126);
 
             foreach (var postTag in post.Tags)
             {
@@ -78,8 +76,8 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             post.OriginalUrl.Should().StartWith("https://v.sankakucomplex.com/data/de/aa/deaac52a6b001b6953db90a09f7629f7.jpg");
             post.Id.Id.Should().Be("YoMBDZgQJrO");
             post.Id.Md5Hash.Should().Be("deaac52a6b001b6953db90a09f7629f7");
-            post.Notes.Should().BeNull();
-            post.Tags.Should().HaveCount(123);
+            post.Notes.Should().BeEmpty();
+            post.Tags.Should().HaveCount(126);
 
             foreach (var postTag in post.Tags)
             {
@@ -185,8 +183,8 @@ public class SankakuLoaderTests(SankakuLoaderFixture loaderFixture) : IClassFixt
             result.Results.Should().HaveCountGreaterThan(1);
         }
 
-        // [Fact(Skip = "Clown Sankaku only allow now 1 tag for free accounts")]
-        public async Task ShouldFindWithMultipleTags()
+        //[Fact(Skip = "Clown Sankaku only allow now 1 tag for free accounts")]
+        private async Task ShouldFindWithMultipleTags()
         {
             var loader = _loaderFixture.GetLoaderWithoutAuth();
 

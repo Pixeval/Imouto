@@ -2,7 +2,6 @@ using System.Net;
 using AwesomeAssertions;
 using Imouto.BooruParser.Implementations;
 using Imouto.BooruParser.Tests.Loaders.Fixtures;
-using Xunit;
 
 namespace Imouto.BooruParser.Tests.Loaders;
 
@@ -60,35 +59,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
 
             var post = await loader.GetPostAsync(5773061);
 
-            post.Should().NotBeNull();
-            post.OriginalUrl.Should().Be("https://cdn.donmai.us/original/54/3f/543f49b2d9fd4e31d8cb10ceaff6cad7.jpg");
-            post.Id.GetIntId().Should().Be(5773061);
-            post.Id.Md5Hash.Should().Be("543f49b2d9fd4e31d8cb10ceaff6cad7");
-            post.Notes.Should().BeEmpty();
-            post.Tags.Should().HaveCount(36);
-
-            foreach (var postTag in post.Tags)
-            {
-                postTag.Name.Should().NotBeNullOrWhiteSpace();
-                postTag.Type.Should().NotBeNullOrWhiteSpace();
-                postTag.Type.Should().BeOneOf("meta", "general", "copyright", "character", "circle", "artist");
-            }
-            
-            post.Parent.Should().NotBeNull();
-            post.Parent!.Id.Should().Be("5775694");
-            post.Parent!.Md5Hash.Should().Be("886823ace72390fe7a8926e2ffe3299d");
-            (await post.PoolsGetter!(post)).Should().BeEmpty();
-            post.SafeRating.IsSensitive.Should().Be(true);
-            post.Source.Should().Be("https://twitter.com/jewel_milk/status/1584877432959541250");
-            post.ChildrenIds.Should().BeEmpty();
-            post.ExistState.Should().Be(ExistState.Exist);
-            post.FileResolution.Should().Be(new Size(1000, 1414));
-            post.CreateDate.Should().Be(new(2022, 10, 25, 12, 01, 24, 980, TimeSpan.Zero));
-            post.SampleUrl.Should().Be("https://cdn.donmai.us/sample/54/3f/sample-543f49b2d9fd4e31d8cb10ceaff6cad7.jpg");
-            post.Uploader.Id.Should().Be("508969");
-            post.Uploader.Name.Should().Be("Topsy Krett");
-            post.ByteSize.Should().Be(151135);
-            post.UgoiraFrameDelays.Should().BeNull();
+            await Verify(post);
         }
     }
     
@@ -128,11 +99,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var loader = _loaderFixture.GetLoaderWithoutAuth();
     
             var searchResult = await loader.SearchAsync("md5:746310ab23d72e075755fd426469e31c");
-            
-            searchResult.Results.Should().NotBeEmpty();
-            
-            searchResult.Results[0].Id.Should().Be("3630304");
-            searchResult.Results[0].Md5Hash.Should().BeNull();
+
+            await Verify(searchResult);
         }
     
         [Fact]
@@ -141,11 +109,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var loader = _loaderFixture.GetLoaderWithoutAuth();
     
             var searchResult = await loader.SearchAsync("md5:4ff6bfa1745692b8eaf4ba2d2208c207");
-            
-            searchResult.Results.Should().NotBeEmpty();
-            
-            searchResult.Results[0].Id.Should().Be("5031817");
-            searchResult.Results[0].Md5Hash.Should().Be("4ff6bfa1745692b8eaf4ba2d2208c207");
+
+            await Verify(searchResult);
         }
     }
 
@@ -243,18 +208,11 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
         {
             var loader = _loaderFixture.GetLoaderWithoutAuth();
     
-            var page = await loader.GetTagHistoryPageAsync(new("a43125946"));
-            var tagsHistory = page.Results;
-    
-            tagsHistory.Should().NotBeEmpty();
-            tagsHistory.First(x => x.HistoryId == 43125965).ParentChanged.Should().BeTrue();
-            tagsHistory.First(x => x.HistoryId == 43125965).ParentId.Should().BeNull();
-            
-            tagsHistory.First(x => x.HistoryId == 43125951).ParentChanged.Should().BeFalse();
-            tagsHistory.First(x => x.HistoryId == 43125951).ParentId.Should().BeNull();
-            
-            tagsHistory.First(x => x.HistoryId == 43125948).ParentChanged.Should().BeFalse();
-            tagsHistory.First(x => x.HistoryId == 43125948).ParentId.Should().Be("4978487");
+            var page = await loader.GetTagHistoryPageAsync(new SearchToken("a43125946"));
+
+            var settings = new VerifySettings();
+            settings.ScrubMember<TagHistoryEntry>(x => x.UpdatedAt);
+            await Verify(page, settings);
         }
         
         [Fact]
@@ -349,12 +307,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var loader = _loaderFixture.GetLoaderWithoutAuth();
             
             var post = await loader.GetPostAsync(2392459);
-            
-            post.Tags.Count.Should().BeGreaterThan(30);
-            post.ChildrenIds?.Count.Should().NotBe(0);
-            post.Parent.Should().NotBeNull();
-            post.Parent.Id.Should().NotBeEmpty();
-            post.Parent.Md5Hash.Should().NotBeNullOrWhiteSpace();
+
+            await Verify(post);
         }
 
         /// <summary>
@@ -367,9 +321,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
 
             var post = await loader.GetPostAsync(5032478);
 
-            post.Tags.Count.Should().BeGreaterThan(30);
-            post.ChildrenIds?.Count.Should().Be(2);
-            post.Parent.Should().BeNull();
+            await Verify(post);
         }
 
         /// <summary>
@@ -382,10 +334,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
 
             var post = await loader.GetPostAsync(5314036);
 
-            post.Tags.Count.Should().BeGreaterThan(30);
-            post.ChildrenIds?.Count.Should().Be(2);
-            post.ChildrenIds?[0].Should().Be(new PostIdentity("5318896", "46dda085dc9c60dd4380ed7b4433aa41", PlatformType.Danbooru));
-            post.Parent.Should().BeNull();
+            await Verify(post);
         }
             
         /// <summary>
@@ -398,9 +347,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
 
             var post = await loader.GetPostAsync(5666656);
 
-            post.Should().NotBeNull();
-            post.SampleUrl.Should()
-                .Be("https://cdn.donmai.us/sample/4a/8b/sample-4a8b6ecee31d9e66e5532f22b19ab736.webm");
+            await Verify(post);
         }
 
         [Fact]
@@ -409,8 +356,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var loader = _loaderFixture.GetLoaderWithoutAuth();
             
             var post = await loader.GetPostAsync(5176287);
-            
-            post.Notes?.Count.Should().Be(6);
+
+            await Verify(post);
         }
             
         [Fact]
@@ -418,8 +365,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
         {
             var loader = _loaderFixture.GetLoaderWithoutAuth();
             var post = await loader.GetPostAsync(3811474);
-            
-            post.Tags.Should().Contain(x => x.Name == "paid reward");
+
+            await Verify(post);
         }
             
         [Fact]
@@ -429,9 +376,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             
             var post = await loader.GetPostAsync(5246157);
 
-            var pools = await post.PoolsGetter!(post);
-            pools.Count.Should().BeGreaterThanOrEqualTo(1);
-            pools.Should().OnlyContain(x => x.Position >= 0);
+            await Verify(post);
         }
 
         [Fact]
@@ -441,12 +386,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
 
             var post = await loader.GetPostByMd5Async("7fb1c60a41e2f71684835e9c9bdaa2d9");
 
-            post.Should().NotBeNull();
-            var pools = await post.PoolsGetter!(post);
-            pools.Should().HaveCount(1);
-            pools[0].Id.Should().Be("21964");
-            pools[0].Name.Should().Be("Original_-_Honeypot_(cherry-gig)");
-            pools[0].Position.Should().Be(93);
+            await Verify(post);
         }
 
         [Fact]
@@ -455,10 +395,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var loader = _loaderFixture.GetLoaderWithoutAuth();
             
             var post = await loader.GetPostAsync(599785);
-            
-            var pools = await post.PoolsGetter!(post);
-            pools.Count.Should().BeGreaterThanOrEqualTo(3);
-            pools.Should().OnlyContain(x => x.Position >= 0);
+
+            await Verify(post);
         }
             
         [Fact]
@@ -467,10 +405,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var loader = _loaderFixture.GetLoaderWithoutAuth();
             
             var post = await loader.GetPostAsync(4278890);
-            
-            post.UgoiraFrameDelays.Should().NotBeNull();
-            post.UgoiraFrameDelays.Should().HaveCount(411);
-            post.UgoiraFrameDelays[^1].Should().Be(2800);
+
+            await Verify(post);
         }
 
         [Fact]
@@ -483,13 +419,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var questionablePost = await loader.GetPostAsync(5026269);
             var explicitPost = await loader.GetPostAsync(236059);
 
-            generalPost.SafeRating.IsGeneral.Should().Be(true);
-                
-            sensitivePost.SafeRating.IsSensitive.Should().Be(true);
-                
-            questionablePost.SafeRating.IsQuestionable.Should().Be(true);
-                
-            explicitPost.SafeRating.IsExplicit.Should().Be(true);
+            await Verify(new [] {generalPost, sensitivePost, questionablePost, explicitPost});
         }
 
         [Fact]
@@ -499,7 +429,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
 
             var restrictedPost = await loader.GetPostAsync(5387246);
 
-            restrictedPost.Tags.Should().NotBeEmpty();
+            await Verify(restrictedPost);
         }
 
         [Fact] 
@@ -509,9 +439,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
 
             var restrictedPost = await loader.GetPostAsync(5707498);
 
-            restrictedPost.Tags.Should().NotBeEmpty();
-            restrictedPost.Id.Md5Hash.Should().NotBeNullOrWhiteSpace();
-            restrictedPost.OriginalUrl.Should().NotBeNullOrWhiteSpace();
+            await Verify(restrictedPost);
         }
 
         [Fact(Skip = "Works only with gold accounts")] 
@@ -521,9 +449,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
 
             var restrictedPost = await loader.GetPostAsync(5387246);
 
-            restrictedPost.Tags.Should().NotBeEmpty();
-            restrictedPost.Id.Md5Hash.Should().NotBeNullOrWhiteSpace();
-            restrictedPost.OriginalUrl.Should().NotBeNullOrWhiteSpace();
+            await Verify(restrictedPost);
         }
 
         [Theory]
@@ -545,10 +471,8 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
             var loader = _loaderFixture.GetLoaderWithoutAuth();
 
             var post = await loader.GetPostByMd5Async("fcf0c189e898edcb316ea0b61096c622");
-            
-            post.Should().NotBeNull();
-            post.Id.GetIntId().Should().Be(5766237);
-            post.OriginalUrl.Should().NotBeNullOrWhiteSpace();
+
+            await Verify(post);
         }
 
         [Fact]
@@ -558,10 +482,7 @@ public class DanbooruLoaderTests : IClassFixture<DanbooruApiLoaderFixture>, ICla
 
             var restrictedPost = await loader.GetPostByMd5Async("b9b933c1835d043ec38cbefbe78554eb");
 
-            restrictedPost.Should().NotBeNull();
-            restrictedPost.Id.GetIntId().Should().Be(5767795);
-            restrictedPost.OriginalUrl.Should().BeNull();
-            restrictedPost.Tags.Should().NotBeEmpty();
+            await Verify(restrictedPost);
         }
     }
 

@@ -61,7 +61,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
             .GetHtmlDocumentAsync();
         
         // https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&id=
-        var postJson = await _flurlJsonClient.Request("index.php")
+        var postJson = await Request()
             .SetQueryParams(new
             {
                 page = "dapi", s = "post", q = "index", json = 1, limit = 1, id = postId
@@ -88,7 +88,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
             .GetHtmlDocumentAsync();
         
         // https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&tags=md5:
-        var postJson = await _flurlJsonClient.Request("index.php")
+        var postJson = await Request()
             .SetQueryParams(new
             {
                 page = "dapi", s = "post", q = "index", json = 1, limit = 1, tags = $"md5:{md5}"
@@ -105,7 +105,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
     public async Task<SearchResult> SearchAsync(string tags)
     {
         // https://api.rule34.xxx/index.php?page=dapi&s=post&q=index&json=1&tags=1girl
-        var postJson = await _flurlJsonClient.Request("index.php")
+        var postJson = await Request()
             .SetQueryParam("page", "dapi")
             .SetQueryParam("s", "post")
             .SetQueryParam("q", "index")
@@ -124,7 +124,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
     {
         var nextPage = results.PageNumber + 1;
 
-        var postJson = await _flurlJsonClient.Request("index.php")
+        var postJson = await Request()
             .SetQueryParam("page", "dapi")
             .SetQueryParam("s", "post")
             .SetQueryParam("q", "index")
@@ -151,7 +151,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
 
         var nextPage = results.PageNumber - 1;
 
-        var postJson = await _flurlJsonClient.Request("index.php")
+        var postJson = await Request()
             .SetQueryParam("page", "dapi")
             .SetQueryParam("s", "post")
             .SetQueryParam("q", "index")
@@ -186,6 +186,14 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
         CancellationToken ct = default)
         => throw new NotSupportedException("Rule34 does not support history");
 
+    private static PostIdentity? GetParent(Rule34Post post)
+        => post.ParentId is not 0 ? new PostIdentity(post.ParentId.ToString(), string.Empty, PlatformType.Rule34) : null;
+
+    private IFlurlRequest Request()
+        => _flurlJsonClient.Request("index.php")
+            .AppendQueryParam("api_key", options.Value.ApiKey)
+            .AppendQueryParam("user_id", options.Value.UserId);
+
     /// <remarks>
     /// Sample: https://rule34.xxx/index.php?page=post&amp;s=view&amp;id=6204314
     /// </remarks>
@@ -196,8 +204,9 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
         
         var boxes = postHtml.DocumentNode.SelectNodes("//*[@id='note-container']/*[@class='note-box']");
         var bodies = postHtml.DocumentNode.SelectNodes("//*[@id='note-container']/*[@class='note-body']");
-        var notes = boxes != null && bodies != null
-            ? boxes.Zip(bodies)
+        return
+        [
+            .. boxes.Zip(bodies)
                 .Select(x =>
                 {
                     var box = x.First;
@@ -219,9 +228,7 @@ public class Rule34ApiLoader(IFlurlClientCache factory, IOptions<Rule34Settings>
 
                     return new Note(id.ToString(), text, point, size);
                 })
-            : [];
-
-        return [.. notes];
+        ];
         
         static int GetSizeInt(string number) => (int)(Convert.ToDouble(number) + 0.5);
         

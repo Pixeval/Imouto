@@ -4,6 +4,7 @@ using Flurl.Http;
 using Flurl.Http.Configuration;
 using HtmlAgilityPack;
 using Imouto.BooruParser.Extensions;
+using Imouto.BooruParser.Implementations.Danbooru;
 using Microsoft.Extensions.Options;
 using Misaki;
 
@@ -27,17 +28,21 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
     
     private const string BaseUrl = "https://yande.re";
 
+    private readonly string _botUserAgent = options.Value.BotUserAgent ?? throw new("UserAgent is required to make api calls");
     private readonly IFlurlClient _flurlClient = factory.GetForDomain(new(BaseUrl)).BeforeCall(x => SetAuthParameters(x, options));
 
     public async Task<Post> GetPostAsync(string postId)
     {
-        var posts = await _flurlClient.Request("post", "index.json")
+        var posts = await _flurlClient
+            .Request("post", "index.json")
+            .WithUserAgent(_botUserAgent)
             .SetQueryParam("tags", $"id:{postId}")
             .GetJsonAsync<YanderePost[]>();
         var post = posts.First();
 
         var postHtml = await _flurlClient
             .Request("post", "show", postId)
+            .WithUserAgent(_botUserAgent)
             .GetHtmlDocumentAsync();
 
         return GetPost(postId, post, postHtml);
@@ -47,6 +52,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
     {
         // https://yande.re/post.json?tags=md5%3Ae6500b62d4003a5f4ba226d3a665c25a
         var posts = await _flurlClient.Request("post.json")
+            .WithUserAgent(_botUserAgent)
             .SetQueryParam("tags", $"md5:{md5} holds:all")
             .GetJsonAsync<IReadOnlyList<YanderePost>>();
 
@@ -56,6 +62,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
 
         var postHtml = await _flurlClient
             .Request("post", "show", post.Id)
+            .WithUserAgent(_botUserAgent)
             .GetHtmlDocumentAsync();
 
         return GetPost(post.Id.ToString(), post, postHtml);
@@ -67,6 +74,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
     public async Task<SearchResult> SearchAsync(string tags)
     {
         var posts = await _flurlClient.Request("post.json")
+            .WithUserAgent(_botUserAgent)
             .SetQueryParam("tags", tags)
             .GetJsonAsync<IReadOnlyList<YanderePost>>();
 
@@ -78,6 +86,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         var nextPage = results.PageNumber + 1;
 
         var posts = await _flurlClient.Request("post.json")
+            .WithUserAgent(_botUserAgent)
             .SetQueryParam("tags", results.SearchTags)
             .SetQueryParam("page", nextPage)
             .GetJsonAsync<IReadOnlyList<YanderePost>>();
@@ -99,6 +108,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         var nextPage = results.PageNumber - 1;
 
         var posts = await _flurlClient.Request("post.json")
+            .WithUserAgent(_botUserAgent)
             .SetQueryParam("tags", results.SearchTags)
             .SetQueryParam("page", nextPage)
             .GetJsonAsync<IReadOnlyList<YanderePost>>();
@@ -124,6 +134,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
 
         // https://yande.re/post/popular_recent.json?period=1w
         var posts = await _flurlClient.Request("post", "popular_recent.json")
+            .WithUserAgent(_botUserAgent)
             .SetQueryParam("period", period)
             .GetJsonAsync<IReadOnlyList<YanderePost>>();
 
@@ -134,7 +145,8 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         int limit = 100,
         CancellationToken ct = default)
     {
-        var request = _flurlClient.Request("history");
+        var request = _flurlClient.Request("history")
+            .WithUserAgent(_botUserAgent);
 
         if (token != null)
             request = request.SetQueryParam("page", token.Page);
@@ -187,7 +199,8 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         int limit = 100,
         CancellationToken ct = default)
     {
-        var request = _flurlClient.Request("note", "history");
+        var request = _flurlClient.Request("note", "history")
+            .WithUserAgent(_botUserAgent);
 
         if (token != null)
             request = request.SetQueryParam("page", token.Page);
@@ -220,6 +233,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
         if (!favorite)
             throw new NotSupportedException(favorite.ToString());
         await _flurlClient.Request("post", "vote.json")
+            .WithUserAgent(_botUserAgent)
             .PostMultipartAsync(content => content
                 .Add("id", new StringContent(postId))
                 .Add("score", new StringContent("3")));
@@ -229,6 +243,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
     private async Task<PostIdentity> GetPostIdentityAsync(int postId)
     {
         var posts = await _flurlClient.Request("post", "index.json")
+            .WithUserAgent(_botUserAgent)
             .SetQueryParam("tags", $"id:{postId} holds:all")
             .GetJsonAsync<YanderePost[]>();
 
@@ -250,6 +265,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
     {
         // https://yande.re/pool/show.json?id={id}
         var pool = await _flurlClient.Request("pool", "show.json")
+            .WithUserAgent(_botUserAgent)
             .SetQueryParam("id", poolId)
             .GetJsonAsync<YanderePool>();
 
@@ -300,7 +316,7 @@ public class YandereApiLoader(IFlurlClientCache factory, IOptions<YandereSetting
             .Select(x =>
             {
                 var type = x.Attributes["class"].Value.Split('-').Last();
-                var aNode = x.SelectSingleNode("a[2]");
+                var aNode = x.SelectSingleNode(@"a[last()]")!;
                 var name = aNode.InnerHtml;
 
                 return new Tag(type, name);
