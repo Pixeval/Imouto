@@ -114,7 +114,8 @@ public record Post(
                     PlatformType.Danbooru => 180,
                     PlatformType.Gelbooru or PlatformType.Rule34 => 250,
                     PlatformType.Yandere => 300,
-                    PlatformType.Sankaku => 600
+                    PlatformType.Sankaku => 600,
+                    _ => 100
                 })) { ImageUri = new Uri(PreviewUrl) });
         if (SampleUrl is not null)
             temp.Add(new ImageFrame(
@@ -123,7 +124,8 @@ public record Post(
                     : IImageSize.FixWidth(this, Id.PlatformType switch
                     {
                         PlatformType.Danbooru or PlatformType.Gelbooru or PlatformType.Rule34 => 850,
-                        PlatformType.Sankaku => 2000
+                        PlatformType.Sankaku => 2000,
+                        _ => 1000
                     })) { ImageUri = new Uri(SampleUrl) });
         return temp;
     }))();
@@ -216,9 +218,9 @@ public record Post(
     [JsonIgnore]
     public int SetIndex => -1;
 
-    public string Serialize() => JsonSerializer.Serialize(this, typeof(Post), PostJsonSerializerContext.Default);
+    public string Serialize() => JsonSerializer.Serialize(this, PostJsonSerializerContext.Default.Post);
 
-    public static ISerializable Deserialize(string data) => (Post) JsonSerializer.Deserialize(data, typeof(Post), PostJsonSerializerContext.Default)!;
+    public static ISerializable Deserialize(string data) => JsonSerializer.Deserialize(data, PostJsonSerializerContext.Default.Post)!;
 
     [JsonIgnore]
     public string SerializeKey => typeof(Post).FullName!;
