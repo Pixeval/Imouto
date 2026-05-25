@@ -220,7 +220,7 @@ public record Post(
 
     public string Serialize() => JsonSerializer.Serialize(this, PostJsonSerializerContext.Default.Post);
 
-    public static ISerializable Deserialize(string data) => JsonSerializer.Deserialize(data, PostJsonSerializerContext.Default.Post)!;
+    public static Post Deserialize(string data) => JsonSerializer.Deserialize(data, PostJsonSerializerContext.Default.Post)!;
 
     [JsonIgnore]
     public string SerializeKey => typeof(Post).FullName!;
