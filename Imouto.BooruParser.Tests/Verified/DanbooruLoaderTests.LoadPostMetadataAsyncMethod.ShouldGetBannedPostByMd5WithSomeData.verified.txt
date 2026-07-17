@@ -1,148 +1,397 @@
 ﻿{
   Id: {
-    Id: 5767795
+    Id: 5767795,
+    Platform: danbooru
   },
   ExistState: MarkDeleted,
-  PostedAt: 2022-10-23 08:19:32.451 -4,
-  UploaderId: {
+  CreateDate: 2022-10-23 08:19:32.451 -4,
+  Uploader: {
     Id: 422478,
-    Name: Oniii-chan
+    Name: Oniii-chan,
+    Description: ,
+    WebsiteUri: https://danbooru.donmai.us/users/422478
   },
   Source: https://e-hentai.org/s/e743cc36a8/2351960-1,
   FileResolution: {
     Width: 2244,
     Height: 3541
   },
-  FileSizeInBytes: 14756025,
-  Rating: Questionable,
+  ByteSize: 14756025,
+  SafeRating: {
+    SafeRatingValue: 30,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: false,
+    IsQuestionable: true,
+    IsExplicit: false,
+    IsGuro: false,
+    IsSafe: false,
+    IsR17: true,
+    IsR18: false,
+    IsR18G: false
+  },
   Tags: [
     {
       Type: artist,
-      Name: dorontabi
+      Name: dorontabi,
+      Category: {
+        Name: artist,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: chongyun (genshin impact)
+      Name: chongyun (genshin impact),
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: shenhe (genshin impact)
+      Name: shenhe (genshin impact),
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: copyright,
-      Name: genshin impact
+      Name: genshin impact,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: 1boy
+      Name: 1boy,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: 1girl
+      Name: 1girl,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: age difference
+      Name: age difference,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: ahoge
+      Name: ahoge,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blue eyes
+      Name: blue eyes,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blue hair
+      Name: blue hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blush
+      Name: blush,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: bow
+      Name: bow,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: braid
+      Name: braid,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: breast sucking
+      Name: breast sucking,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: breastfeeding
+      Name: breastfeeding,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: breasts
+      Name: breasts,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: breasts squeezed together
+      Name: breasts squeezed together,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: couch
+      Name: couch,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: hair bow
+      Name: hair bow,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: hetero
+      Name: hetero,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: incest
+      Name: incest,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: large breasts
+      Name: large breasts,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: long hair
+      Name: long hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: looking at another
+      Name: looking at another,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: lying
+      Name: lying,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: on couch
+      Name: on couch,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: on side
+      Name: on side,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: sitting
+      Name: sitting,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: absurdres
+      Name: absurdres,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: fanbox reward
+      Name: fanbox reward,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: highres
+      Name: highres,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: paid reward
+      Name: paid reward,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     }
-  ]
+  ],
+  IsAiGenerated: false,
+  WebsiteUri: https://danbooru.donmai.us/posts/5767795,
+  AppUri: pixeval://Danbooru/5767795,
+  PoolsGetter: {
+    Type: Func<Post, Task<IReadOnlyList<Pool>>>,
+    Target: DanbooruApiLoader,
+    Method: System.Threading.Tasks.Task`1[System.Collections.Generic.IReadOnlyList`1[Imouto.BooruParser.Pool]] GetPoolsAsync(Imouto.BooruParser.Post)
+  },
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }

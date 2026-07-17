@@ -1,195 +1,511 @@
 ﻿{
   Id: {
     Id: 5176287,
-    Md5Hash: e6b6c4fc62929329c0af232a554a45fc
+    Md5Hash: e6b6c4fc62929329c0af232a554a45fc,
+    Platform: danbooru
   },
   OriginalUrl: https://cdn.donmai.us/original/e6/b6/e6b6c4fc62929329c0af232a554a45fc.jpg,
   SampleUrl: https://cdn.donmai.us/sample/e6/b6/sample-e6b6c4fc62929329c0af232a554a45fc.jpg,
   PreviewUrl: https://cdn.donmai.us/180x180/e6/b6/e6b6c4fc62929329c0af232a554a45fc.jpg,
-  PostedAt: 2022-03-06 15:33:58.653 +0,
-  UploaderId: {
+  CreateDate: 2022-03-06 15:33:58.653 +0,
+  Uploader: {
     Id: 30072,
-    Name: Doragonn
+    Name: Doragonn,
+    Description: ,
+    WebsiteUri: https://danbooru.donmai.us/users/30072
   },
   Source: https://ayanakitori.fanbox.cc/posts/3512281,
   FileResolution: {
     Width: 1600,
     Height: 2266
   },
-  FileSizeInBytes: 1028468,
-  Rating: Explicit,
-  Parent: {
-    Id: 5176291,
-    Md5Hash: 3421a62c114890e9c8f64b5cff25cd9b
+  ByteSize: 1028468,
+  SafeRating: {
+    SafeRatingValue: 40,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: false,
+    IsQuestionable: false,
+    IsExplicit: true,
+    IsGuro: false,
+    IsSafe: false,
+    IsR17: false,
+    IsR18: true,
+    IsR18G: false
   },
   Tags: [
     {
       Type: artist,
-      Name: ayanakitori
+      Name: ayanakitori,
+      Category: {
+        Name: artist,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: copyright,
-      Name: original
+      Name: original,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: 2girls
+      Name: 2girls,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: bar censor
+      Name: bar censor,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: black socks
+      Name: black socks,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: black thighhighs
+      Name: black thighhighs,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blue eyes
+      Name: blue eyes,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blue sailor collar
+      Name: blue sailor collar,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blue skirt
+      Name: blue skirt,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blush
+      Name: blush,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: braid
+      Name: braid,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: brown hair
+      Name: brown hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: censored
+      Name: censored,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: clothed sex
+      Name: clothed sex,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: cum
+      Name: cum,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: futa with female
+      Name: futa with female,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: futanari
+      Name: futanari,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: long hair
+      Name: long hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: long sleeves
+      Name: long sleeves,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: multiple girls
+      Name: multiple girls,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: neckerchief
+      Name: neckerchief,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: open mouth
+      Name: open mouth,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: penis
+      Name: penis,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: pleated skirt
+      Name: pleated skirt,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: red neckerchief
+      Name: red neckerchief,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: sailor collar
+      Name: sailor collar,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: saliva
+      Name: saliva,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: school uniform
+      Name: school uniform,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: serafuku
+      Name: serafuku,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: sex
+      Name: sex,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: sex from behind
+      Name: sex from behind,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: shoes
+      Name: shoes,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: skirt
+      Name: skirt,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: socks
+      Name: socks,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: sweat
+      Name: sweat,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: thighhighs
+      Name: thighhighs,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: thighs
+      Name: thighs,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: wavy mouth
+      Name: wavy mouth,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: white shoes
+      Name: white shoes,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: zettai ryouiki
+      Name: zettai ryouiki,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: highres
+      Name: commentary request,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: translated
+      Name: highres,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: meta,
+      Name: translated,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     }
   ],
   Notes: [
@@ -265,5 +581,20 @@
         Height: 229
       }
     }
-  ]
+  ],
+  Parent: {
+    Id: 5176291,
+    Md5Hash: 3421a62c114890e9c8f64b5cff25cd9b,
+    Platform: danbooru
+  },
+  IsAiGenerated: false,
+  WebsiteUri: https://danbooru.donmai.us/posts/5176287,
+  AppUri: pixeval://Danbooru/5176287,
+  PoolsGetter: {
+    Type: Func<Post, Task<IReadOnlyList<Pool>>>,
+    Target: DanbooruApiLoader,
+    Method: System.Threading.Tasks.Task`1[System.Collections.Generic.IReadOnlyList`1[Imouto.BooruParser.Pool]] GetPoolsAsync(Imouto.BooruParser.Post)
+  },
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }

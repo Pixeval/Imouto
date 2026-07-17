@@ -1,177 +1,456 @@
 ﻿{
   Id: {
     Id: 5314036,
-    Md5Hash: b28640f7aa69c5fbfb5e5b24f381e9c8
+    Md5Hash: b28640f7aa69c5fbfb5e5b24f381e9c8,
+    Platform: danbooru
   },
   OriginalUrl: https://cdn.donmai.us/original/b2/86/b28640f7aa69c5fbfb5e5b24f381e9c8.jpg,
   SampleUrl: https://cdn.donmai.us/original/b2/86/b28640f7aa69c5fbfb5e5b24f381e9c8.jpg,
   PreviewUrl: https://cdn.donmai.us/180x180/b2/86/b28640f7aa69c5fbfb5e5b24f381e9c8.jpg,
-  PostedAt: 2022-04-30 15:09:00.581 +0,
-  UploaderId: {
+  CreateDate: 2022-04-30 15:09:00.581 +0,
+  Uploader: {
     Id: 424728,
-    Name: pantsukiller
+    Name: pantsukiller,
+    Description: ,
+    WebsiteUri: https://danbooru.donmai.us/users/424728
   },
   Source: https://twitter.com/minaqueenu/status/1519092864768163841,
   FileResolution: {
     Width: 666,
     Height: 900
   },
-  FileSizeInBytes: 191218,
-  RatingSafeLevel: Sensitive,
-  ChildrenIds: [
-    {
-      Id: 5318896,
-      Md5Hash: 46dda085dc9c60dd4380ed7b4433aa41
-    },
-    {
-      Id: 6851213,
-      Md5Hash: 58da060fe06e9d27f12269da6ef8dbbb
-    }
-  ],
+  ByteSize: 191218,
+  SafeRating: {
+    SafeRatingValue: 20,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: true,
+    IsQuestionable: false,
+    IsExplicit: false,
+    IsGuro: false,
+    IsSafe: true,
+    IsR17: false,
+    IsR18: false,
+    IsR18G: false
+  },
   Tags: [
     {
       Type: artist,
-      Name: mina cream
+      Name: mina cream,
+      Category: {
+        Name: artist,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: hilda valentine goneril
+      Name: hilda valentine goneril,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: hilda valentine goneril (timeskip)
+      Name: hilda valentine goneril (timeskip),
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: marianne von edmund
+      Name: marianne von edmund,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: marianne von edmund (timeskip)
+      Name: marianne von edmund (timeskip),
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: copyright,
-      Name: fire emblem
+      Name: fire emblem,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: copyright,
-      Name: fire emblem: three houses
+      Name: fire emblem: three houses,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: 2girls
+      Name: 2girls,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: artist name
+      Name: artist name,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blue dress
+      Name: blue dress,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blue hair
+      Name: blue hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blush
+      Name: blush,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: braid
+      Name: braid,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: breasts
+      Name: breasts,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: circlet
+      Name: circlet,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: closed eyes
+      Name: closed eyes,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: crown braid
+      Name: crown braid,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: dated
+      Name: dated,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: dress
+      Name: dress,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: earrings
+      Name: earrings,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: eyelashes
+      Name: eyelashes,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: hand on another's face
+      Name: hand on another's face,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: hand on another's shoulder
+      Name: hand on another's shoulder,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: jewelry
+      Name: jewelry,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: kiss
+      Name: kiss,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: long hair
+      Name: long hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: multiple girls
+      Name: multiple girls,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: nail polish
+      Name: nail polish,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: pink hair
+      Name: pink hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: sideboob
+      Name: sideboob,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: skirt
+      Name: skirt,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: thighhighs
+      Name: thighhighs,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: thighs
+      Name: thighs,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: yuri
+      Name: yuri,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: zettai ryouiki
+      Name: zettai ryouiki,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: commentary
+      Name: commentary,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     }
-  ]
+  ],
+  IsAiGenerated: false,
+  WebsiteUri: https://danbooru.donmai.us/posts/5314036,
+  AppUri: pixeval://Danbooru/5314036,
+  ChildrenIds: [
+    {
+      Id: 5318896,
+      Md5Hash: 46dda085dc9c60dd4380ed7b4433aa41,
+      Platform: danbooru
+    },
+    {
+      Id: 6851213,
+      Md5Hash: 58da060fe06e9d27f12269da6ef8dbbb,
+      Platform: danbooru
+    }
+  ],
+  PoolsGetter: {
+    Type: Func<Post, Task<IReadOnlyList<Pool>>>,
+    Target: DanbooruApiLoader,
+    Method: System.Threading.Tasks.Task`1[System.Collections.Generic.IReadOnlyList`1[Imouto.BooruParser.Pool]] GetPoolsAsync(Imouto.BooruParser.Post)
+  },
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }

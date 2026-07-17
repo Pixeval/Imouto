@@ -12,27 +12,58 @@ namespace Imouto.BooruParser;
 
 public static class ServiceCollectionExtensions
 {
-    /// <summary>
-    /// Should:
-    ///     Add memory cache
-    ///     Configure SankakuSettings, YandereSettings, DanbooruSettings
-    /// </summary>
     public static IServiceCollection AddBooruParsers(this IServiceCollection services)
     {
-        return services.AddSingleton<IFlurlClientCache>(_ => new FlurlClientCache())
-            .AddKeyedSingleton<IDownloadHttpClientService, DanbooruImageDownloader>(IPlatformInfo.Danbooru)
-            .AddKeyedSingleton<IDownloadHttpClientService, GeneralImageDownloader>(IPlatformInfo.All)
-            .AddKeyedSingleton<IGetArtworkService, DanbooruApiLoader>(IPlatformInfo.Danbooru)
-            .Configure<DanbooruSettings>(_ => { })
-            .AddKeyedSingleton<IGetArtworkService, YandereApiLoader>(IPlatformInfo.Yandere)
-            .Configure<YandereSettings>(_ => { })
-            .AddKeyedSingleton<IGetArtworkService, SankakuApiLoader>(IPlatformInfo.Sankaku)
-            .Configure<SankakuSettings>(_ => { })
-            .AddKeyedSingleton<IGetArtworkService, GelbooruApiLoader>(IPlatformInfo.Gelbooru)
-            .Configure<GelbooruSettings>(_ => { })
-            .AddKeyedSingleton<IGetArtworkService, Rule34ApiLoader>(IPlatformInfo.Rule34)
-            .Configure<Rule34Settings>(_ => { })
-            .AddKeyedSingleton<ISankakuAuthManager, SankakuAuthManager>(IPlatformInfo.Sankaku);
+        services.AddMemoryCache();
+        services.AddSingleton<IFlurlClientCache>(_ => new FlurlClientCache());
+
+        services.AddSingleton<ISankakuAuthManager, SankakuAuthManager>();
+        services.AddKeyedSingleton<ISankakuAuthManager>(
+            IPlatformInfo.Sankaku,
+            (provider, _) => provider.GetRequiredService<ISankakuAuthManager>());
+
+        services.AddSingleton<DanbooruApiLoader>();
+        services.AddSingleton<YandereApiLoader>();
+        services.AddSingleton<SankakuApiLoader>();
+        services.AddSingleton<GelbooruApiLoader>();
+        services.AddSingleton<Rule34ApiLoader>();
+
+        services.AddSingleton<IBooruApiLoader>(x => x.GetRequiredService<DanbooruApiLoader>());
+        services.AddSingleton<IBooruApiLoader>(x => x.GetRequiredService<YandereApiLoader>());
+        services.AddSingleton<IBooruApiLoader>(x => x.GetRequiredService<SankakuApiLoader>());
+        services.AddSingleton<IBooruApiLoader>(x => x.GetRequiredService<GelbooruApiLoader>());
+        services.AddSingleton<IBooruApiLoader>(x => x.GetRequiredService<Rule34ApiLoader>());
+
+        services.AddSingleton<IBooruApiAccessor>(x => x.GetRequiredService<DanbooruApiLoader>());
+        services.AddSingleton<IBooruApiAccessor>(x => x.GetRequiredService<YandereApiLoader>());
+        services.AddSingleton<IBooruApiAccessor>(x => x.GetRequiredService<SankakuApiLoader>());
+
+        services.AddKeyedSingleton<IGetArtworkService>(
+            IPlatformInfo.Danbooru,
+            (provider, _) => provider.GetRequiredService<DanbooruApiLoader>());
+        services.AddKeyedSingleton<IGetArtworkService>(
+            IPlatformInfo.Yandere,
+            (provider, _) => provider.GetRequiredService<YandereApiLoader>());
+        services.AddKeyedSingleton<IGetArtworkService>(
+            IPlatformInfo.Sankaku,
+            (provider, _) => provider.GetRequiredService<SankakuApiLoader>());
+        services.AddKeyedSingleton<IGetArtworkService>(
+            IPlatformInfo.Gelbooru,
+            (provider, _) => provider.GetRequiredService<GelbooruApiLoader>());
+        services.AddKeyedSingleton<IGetArtworkService>(
+            IPlatformInfo.Rule34,
+            (provider, _) => provider.GetRequiredService<Rule34ApiLoader>());
+
+        services.AddKeyedSingleton<IDownloadHttpClientService, DanbooruImageDownloader>(IPlatformInfo.Danbooru);
+        services.AddKeyedSingleton<IDownloadHttpClientService, GeneralImageDownloader>(IPlatformInfo.All);
+
+        services.Configure<DanbooruSettings>(_ => { });
+        services.Configure<YandereSettings>(_ => { });
+        services.Configure<SankakuSettings>(_ => { });
+        services.Configure<GelbooruSettings>(_ => { });
+        services.Configure<Rule34Settings>(_ => { });
+
+        return services;
     }
 }
 
@@ -53,7 +84,7 @@ public class GeneralImageDownloader : IDownloadHttpClientService
             new("Safari", "537.36"),
             new("Edg", "133.0.0.0")
         ];
-        foreach (var item in ua) 
+        foreach (var item in ua)
             client.DefaultRequestHeaders.UserAgent.Add(item);
         return client;
     });
@@ -62,7 +93,6 @@ public class GeneralImageDownloader : IDownloadHttpClientService
 
     public HttpClient GetImageDownloadClient() => _HttpClient.Value;
 }
-
 
 public class DanbooruImageDownloader : IDownloadHttpClientService
 {

@@ -1,4 +1,8 @@
 using System.Globalization;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Xml.Linq;
+using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using HtmlAgilityPack;
@@ -12,64 +16,89 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
     : IBooruApiLoader
 {
     public string Platform => IPlatformInfo.Gelbooru;
+
+    private static readonly Regex DateTimeRegex = new(
+        ".*(?<month>[A-Za-z]{3}).*(?<date>\\d{2}).*(?<hours>\\d{2})\\:(?<minutes>\\d{2})\\:(?<seconds>\\d{2}).*(?<tzhours>[+\\-]\\d{2})(?<tzminutes>\\d{2}).*(?<year>\\d{4})",
+        RegexOptions.Compiled,
+        TimeSpan.FromSeconds(1));
+
     private const string BaseUrl = "https://gelbooru.com/";
+
     private readonly IFlurlClient _flurlClient = factory
         .GetForDomain(new(BaseUrl))
         .BeforeCall(_ => DelayWithThrottler(options));
 
     public async Task<Post> GetPostAsync(string postId)
     {
-        // https://gelbooru.com/index.php?page=post&s=view&id=
-        var postHtml = await Request()
-            .SetQueryParams(new
-            {
-                page = "post",
-                s = "view",
-                id = postId
-            })
-            .GetHtmlDocumentAsync();
-        
         // https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=1&id=
         var postJson = await Request()
             .SetQueryParams(new
             {
-                page = "dapi", s = "post", q = "index", json = 1, limit = 1, id = postId
+                page = "dapi",
+                s = "post",
+                q = "index",
+                json = 1,
+                limit = 1,
+                id = postId
             })
             .GetJsonAsync<GelbooruPostPage>();
 
         var post = postJson.Posts?.FirstOrDefault();
+        if (post is not null)
+            return await CreatePostAsync(post);
 
-        return post is null
-            ? CreatePost(postHtml)!
-            : CreatePost(post, postHtml);
+        // Deleted posts are not returned by DAPI, but can still have a public HTML page.
+        HtmlDocument postHtml;
+        try
+        {
+            postHtml = await Request()
+                .SetQueryParams(new
+                {
+                    page = "post",
+                    s = "view",
+                    id = postId
+                })
+                .GetHtmlDocumentAsync();
+        }
+        catch (FlurlHttpException exception) when (exception.Call.Response?.StatusCode == 404)
+        {
+            throw new PostNotFoundException("Gelbooru", postId, exception);
+        }
+
+        return CreatePost(postHtml)
+               ?? throw new PostNotFoundException("Gelbooru", postId);
     }
 
     public async Task<Post?> GetPostByMd5Async(string md5)
     {
-        // https://gelbooru.com/index.php?page=post&s=list&md5=
+        // https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=1&md5=
+        var postJson = await Request()
+            .SetQueryParams(new
+            {
+                page = "dapi",
+                s = "post",
+                q = "index",
+                json = 1,
+                limit = 1,
+                tags = $"md5:{md5}"
+            })
+            .GetJsonAsync<GelbooruPostPage>();
+
+        var post = postJson.Posts?.FirstOrDefault();
+        if (post is not null)
+            return await CreatePostAsync(post);
+
         var postHtml = await Request()
             .SetQueryParams(new
             {
                 page = "post",
                 s = "list",
-                md5
+                md5 = md5
             })
             .WithAutoRedirect(true)
             .GetHtmlDocumentAsync();
-        
-        // https://gelbooru.com/index.php?page=dapi&s=post&q=index&json=1&limit=1&md5=
-        var postJson = await Request()
-            .SetQueryParams(new
-            {
-                page = "dapi", s = "post", q = "index", json = 1, limit = 1, tags = $"md5:{md5}"
-            })
-            .GetJsonAsync<GelbooruPostPage>();
-        
-        var post = postJson.Posts?.FirstOrDefault();
-        
-        return post is null
-            ? CreatePost(postHtml)
-            : CreatePost(post, postHtml);
+
+        return CreatePost(postHtml);
     }
 
     public async Task<SearchResult> SearchAsync(string tags)
@@ -161,11 +190,51 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
         CancellationToken ct = default)
         => throw new NotSupportedException("Gelbooru does not support history");
 
-    private static IReadOnlyList<Note> GetNotes(GelbooruPost? post, HtmlDocument postHtml)
+    /// <remarks>
+    /// Parent is always 0.
+    /// </remarks>
+    private static PostIdentity? GetParent(GelbooruPost post)
+        => post.ParentId is not 0
+            ? new PostIdentity(post.ParentId.ToString(), string.Empty, PlatformType.Gelbooru)
+            : null;
+
+    /// <remarks>
+    /// Haven't found any post with them
+    /// </remarks>
+    private static IReadOnlyList<PostIdentity> GetChildren() => [];
+
+    private async Task<IReadOnlyList<Note>> GetNotesAsync(GelbooruPost post)
     {
-        if (post?.HasNotes == "false")
+        if (!string.Equals(post.HasNotes, "true", StringComparison.OrdinalIgnoreCase))
             return [];
 
+        var notesXml = await Request()
+            .SetQueryParams(new
+            {
+                page = "dapi",
+                s = "note",
+                q = "index",
+                post_id = post.Id
+            })
+            .GetStringAsync();
+
+        return XDocument.Parse(notesXml).Root?
+            .Elements("note")
+            .Where(x => !string.Equals(
+                (string?) x.Attribute("is_active"),
+                "false",
+                StringComparison.OrdinalIgnoreCase))
+            .Select(x => new Note(
+                ((int) x.Attribute("id")!).ToString(),
+                GetPlainText((string?) x.Attribute("body") ?? string.Empty),
+                new Position((int) x.Attribute("y")!, (int) x.Attribute("x")!),
+                new Size((int) x.Attribute("width")!, (int) x.Attribute("height")!)))
+            .OrderBy(x => int.Parse(x.Id, CultureInfo.InvariantCulture))
+            .ToArray() ?? [];
+    }
+
+    private static IReadOnlyList<Note> GetNotes(HtmlDocument postHtml)
+    {
         var notes = postHtml.DocumentNode
             .SelectNodes("//*[@id='notes']/article")
             ?.Select(note =>
@@ -185,24 +254,71 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
             }) ?? [];
 
         return [.. notes];
-        
-        static int GetSizeInt(string number) => (int)(Convert.ToDouble(number) + 0.5);
-        
-        static int GetPositionInt(string number) => (int)Math.Ceiling(Convert.ToDouble(number) - 0.5);
+
+        static int GetSizeInt(string number)
+            => (int) (double.Parse(number, CultureInfo.InvariantCulture) + 0.5);
+
+        static int GetPositionInt(string number)
+            => (int) Math.Ceiling(double.Parse(number, CultureInfo.InvariantCulture) - 0.5);
     }
 
-    private static IReadOnlyList<Tag> GetTags(HtmlDocument post) 
-        => [.. post.DocumentNode
-            .SelectSingleNode("//*[@id='tag-list']")!
-            .SelectNodes("li")!
-            .Where(x => x.Attributes["class"]?.Value.StartsWith("tag-type-") == true)
-            .Select(x =>
-            {
-                var type = x.Attributes["class"].Value.Split('-')[^1];
-                var name = x.SelectSingleNode("a")!.InnerHtml;
+    private static IReadOnlyList<Tag> GetTags(HtmlDocument post)
+        =>
+        [
+            .. post.DocumentNode
+                .SelectSingleNode("//*[@id='tag-list']")!
+                .SelectNodes("li")!
+                .Where(x => x.Attributes["class"]?.Value.StartsWith("tag-type-") == true)
+                .Select(x =>
+                {
+                    var type = x.Attributes["class"].Value.Split('-')[^1];
+                    var name = x.SelectSingleNode("a")!.InnerHtml;
 
-                return new Tag(type, name);
-            })];
+                    return new Tag(type, name);
+                })
+        ];
+
+    private async Task<IReadOnlyList<Tag>> GetTagsAsync(GelbooruPost post)
+    {
+        var names = post.Tags.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var found = new Dictionary<string, int>(StringComparer.Ordinal);
+
+        foreach (var chunk in names.Chunk(100))
+        {
+            var response = await Request()
+                .SetQueryParams(new
+                {
+                    page = "dapi",
+                    s = "tag",
+                    q = "index",
+                    json = 1,
+                    limit = chunk.Length,
+                    names = string.Join(' ', chunk)
+                })
+                .GetJsonAsync<GelbooruTagPage>();
+
+            foreach (var tag in response.Tags ?? [])
+                found[tag.Name] = tag.Type;
+        }
+
+        return names
+            .Select(x => new Tag(
+                found.TryGetValue(x, out var type) ? GetTagType(type) : "general",
+                x.Replace('_', ' ')))
+            .ToArray();
+    }
+
+    private static string GetTagType(int type)
+        => type switch
+        {
+            0 => "general",
+            1 => "artist",
+            2 => "deprecated",
+            3 => "copyright",
+            4 => "character",
+            5 => "metadata",
+            _ => "general"
+        };
 
     /// <summary>
     /// Auth isn't supported right now.
@@ -214,18 +330,33 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
             await Throttler.Get("gelbooru").UseAsync(delay);
     }
 
-    private static DateTimeOffset ExtractDate(GelbooruPost post) =>
-        // Sat Oct 22 02:03:36 -0500 2022
-        DateTimeOffset.ParseExact(
-            post.CreatedAt,
-            "ddd MMM dd HH:mm:ss zzz yyyy",
-            CultureInfo.InvariantCulture);
+    private static DateTimeOffset ExtractDate(GelbooruPost post)
+    {
+        var datetime = DateTimeRegex.Match(post.CreatedAt);
 
-    private static Post CreatePost(GelbooruPost post, HtmlDocument postHtml)
-        // Parent is always 0
-        // No children
-        => new(
-            new(post.Id.ToString(), post.Md5, PlatformType.Gelbooru),
+        var year = int.Parse(datetime.Groups["year"].Value);
+        var monthString = datetime.Groups["month"].Value;
+        var date = int.Parse(datetime.Groups["date"].Value);
+        var hours = int.Parse(datetime.Groups["hours"].Value);
+        var minutes = int.Parse(datetime.Groups["minutes"].Value);
+        var seconds = int.Parse(datetime.Groups["seconds"].Value);
+        var tzHours = int.Parse(datetime.Groups["tzhours"].Value);
+        var tzMinutes = int.Parse(datetime.Groups["tzminutes"].Value);
+        var month = DateTime.ParseExact(monthString, "MMM", CultureInfo.InvariantCulture).Month;
+        var offsetMinutes = tzHours < 0 ? -tzMinutes : tzMinutes;
+
+        return new DateTimeOffset(year, month, date, hours, minutes, seconds,
+            new TimeSpan(tzHours, offsetMinutes, 0));
+    }
+
+    private async Task<Post> CreatePostAsync(GelbooruPost post)
+    {
+        var tagsTask = GetTagsAsync(post);
+        var notesTask = GetNotesAsync(post);
+        await Task.WhenAll(tagsTask, notesTask);
+
+        return new(
+            new PostIdentity(post.Id.ToString(), post.Md5, PlatformType.Gelbooru),
             post.FileUrl,
             string.IsNullOrWhiteSpace(post.SampleUrl) ? null : post.SampleUrl,
             post.PreviewUrl,
@@ -236,8 +367,10 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
             new(post.Width, post.Height),
             0,
             SafeRating.Parse(post.Rating),
-            GetTags(postHtml),
-            GetNotes(post, postHtml));
+            await tagsTask,
+            await notesTask,
+            GetParent(post)) { ChildrenIds = GetChildren() };
+    }
 
     private static Post? CreatePost(HtmlDocument postHtml)
     {
@@ -246,23 +379,24 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
 
         if (idString is null)
             return null;
-        
+
         var id = int.Parse(idString);
-        
+
         var url = postHtml.DocumentNode.SelectSingleNode("//head/meta[@property='og:image']")!.Attributes["content"].Value;
         var md5 = url.Split('/')[^1].Split('.')[0];
-        
+
         var dateString = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Posted: ')]/text()[1]")!.InnerText[8..];
         var date = new DateTimeOffset(DateTime.ParseExact(dateString, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture), TimeSpan.FromHours(-5));
-        
+
         var uploader = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Posted: ')]/a/text()")?.InnerText ?? "Anonymous";
-        
+
         var source = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Source: ')]/a[1]")?.Attributes["href"].Value;
-        
+
         var sizeString = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Size: ')]/text()")!.InnerText;
         var size = sizeString.Split(':')[^1].Trim().Split('x').Select(int.Parse).ToList();
-        
-        var rating = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Rating: ')]/text()")!.InnerText.Split(' ')[^1].ToLower();
+
+        var rating = postHtml.DocumentNode.SelectSingleNode("//li[contains (., 'Rating: ')]/text()")!
+            .InnerText.Split(' ')[^1].ToLowerInvariant();
 
         return new(
             new(id.ToString(), md5, PlatformType.Gelbooru),
@@ -277,6 +411,13 @@ public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSetti
             0,
             SafeRating.Parse(rating),
             GetTags(postHtml),
-            GetNotes(null, postHtml));
+            GetNotes(postHtml));
+    }
+
+    private static string GetPlainText(string html)
+    {
+        var document = new HtmlDocument();
+        document.LoadHtml(html);
+        return WebUtility.HtmlDecode(document.DocumentNode.InnerText);
     }
 }

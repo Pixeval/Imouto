@@ -1,186 +1,478 @@
 ﻿{
   Id: {
     Id: 5246157,
-    Md5Hash: 37493f99a0e45a35f5b69f2c90b2ad39
+    Md5Hash: 37493f99a0e45a35f5b69f2c90b2ad39,
+    Platform: danbooru
   },
   OriginalUrl: https://cdn.donmai.us/original/37/49/37493f99a0e45a35f5b69f2c90b2ad39.png,
   SampleUrl: https://cdn.donmai.us/sample/37/49/sample-37493f99a0e45a35f5b69f2c90b2ad39.jpg,
   PreviewUrl: https://cdn.donmai.us/180x180/37/49/37493f99a0e45a35f5b69f2c90b2ad39.jpg,
-  PostedAt: 2022-04-04 03:20:03.665 +0,
-  UploaderId: {
+  CreateDate: 2022-04-04 03:20:03.665 +0,
+  Uploader: {
     Id: 367032,
-    Name: rpgman1
+    Name: rpgman1,
+    Description: ,
+    WebsiteUri: https://danbooru.donmai.us/users/367032
   },
   Source: https://twitter.com/Strangestone/status/1510818766778605569,
   FileResolution: {
     Width: 1287,
     Height: 1800
   },
-  FileSizeInBytes: 425485,
-  RatingSafeLevel: Sensitive,
-  Pools: [
-    {
-      Id: 10374,
-      Name: Getsuyoubi_no_Tawawa_-_Monday_Morning_Offerings_(Himura_Kiseki),
-      Position: 383
-    }
-  ],
+  ByteSize: 425485,
+  SafeRating: {
+    SafeRatingValue: 20,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: true,
+    IsQuestionable: false,
+    IsExplicit: false,
+    IsGuro: false,
+    IsSafe: true,
+    IsR17: false,
+    IsR18: false,
+    IsR18G: false
+  },
   Tags: [
     {
       Type: artist,
-      Name: himura kiseki
+      Name: himura kiseki,
+      Category: {
+        Name: artist,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: ai-chan (tawawa)
+      Name: ai-chan (tawawa),
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: volley-bu-chan (tawawa)
+      Name: volley-bu-chan (tawawa),
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: copyright,
-      Name: getsuyoubi no tawawa
+      Name: getsuyoubi no tawawa,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: 2girls
+      Name: 2girls,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blue theme
+      Name: blue theme,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: blush
+      Name: blush,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: braid
+      Name: braid,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: breast rest
+      Name: breast rest,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: breasts
+      Name: breasts,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: breasts on head
+      Name: breasts on head,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: cellphone
+      Name: cellphone,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: classroom
+      Name: classroom,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: crossed legs
+      Name: crossed legs,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: curtains
+      Name: curtains,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: desk
+      Name: desk,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: drinking straw
+      Name: drink carton,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: drooling
+      Name: drinking straw,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: female pervert
+      Name: drooling,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: indoors
+      Name: female pervert,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: lap pillow
+      Name: indoors,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: large breasts
+      Name: lap pillow,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: milk carton
+      Name: large breasts,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: monochrome
+      Name: milk carton,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: mouth drool
+      Name: monochrome,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: multiple girls
+      Name: mouth drool,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: pantyhose
+      Name: multiple girls,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: pervert
+      Name: pantyhose,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: phone
+      Name: pervert,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: pleated skirt
+      Name: phone,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: school uniform
+      Name: pleated skirt,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: short hair
+      Name: school uniform,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: skirt
+      Name: short hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: smartphone
+      Name: skirt,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: window
+      Name: smartphone,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: yuri
+      Name: window,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: yuri,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: commentary
+      Name: commentary,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: highres
+      Name: highres,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: translated
+      Name: translated,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     }
   ],
   Notes: [
@@ -198,5 +490,15 @@ Wish you another wonderful week.
         Height: 79
       }
     }
-  ]
+  ],
+  IsAiGenerated: false,
+  WebsiteUri: https://danbooru.donmai.us/posts/5246157,
+  AppUri: pixeval://Danbooru/5246157,
+  PoolsGetter: {
+    Type: Func<Post, Task<IReadOnlyList<Pool>>>,
+    Target: DanbooruApiLoader,
+    Method: System.Threading.Tasks.Task`1[System.Collections.Generic.IReadOnlyList`1[Imouto.BooruParser.Pool]] GetPoolsAsync(Imouto.BooruParser.Post)
+  },
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }

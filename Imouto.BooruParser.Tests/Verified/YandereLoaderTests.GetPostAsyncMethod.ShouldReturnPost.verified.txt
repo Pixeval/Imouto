@@ -1,59 +1,144 @@
 ﻿{
   Id: {
     Id: 408517,
-    Md5Hash: 5569d245d4c85921a0da173d87391862
+    Md5Hash: 5569d245d4c85921a0da173d87391862,
+    PlatformType: Yandere,
+    Platform: yandere
   },
   OriginalUrl: https://files.yande.re/image/5569d245d4c85921a0da173d87391862/yande.re%20408517%20cleavage%20dakimakura%20fate_grand_order%20kimono%20mash_kyrielight%20no_bra%20nopan%20open_shirt%20yuran.png,
   SampleUrl: https://files.yande.re/sample/5569d245d4c85921a0da173d87391862/yande.re%20408517%20sample%20cleavage%20dakimakura%20fate_grand_order%20kimono%20mash_kyrielight%20no_bra%20nopan%20open_shirt%20yuran.jpg,
   PreviewUrl: https://files.yande.re/jpeg/5569d245d4c85921a0da173d87391862/yande.re%20408517%20cleavage%20dakimakura%20fate_grand_order%20kimono%20mash_kyrielight%20no_bra%20nopan%20open_shirt%20yuran.jpg,
-  PostedAt: 2017-09-06 05:38:17 +0,
-  UploaderId: {
+  CreateDate: 2017-09-06 05:38:17 +0,
+  Uploader: {
     Id: 25882,
-    Name: Mr_GT
+    Name: Mr_GT,
+    Platform: Yandere,
+    Description: ,
+    WebsiteUri: https://yande.re/user/show/25882
   },
   Source: https://yurang92.booth.pm/items/621246,
   FileResolution: {
     Width: 1383,
     Height: 4393
   },
-  FileSizeInBytes: 5455985,
-  Rating: Questionable,
+  ByteSize: 5455985,
+  SafeRating: {
+    SafeRatingValue: 30,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: false,
+    IsQuestionable: true,
+    IsExplicit: false,
+    IsGuro: false,
+    IsSafe: false,
+    IsR17: true,
+    IsR18: false,
+    IsR18G: false
+  },
   Tags: [
     {
       Type: artist,
-      Name: yuran
+      Name: yuran,
+      Category: {
+        Name: artist,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: copyright,
-      Name: fate/grand order
+      Name: fate/grand order,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: mash kyrielight
+      Name: mash kyrielight,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: cleavage
+      Name: cleavage,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: dakimakura
+      Name: dakimakura,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: kimono
+      Name: kimono,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: no bra
+      Name: no bra,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: nopan
+      Name: nopan,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: open shirt
+      Name: open shirt,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     }
-  ]
+  ],
+  IsAiGenerated: false,
+  WebsiteUri: https://yande.re/post/show/408517,
+  AppUri: pixeval://Yandere/408517,
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }

@@ -1,26 +1,128 @@
 ﻿{
   Id: {
     Id: 572039,
-    Md5Hash: 2bb1833a5a12852d186d4fcf86bf9020
+    Md5Hash: 2bb1833a5a12852d186d4fcf86bf9020,
+    PlatformType: Yandere,
+    Platform: yandere
   },
   OriginalUrl: https://files.yande.re/image/2bb1833a5a12852d186d4fcf86bf9020/yande.re%20572039%20aquastar_inc.%20cardinal%20dress%20megane%20quinella%20sword_art_online%20sword_art_online_alicization.jpg,
   SampleUrl: https://files.yande.re/sample/2bb1833a5a12852d186d4fcf86bf9020/yande.re%20572039%20sample%20aquastar_inc.%20cardinal%20dress%20megane%20quinella%20sword_art_online%20sword_art_online_alicization.jpg,
   PreviewUrl: https://files.yande.re/image/2bb1833a5a12852d186d4fcf86bf9020/yande.re%20572039%20aquastar_inc.%20cardinal%20dress%20megane%20quinella%20sword_art_online%20sword_art_online_alicization.jpg,
-  PostedAt: 2019-09-21 07:46:25 +0,
-  UploaderId: {
+  CreateDate: 2019-09-21 07:46:25 +0,
+  Uploader: {
     Id: 188377,
-    Name: drop
+    Name: drop,
+    Platform: Yandere,
+    Description: ,
+    WebsiteUri: https://yande.re/user/show/188377
   },
   Source: ,
   FileResolution: {
     Width: 4070,
     Height: 2890
   },
-  FileSizeInBytes: 1304936,
+  ByteSize: 1304936,
+  SafeRating: {
+    SafeRatingValue: 20,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: true,
+    IsQuestionable: false,
+    IsExplicit: false,
+    IsGuro: false,
+    IsSafe: true,
+    IsR17: false,
+    IsR18: false,
+    IsR18G: false
+  },
+  Tags: [
+    {
+      Type: circle,
+      Name: aquastar inc.,
+      Category: {
+        Name: circle,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: copyright,
+      Name: sword art online,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: copyright,
+      Name: sword art online alicization,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: character,
+      Name: cardinal,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: character,
+      Name: quinella,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: dress,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: megane,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    }
+  ],
   Parent: {
     Id: 507680,
-    Md5Hash: 88c25db418060d983d6eb9504b3eb119
+    Md5Hash: 88c25db418060d983d6eb9504b3eb119,
+    PlatformType: Yandere,
+    Platform: yandere
   },
+  IsAiGenerated: false,
+  WebsiteUri: https://yande.re/post/show/572039,
+  AppUri: pixeval://Yandere/572039,
   Pools: [
     {
       Id: 96746,
@@ -28,34 +130,6 @@
       Position: 22
     }
   ],
-  Tags: [
-    {
-      Type: circle,
-      Name: aquastar inc.
-    },
-    {
-      Type: copyright,
-      Name: sword art online
-    },
-    {
-      Type: copyright,
-      Name: sword art online alicization
-    },
-    {
-      Type: character,
-      Name: cardinal
-    },
-    {
-      Type: character,
-      Name: quinella
-    },
-    {
-      Type: general,
-      Name: dress
-    },
-    {
-      Type: general,
-      Name: megane
-    }
-  ]
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }

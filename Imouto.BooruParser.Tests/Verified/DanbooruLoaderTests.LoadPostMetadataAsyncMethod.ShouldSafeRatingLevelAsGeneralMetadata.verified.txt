@@ -2,619 +2,1641 @@
   {
     Id: {
       Id: 5765281,
-      Md5Hash: ec3803aa8a731cd417f87acfc14410de
+      Md5Hash: ec3803aa8a731cd417f87acfc14410de,
+      Platform: danbooru
     },
     OriginalUrl: https://cdn.donmai.us/original/ec/38/ec3803aa8a731cd417f87acfc14410de.png,
     SampleUrl: https://cdn.donmai.us/sample/ec/38/sample-ec3803aa8a731cd417f87acfc14410de.jpg,
     PreviewUrl: https://cdn.donmai.us/180x180/ec/38/ec3803aa8a731cd417f87acfc14410de.jpg,
-    PostedAt: 2022-10-22 13:18:43.497 +0,
-    UploaderId: {
+    CreateDate: 2022-10-22 13:18:43.497 +0,
+    Uploader: {
       Id: 748660,
-      Name: Luckymage92
+      Name: Luckymage92,
+      Description: ,
+      WebsiteUri: https://danbooru.donmai.us/users/748660
     },
     Source: https://i.pximg.net/img-original/img/2022/10/11/22/36/32/101860418_p0.png,
     FileResolution: {
       Width: 1344,
       Height: 1118
     },
-    FileSizeInBytes: 1619957,
-    RatingSafeLevel: General,
+    ByteSize: 1619957,
+    SafeRating: {
+      SafeRatingValue: 10,
+      IsNotSpecified: false,
+      IsGeneral: true,
+      IsSensitive: false,
+      IsQuestionable: false,
+      IsExplicit: false,
+      IsGuro: false,
+      IsSafe: true,
+      IsR17: false,
+      IsR18: false,
+      IsR18G: false
+    },
     Tags: [
       {
         Type: artist,
-        Name: ewokaku335
+        Name: ewokaku335,
+        Category: {
+          Name: artist,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: character,
-        Name: yun jin (genshin impact)
+        Name: yun jin (genshin impact),
+        Category: {
+          Name: character,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: copyright,
-        Name: genshin impact
+        Name: genshin impact,
+        Category: {
+          Name: copyright,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: 1girl
+        Name: 1girl,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: black bonnet
+        Name: black bonnet,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: black hair
+        Name: black hair,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: blunt bangs
+        Name: blunt bangs,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: blush
+        Name: blush,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: bonnet
+        Name: bonnet,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: collar
+        Name: collar,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: facing viewer
+        Name: facing viewer,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: fur collar
+        Name: fur collar,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: parted lips
+        Name: parted lips,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: portrait
+        Name: portrait,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: red eyes
+        Name: red eyes,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: solo
+        Name: solo,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: white collar
+        Name: white collar,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: meta,
-        Name: commentary request
+        Name: commentary request,
+        Category: {
+          Name: meta,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       }
-    ]
+    ],
+    IsAiGenerated: false,
+    WebsiteUri: https://danbooru.donmai.us/posts/5765281,
+    AppUri: pixeval://Danbooru/5765281,
+    PoolsGetter: {
+      Type: Func<Post, Task<IReadOnlyList<Pool>>>,
+      Target: DanbooruApiLoader,
+      Method: System.Threading.Tasks.Task`1[System.Collections.Generic.IReadOnlyList`1[Imouto.BooruParser.Pool]] GetPoolsAsync(Imouto.BooruParser.Post)
+    },
+    SetIndex: -1,
+    SerializeKey: Imouto.BooruParser.Post
   },
   {
     Id: {
       Id: 5372463,
-      Md5Hash: 1ae86c34ceaa8fc75d75bc6b5c65cfec
+      Md5Hash: 1ae86c34ceaa8fc75d75bc6b5c65cfec,
+      Platform: danbooru
     },
     OriginalUrl: https://cdn.donmai.us/original/1a/e8/1ae86c34ceaa8fc75d75bc6b5c65cfec.jpg,
     SampleUrl: https://cdn.donmai.us/sample/1a/e8/sample-1ae86c34ceaa8fc75d75bc6b5c65cfec.jpg,
     PreviewUrl: https://cdn.donmai.us/180x180/1a/e8/1ae86c34ceaa8fc75d75bc6b5c65cfec.jpg,
-    PostedAt: 2022-05-22 13:36:33.502 +0,
-    UploaderId: {
+    CreateDate: 2022-05-22 13:36:33.502 +0,
+    Uploader: {
       Id: 739141,
-      Name: HeeroWingZero
+      Name: HeeroWingZero,
+      Description: ,
+      WebsiteUri: https://danbooru.donmai.us/users/739141
     },
     Source: https://twitter.com/Aloe_04maho/status/1528329371567595520,
     FileResolution: {
       Width: 1012,
       Height: 1598
     },
-    FileSizeInBytes: 216700,
-    RatingSafeLevel: Sensitive,
+    ByteSize: 216700,
+    SafeRating: {
+      SafeRatingValue: 20,
+      IsNotSpecified: false,
+      IsGeneral: false,
+      IsSensitive: true,
+      IsQuestionable: false,
+      IsExplicit: false,
+      IsGuro: false,
+      IsSafe: true,
+      IsR17: false,
+      IsR18: false,
+      IsR18G: false
+    },
     Tags: [
       {
         Type: artist,
-        Name: aloe (kenkou3733)
+        Name: aloe (kenkou3733),
+        Category: {
+          Name: artist,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: character,
-        Name: angelica rafa redgrave
+        Name: angelica rafa redgrave,
+        Category: {
+          Name: character,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: character,
-        Name: leon fou bartford
+        Name: leon fou bartford,
+        Category: {
+          Name: character,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: character,
-        Name: luxion (mobseka)
+        Name: luxion (mobseka),
+        Category: {
+          Name: character,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: copyright,
-        Name: otome gee sekai wa mob ni kibishii sekai desu
+        Name: otome gee sekai wa mob ni kibishii sekai desu,
+        Category: {
+          Name: copyright,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: 1boy
+        Name: 1boy,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: 1girl
+        Name: 1girl,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: black choker
+        Name: black choker,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: black eyes
+        Name: black eyes,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: black hair
+        Name: black hair,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: black jacket
+        Name: black jacket,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: blonde hair
+        Name: blonde hair,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: blush
+        Name: blush,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: breasts
+        Name: breasts,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: choker
+        Name: choker,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: cloud
+        Name: cloud,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: crying
+        Name: crying,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: crying with eyes open
+        Name: crying with eyes open,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: dress
+        Name: dress,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: dutch angle
+        Name: dutch angle,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: floating island
+        Name: floating island,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: flower
+        Name: flower,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: hair behind ear
+        Name: hair behind ear,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: hair bun
+        Name: hair bun,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: hair flower
+        Name: hair flower,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: hair ornament
+        Name: hair ornament,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: huge breasts
+        Name: huge breasts,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: jacket
+        Name: jacket,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: looking ahead
+        Name: looking ahead,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: looking at another
+        Name: looking at another,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: outdoors
+        Name: outdoors,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: red dress
+        Name: red dress,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: red eyes
+        Name: red eyes,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: robot
+        Name: robot,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: single hair bun
+        Name: single hair bun,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: sky
+        Name: sky,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: sleeveless
+        Name: sleeveless,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: sleeveless dress
+        Name: sleeveless dress,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: solo focus
+        Name: solo focus,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: tears
+        Name: tears,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: white flower
+        Name: white flower,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: meta,
-        Name: commentary request
+        Name: commentary request,
+        Category: {
+          Name: meta,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: meta,
-        Name: highres
+        Name: highres,
+        Category: {
+          Name: meta,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       }
-    ]
+    ],
+    IsAiGenerated: false,
+    WebsiteUri: https://danbooru.donmai.us/posts/5372463,
+    AppUri: pixeval://Danbooru/5372463,
+    PoolsGetter: {
+      Type: Func<Post, Task<IReadOnlyList<Pool>>>,
+      Target: DanbooruApiLoader,
+      Method: System.Threading.Tasks.Task`1[System.Collections.Generic.IReadOnlyList`1[Imouto.BooruParser.Pool]] GetPoolsAsync(Imouto.BooruParser.Post)
+    },
+    SetIndex: -1,
+    SerializeKey: Imouto.BooruParser.Post
   },
   {
     Id: {
       Id: 5026269,
-      Md5Hash: 37fb7fcc58a3a438480464258f2b384c
+      Md5Hash: 37fb7fcc58a3a438480464258f2b384c,
+      Platform: danbooru
     },
     OriginalUrl: https://cdn.donmai.us/original/37/fb/37fb7fcc58a3a438480464258f2b384c.jpg,
     SampleUrl: https://cdn.donmai.us/sample/37/fb/sample-37fb7fcc58a3a438480464258f2b384c.jpg,
     PreviewUrl: https://cdn.donmai.us/180x180/37/fb/37fb7fcc58a3a438480464258f2b384c.jpg,
-    PostedAt: 2022-01-03 06:37:49.465 +0,
-    UploaderId: {
+    CreateDate: 2022-01-03 06:37:49.465 +0,
+    Uploader: {
       Id: 418493,
-      Name: user 418493
+      Name: user 418493,
+      Description: ,
+      WebsiteUri: https://danbooru.donmai.us/users/418493
     },
     Source: https://i.pximg.net/img-original/img/2022/01/01/19/22/43/95215244_p0.jpg,
     FileResolution: {
       Width: 1197,
       Height: 1785
     },
-    FileSizeInBytes: 1135630,
-    Rating: Questionable,
+    ByteSize: 1135630,
+    SafeRating: {
+      SafeRatingValue: 30,
+      IsNotSpecified: false,
+      IsGeneral: false,
+      IsSensitive: false,
+      IsQuestionable: true,
+      IsExplicit: false,
+      IsGuro: false,
+      IsSafe: false,
+      IsR17: true,
+      IsR18: false,
+      IsR18G: false
+    },
     Tags: [
       {
         Type: artist,
-        Name: kemoyuri
+        Name: kemoyuri,
+        Category: {
+          Name: artist,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: character,
-        Name: suzukaze aoba
+        Name: suzukaze aoba,
+        Category: {
+          Name: character,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: character,
-        Name: takimoto hifumi
+        Name: takimoto hifumi,
+        Category: {
+          Name: character,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: copyright,
-        Name: new game!
+        Name: new game!,
+        Category: {
+          Name: copyright,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: 2girls
+        Name: 2girls,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: asymmetrical docking
+        Name: asymmetrical docking,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: backlighting
+        Name: backlighting,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: blunt bangs
+        Name: blunt bangs,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: breast press
+        Name: breast press,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: breasts
+        Name: breasts,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: bridal veil
+        Name: bridal veil,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: brown hair
+        Name: brown hair,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: closed eyes
+        Name: closed eyes,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: collarbone
+        Name: collarbone,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: dress
+        Name: dress,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: elbow gloves
+        Name: elbow gloves,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: from side
+        Name: from side,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: garter straps
+        Name: garter straps,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: gloves
+        Name: gloves,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: holding hands
+        Name: holding hands,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: huge breasts
+        Name: huge breasts,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: interlocked fingers
+        Name: interlocked fingers,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: kiss
+        Name: kiss,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: long hair
+        Name: long hair,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: medium breasts
+        Name: medium breasts,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: multiple girls
+        Name: multiple girls,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: purple hair
+        Name: purple hair,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: sparkle
+        Name: sparkle,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: symmetrical docking
+        Name: symmetrical docking,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: thighhighs
+        Name: thighhighs,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: veil
+        Name: veil,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: wedding
+        Name: wedding,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: wedding dress
+        Name: wedding dress,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: white dress
+        Name: white dress,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: white gloves
+        Name: white gloves,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: white thighhighs
+        Name: white thighhighs,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: wife and wife
+        Name: wife and wife,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: yuri
+        Name: yuri,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: meta,
-        Name: commentary request
+        Name: commentary request,
+        Category: {
+          Name: meta,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: meta,
-        Name: commission
+        Name: commission,
+        Category: {
+          Name: meta,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: meta,
-        Name: highres
+        Name: highres,
+        Category: {
+          Name: meta,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: meta,
-        Name: skeb commission
+        Name: skeb commission,
+        Category: {
+          Name: meta,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       }
-    ]
+    ],
+    IsAiGenerated: false,
+    WebsiteUri: https://danbooru.donmai.us/posts/5026269,
+    AppUri: pixeval://Danbooru/5026269,
+    PoolsGetter: {
+      Type: Func<Post, Task<IReadOnlyList<Pool>>>,
+      Target: DanbooruApiLoader,
+      Method: System.Threading.Tasks.Task`1[System.Collections.Generic.IReadOnlyList`1[Imouto.BooruParser.Pool]] GetPoolsAsync(Imouto.BooruParser.Post)
+    },
+    SetIndex: -1,
+    SerializeKey: Imouto.BooruParser.Post
   },
   {
     Id: {
       Id: 236059,
-      Md5Hash: 95f40be1cbf3de83642ae23d60097bc0
+      Md5Hash: 95f40be1cbf3de83642ae23d60097bc0,
+      Platform: danbooru
     },
     OriginalUrl: https://cdn.donmai.us/original/95/f4/95f40be1cbf3de83642ae23d60097bc0.jpg,
     SampleUrl: https://cdn.donmai.us/original/95/f4/95f40be1cbf3de83642ae23d60097bc0.jpg,
     PreviewUrl: https://cdn.donmai.us/180x180/95/f4/95f40be1cbf3de83642ae23d60097bc0.jpg,
-    PostedAt: 2008-04-24 23:24:29.15 +0,
-    UploaderId: {
+    CreateDate: 2008-04-24 23:24:29.15 +0,
+    Uploader: {
       Id: 18240,
-      Name: hextra
+      Name: hextra,
+      Description: ,
+      WebsiteUri: https://danbooru.donmai.us/users/18240
     },
     Source: ,
     FileResolution: {
       Width: 800,
       Height: 600
     },
-    FileSizeInBytes: 192715,
-    Rating: Explicit,
-    ChildrenIds: [
-      {
-        Id: 171671,
-        Md5Hash: 86e0a2aa46a3655d8f4b3d5cc84d6cae
-      }
-    ],
+    ByteSize: 192715,
+    SafeRating: {
+      SafeRatingValue: 40,
+      IsNotSpecified: false,
+      IsGeneral: false,
+      IsSensitive: false,
+      IsQuestionable: false,
+      IsExplicit: true,
+      IsGuro: false,
+      IsSafe: false,
+      IsR17: false,
+      IsR18: true,
+      IsR18G: false
+    },
     Tags: [
       {
         Type: artist,
-        Name: sano toshihide
+        Name: sano toshihide,
+        Category: {
+          Name: artist,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: character,
-        Name: princess juliette
+        Name: princess juliette,
+        Category: {
+          Name: character,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: copyright,
-        Name: queen bonjourno
+        Name: queen bonjourno,
+        Category: {
+          Name: copyright,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: 1boy
+        Name: 1boy,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: 1girl
+        Name: 1girl,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: aqua eyes
+        Name: aqua eyes,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: blonde hair
+        Name: blonde hair,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: blush
+        Name: blush,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: breasts
+        Name: breasts,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: censored
+        Name: censored,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: crown
+        Name: crown,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: dress
+        Name: dress,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: hat
+        Name: hat,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: hetero
+        Name: hetero,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: huge breasts
+        Name: huge breasts,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: large penis
+        Name: large penis,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: mosaic censoring
+        Name: mosaic censoring,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: nipples
+        Name: nipples,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: nude
+        Name: nude,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: paizuri
+        Name: paizuri,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: penis
+        Name: penis,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: puffy nipples
+        Name: puffy nipples,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: solo focus
+        Name: solo focus,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: tongue
+        Name: tongue,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: topless male
+        Name: topless male,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: general,
-        Name: wedding dress
+        Name: wedding dress,
+        Category: {
+          Name: general,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       },
       {
         Type: meta,
-        Name: game cg
+        Name: game asset,
+        Category: {
+          Name: meta,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
+      },
+      {
+        Type: meta,
+        Name: visual novel cg,
+        Category: {
+          Name: meta,
+          TranslatedName: ,
+          Description: 
+        },
+        Description: ,
+        TranslatedName: 
       }
-    ]
+    ],
+    IsAiGenerated: false,
+    WebsiteUri: https://danbooru.donmai.us/posts/236059,
+    AppUri: pixeval://Danbooru/236059,
+    ChildrenIds: [
+      {
+        Id: 171671,
+        Md5Hash: 86e0a2aa46a3655d8f4b3d5cc84d6cae,
+        Platform: danbooru
+      }
+    ],
+    PoolsGetter: {
+      Type: Func<Post, Task<IReadOnlyList<Pool>>>,
+      Target: DanbooruApiLoader,
+      Method: System.Threading.Tasks.Task`1[System.Collections.Generic.IReadOnlyList`1[Imouto.BooruParser.Pool]] GetPoolsAsync(Imouto.BooruParser.Post)
+    },
+    SetIndex: -1,
+    SerializeKey: Imouto.BooruParser.Post
   }
 ]

@@ -1,39 +1,201 @@
 ﻿{
   Id: {
     Id: 1032020,
-    Md5Hash: da8792041184e6ba6b6584871b9ccfdc
+    Md5Hash: da8792041184e6ba6b6584871b9ccfdc,
+    PlatformType: Yandere,
+    Platform: yandere
   },
   OriginalUrl: https://files.yande.re/image/da8792041184e6ba6b6584871b9ccfdc/yande.re%201032020%20bra%20mizusawa_suzuka%20nipples%20pantsu%20school_swimsuit%20see_through%20seifuku%20senji%20swimsuits%20tegone_spike%20wet%20wet_clothes.png,
   SampleUrl: https://files.yande.re/sample/da8792041184e6ba6b6584871b9ccfdc/yande.re%201032020%20sample%20bra%20mizusawa_suzuka%20nipples%20pantsu%20school_swimsuit%20see_through%20seifuku%20senji%20swimsuits%20tegone_spike%20wet%20wet_clothes.jpg,
   PreviewUrl: https://files.yande.re/jpeg/da8792041184e6ba6b6584871b9ccfdc/yande.re%201032020%20bra%20mizusawa_suzuka%20nipples%20pantsu%20school_swimsuit%20see_through%20seifuku%20senji%20swimsuits%20tegone_spike%20wet%20wet_clothes.jpg,
-  PostedAt: 2022-10-25 11:25:03 +0,
-  UploaderId: {
+  CreateDate: 2022-10-25 11:25:03 +0,
+  Uploader: {
     Id: 225185,
-    Name: hiroimo2
+    Name: hiroimo2,
+    Platform: Yandere,
+    Description: ,
+    WebsiteUri: https://yande.re/user/show/225185
   },
   Source: (C100) [Tegone Spike (Senji)] kaimin shojo,
   FileResolution: {
     Width: 2512,
     Height: 3536
   },
-  FileSizeInBytes: 5048827,
-  Rating: Questionable,
+  ByteSize: 5048827,
+  SafeRating: {
+    SafeRatingValue: 30,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: false,
+    IsQuestionable: true,
+    IsExplicit: false,
+    IsGuro: false,
+    IsSafe: false,
+    IsR17: true,
+    IsR18: false,
+    IsR18G: false
+  },
+  Tags: [
+    {
+      Type: circle,
+      Name: tegone spike,
+      Category: {
+        Name: circle,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: artist,
+      Name: senji,
+      Category: {
+        Name: artist,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: character,
+      Name: mizusawa suzuka,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: bra,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: nipples,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: pantsu,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: school swimsuit,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: see through,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: seifuku,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: swimsuits,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: wet,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: wet clothes,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    }
+  ],
+  IsAiGenerated: false,
+  WebsiteUri: https://yande.re/post/show/1032020,
+  AppUri: pixeval://Yandere/1032020,
   ChildrenIds: [
     {
       Id: 1032025,
-      Md5Hash: 99f163812e84ef2fa0e0ea2911f112fc
+      Md5Hash: 99f163812e84ef2fa0e0ea2911f112fc,
+      PlatformType: Yandere,
+      Platform: yandere
     },
     {
       Id: 1032036,
-      Md5Hash: 776ea7ba2468ff63b3b64d134583c3e1
+      Md5Hash: 776ea7ba2468ff63b3b64d134583c3e1,
+      PlatformType: Yandere,
+      Platform: yandere
     },
     {
       Id: 1032037,
-      Md5Hash: 16e92be91ead3e4e7dfd52b5d5288ba9
+      Md5Hash: 16e92be91ead3e4e7dfd52b5d5288ba9,
+      PlatformType: Yandere,
+      Platform: yandere
     },
     {
       Id: 1052139,
-      Md5Hash: 319d35b29ab990883e283387aaff96b1
+      Md5Hash: 319d35b29ab990883e283387aaff96b1,
+      PlatformType: Yandere,
+      Platform: yandere
     }
   ],
   Pools: [
@@ -43,54 +205,6 @@
       Position: 1
     }
   ],
-  Tags: [
-    {
-      Type: circle,
-      Name: tegone spike
-    },
-    {
-      Type: artist,
-      Name: senji
-    },
-    {
-      Type: character,
-      Name: mizusawa suzuka
-    },
-    {
-      Type: general,
-      Name: bra
-    },
-    {
-      Type: general,
-      Name: nipples
-    },
-    {
-      Type: general,
-      Name: pantsu
-    },
-    {
-      Type: general,
-      Name: school swimsuit
-    },
-    {
-      Type: general,
-      Name: see through
-    },
-    {
-      Type: general,
-      Name: seifuku
-    },
-    {
-      Type: general,
-      Name: swimsuits
-    },
-    {
-      Type: general,
-      Name: wet
-    },
-    {
-      Type: general,
-      Name: wet clothes
-    }
-  ]
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }

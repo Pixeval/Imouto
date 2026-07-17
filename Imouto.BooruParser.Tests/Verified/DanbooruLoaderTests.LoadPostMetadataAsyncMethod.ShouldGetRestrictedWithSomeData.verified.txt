@@ -1,261 +1,681 @@
 ﻿{
   Id: {
     Id: 5387246,
-    Md5Hash: 2b1ae7b98857cc5654fb73177b3ab240
+    Md5Hash: 2b1ae7b98857cc5654fb73177b3ab240,
+    Platform: danbooru
   },
   OriginalUrl: https://cdn.donmai.us/original/2b/1a/2b1ae7b98857cc5654fb73177b3ab240.jpg,
   SampleUrl: https://cdn.donmai.us/sample/2b/1a/sample-2b1ae7b98857cc5654fb73177b3ab240.jpg,
   PreviewUrl: https://cdn.donmai.us/180x180/2b/1a/2b1ae7b98857cc5654fb73177b3ab240.jpg,
-  PostedAt: 2022-05-28 09:02:28.176 +0,
-  UploaderId: {
+  CreateDate: 2022-05-28 09:02:28.176 +0,
+  Uploader: {
     Id: 30072,
-    Name: Doragonn
+    Name: Doragonn,
+    Description: ,
+    WebsiteUri: https://danbooru.donmai.us/users/30072
   },
   Source: https://twitter.com/MsMspc/status/1530473954808307713,
   FileResolution: {
     Width: 1254,
     Height: 1771
   },
-  FileSizeInBytes: 1863351,
-  Rating: Questionable,
-  ChildrenIds: [
-    {
-      Id: 5195010,
-      Md5Hash: bbecb503a3efaf5873bff406ba43517a
-    },
-    {
-      Id: 5199213,
-      Md5Hash: c69aafa22d8a8602d967e38d61fe1684
-    },
-    {
-      Id: 5389814,
-      Md5Hash: 01b7c9942283ad3dab83621f189e151e
-    }
-  ],
+  ByteSize: 1863351,
+  SafeRating: {
+    SafeRatingValue: 30,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: false,
+    IsQuestionable: true,
+    IsExplicit: false,
+    IsGuro: false,
+    IsSafe: false,
+    IsR17: true,
+    IsR18: false,
+    IsR18G: false
+  },
   Tags: [
     {
       Type: artist,
-      Name: m-da s-tarou
+      Name: m-da s-tarou,
+      Category: {
+        Name: artist,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: chloe von einzbern
+      Name: chloe von einzbern,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: illyasviel von einzbern
+      Name: illyasviel von einzbern,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: copyright,
-      Name: fate/kaleid liner prisma illya
+      Name: fate/kaleid liner prisma illya,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: copyright,
-      Name: fate (series)
+      Name: fate (series),
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: 2girls
+      Name: 2girls,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: barefoot
+      Name: barefoot,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: bikini
+      Name: bikini,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: black bikini
+      Name: black bikini,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: black ribbon
+      Name: black ribbon,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: breasts
+      Name: breasts,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: clenched teeth
+      Name: clenched teeth,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: closed mouth
+      Name: closed mouth,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: collarbone
+      Name: collarbone,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: condom
+      Name: condom,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: condom wrapper
+      Name: condom wrapper,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: dark-skinned female
+      Name: dark-skinned female,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: dark skin
+      Name: dark skin,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: earrings
+      Name: earrings,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: fingernails
+      Name: fingernails,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: grin
+      Name: grin,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: hair ribbon
+      Name: hair ribbon,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: hand up
+      Name: hand up,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: heart
+      Name: heart,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: holding hands
+      Name: holding hands,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: jewelry
+      Name: jewelry,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: long hair
+      Name: long hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: looking at viewer
+      Name: looking at viewer,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: micro bikini
+      Name: micro bikini,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: multiple girls
+      Name: multiple girls,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: navel
+      Name: navel,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: petite
+      Name: petite,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: pink hair
+      Name: pink hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: red eyes
+      Name: red eyes,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: ribbon
+      Name: ribbon,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: side-tie bikini bottom
+      Name: side-tie bikini bottom,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: small breasts
+      Name: small breasts,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: smile
+      Name: smile,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: spoken blush
+      Name: spoken blush,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: squatting
+      Name: squatting,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: stomach
+      Name: stomach,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: stomach tattoo
+      Name: stomach tattoo,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: sweat
+      Name: sweat,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: swimsuit
+      Name: swimsuit,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: tattoo
+      Name: tattoo,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: teeth
+      Name: teeth,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: thighs
+      Name: thighs,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: toenails
+      Name: toenails,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: toes
+      Name: toes,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: two side up
+      Name: two side up,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: v
+      Name: v,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: white bikini
+      Name: white bikini,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: white hair
+      Name: white hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: yellow eyes
+      Name: yellow eyes,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: commentary request
+      Name: commentary request,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: highres
+      Name: highres,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     }
-  ]
+  ],
+  IsAiGenerated: false,
+  WebsiteUri: https://danbooru.donmai.us/posts/5387246,
+  AppUri: pixeval://Danbooru/5387246,
+  ChildrenIds: [
+    {
+      Id: 5195010,
+      Md5Hash: bbecb503a3efaf5873bff406ba43517a,
+      Platform: danbooru
+    },
+    {
+      Id: 5199213,
+      Md5Hash: c69aafa22d8a8602d967e38d61fe1684,
+      Platform: danbooru
+    },
+    {
+      Id: 5389814,
+      Md5Hash: 01b7c9942283ad3dab83621f189e151e,
+      Platform: danbooru
+    }
+  ],
+  PoolsGetter: {
+    Type: Func<Post, Task<IReadOnlyList<Pool>>>,
+    Target: DanbooruApiLoader,
+    Method: System.Threading.Tasks.Task`1[System.Collections.Generic.IReadOnlyList`1[Imouto.BooruParser.Pool]] GetPoolsAsync(Imouto.BooruParser.Post)
+  },
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }

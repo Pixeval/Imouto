@@ -31,31 +31,34 @@ public static class BooruApiLoaderNoteHistoryExtensions
 
                 foreach (var historyEntry in page.Results)
                     yield return historyEntry;
-
             } while (searchToken != null);
         }
         else if (loader is YandereApiLoader)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("Yande.re note history does not expose stable history ids");
         }
     }
 
     public static async IAsyncEnumerable<NoteHistoryEntry> GetNoteHistoryToDateTimeAsync(
-        this IBooruApiLoader loader, 
+        this IBooruApiLoader loader,
         DateTimeOffset upToDateTime,
         int limit = 100,
         [EnumeratorCancellation] CancellationToken ct = default)
     {
         SearchToken? searchToken = null;
-        HistorySearchResult<NoteHistoryEntry> page;
-        do
+        while (true)
         {
-            page = await loader.GetNoteHistoryPageAsync(searchToken, limit, ct);
+            var page = await loader.GetNoteHistoryPageAsync(searchToken, limit, ct);
             searchToken = page.NextToken;
+
+            if (!page.Results.Any())
+                yield break;
 
             foreach (var historyEntry in page.Results)
                 yield return historyEntry;
 
-        } while (page.Results[^1].UpdatedAt >= upToDateTime);
+            if (searchToken == null || page.Results.Min(x => x.UpdatedAt) < upToDateTime)
+                yield break;
+        }
     }
 }

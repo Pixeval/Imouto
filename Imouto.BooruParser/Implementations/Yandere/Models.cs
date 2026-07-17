@@ -5,20 +5,42 @@ namespace Imouto.BooruParser.Implementations.Yandere;
 public record YanderePost(
     [property: JsonPropertyName("id")] int Id,
     [property: JsonPropertyName("tags")] string Tags,
-    [property: JsonPropertyName("created_at")] int CreatedAt,
-    [property: JsonPropertyName("creator_id")] int? CreatorId,
+    [property: JsonPropertyName("created_at")]
+    int CreatedAt,
+    [property: JsonPropertyName("creator_id")]
+    int? CreatorId,
     [property: JsonPropertyName("author")] string Author,
     [property: JsonPropertyName("source")] string Source,
     [property: JsonPropertyName("md5")] string Md5,
-    [property: JsonPropertyName("file_size")] ulong FileSize,
-    [property: JsonPropertyName("file_url")] string FileUrl,
-    [property: JsonPropertyName("sample_url")] string? SampleUrl,
-    [property: JsonPropertyName("jpeg_url")] string JpegUrl,
+    [property: JsonPropertyName("file_size")]
+    ulong FileSize,
+    [property: JsonPropertyName("file_url")]
+    string FileUrl,
+    [property: JsonPropertyName("sample_url")]
+    string? SampleUrl,
+    [property: JsonPropertyName("jpeg_url")]
+    string JpegUrl,
     [property: JsonPropertyName("rating")] string Rating,
-    [property: JsonPropertyName("parent_id")] long? ParentId,
+    [property: JsonPropertyName("parent_id")]
+    long? ParentId,
+    [property: JsonPropertyName("has_children")]
+    bool HasChildren,
+    [property: JsonPropertyName("status")] string Status,
     [property: JsonPropertyName("width")] int Width,
     [property: JsonPropertyName("height")] int Height,
-    [property: JsonPropertyName("last_noted_at")] int LastNotedAt
+    [property: JsonPropertyName("last_noted_at")]
+    int LastNotedAt
+);
+
+public record YandereNote(
+    [property: JsonPropertyName("id")] int Id,
+    [property: JsonPropertyName("x")] int X,
+    [property: JsonPropertyName("y")] int Y,
+    [property: JsonPropertyName("width")] int Width,
+    [property: JsonPropertyName("height")] int Height,
+    [property: JsonPropertyName("is_active")]
+    bool IsActive,
+    [property: JsonPropertyName("body")] string Body
 );
 
 public record YanderePool(

@@ -1,46 +1,106 @@
 ﻿{
   Id: {
     Id: 321139,
-    Md5Hash: caedf1c6957a956fcbd1f8bb17effb73
+    Md5Hash: caedf1c6957a956fcbd1f8bb17effb73,
+    PlatformType: Yandere,
+    Platform: yandere
   },
   OriginalUrl: https://files.yande.re/image/caedf1c6957a956fcbd1f8bb17effb73/yande.re%20321139%20bra%20cleavage%20pantsu%20shirabi%20tokyo_inroaded%3A_closed_eden%20undressing.jpg,
   SampleUrl: https://files.yande.re/sample/caedf1c6957a956fcbd1f8bb17effb73/yande.re%20321139%20sample%20bra%20cleavage%20pantsu%20shirabi%20tokyo_inroaded%3A_closed_eden%20undressing.jpg,
   PreviewUrl: https://files.yande.re/image/caedf1c6957a956fcbd1f8bb17effb73/yande.re%20321139%20bra%20cleavage%20pantsu%20shirabi%20tokyo_inroaded%3A_closed_eden%20undressing.jpg,
-  PostedAt: 2015-06-01 21:39:17 +0,
-  UploaderId: {
+  CreateDate: 2015-06-01 21:39:17 +0,
+  Uploader: {
     Id: 108708,
-    Name: nphuongsun93
+    Name: nphuongsun93,
+    Platform: Yandere,
+    Description: ,
+    WebsiteUri: https://yande.re/user/show/108708
   },
   Source: ,
   FileResolution: {
     Width: 1127,
     Height: 1600
   },
-  FileSizeInBytes: 409966,
+  ByteSize: 409966,
+  SafeRating: {
+    SafeRatingValue: 20,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: true,
+    IsQuestionable: false,
+    IsExplicit: false,
+    IsGuro: false,
+    IsSafe: true,
+    IsR17: false,
+    IsR18: false,
+    IsR18G: false
+  },
   Tags: [
     {
       Type: artist,
-      Name: shirabi
+      Name: shirabi,
+      Category: {
+        Name: artist,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: copyright,
-      Name: tokyo inroaded: closed eden
+      Name: tokyo inroaded: closed eden,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: bra
+      Name: bra,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: cleavage
+      Name: cleavage,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: pantsu
+      Name: pantsu,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: undressing
+      Name: undressing,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     }
   ],
   Notes: [
@@ -68,5 +128,10 @@
         Height: 456
       }
     }
-  ]
+  ],
+  IsAiGenerated: false,
+  WebsiteUri: https://yande.re/post/show/321139,
+  AppUri: pixeval://Yandere/321139,
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }

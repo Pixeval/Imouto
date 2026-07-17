@@ -35,7 +35,7 @@ public static class BooruApiLoaderExtensions
 
 public interface IBooruApiLoader : IGetArtworkService
 {
-    async Task<IArtworkInfo> IGetArtworkService.GetArtworkAsync(string id)
+    async Task<IArtworkInfo> IGetArtworkService.GetArtworkAsync(string id, CancellationToken token)
         => await GetPostAsync(id);
 
     Task<Post> GetPostAsync(string postId);
@@ -70,7 +70,10 @@ public record SearchResult(IReadOnlyList<PostPreview> Results, string SearchTags
 
 public record HistorySearchResult<T>(
     IReadOnlyList<T> Results,
-    SearchToken? NextToken);
+    SearchToken? NextToken)
+{
+    public long? OldestHistoryId { get; init; }
+}
 
 public record PostPreview(string Id, string? Md5Hash, string Title, bool IsBanned, bool IsDeleted);
 
@@ -93,18 +96,15 @@ public record Post(
     IReadOnlyList<Note>? Notes,
     PostIdentity? Parent = null) : ISingleImage, ISerializable
 {
-    [JsonIgnore]
-    string IIdentityInfo.Id => Id.Id;
+    [JsonIgnore] string IIdentityInfo.Id => Id.Id;
 
-    [JsonIgnore]
-    string IPlatformInfo.Platform => Id.Platform;
+    [JsonIgnore] string IPlatformInfo.Platform => Id.Platform;
 
-    [JsonIgnore]
-    ILookup<ITagCategory, ITag> IArtworkInfo.Tags => Tags.ToLookup(t => t.Category, ITag (t) => t);
+    [JsonIgnore] ILookup<ITagCategory, ITag> IArtworkInfo.Tags => Tags.ToLookup(t => t.Category, ITag (t) => t);
 
     [JsonIgnore]
     [field: AllowNull, MaybeNull]
-    IReadOnlyCollection<IImageFrame> IArtworkInfo.Thumbnails => field ??= ((Func<IReadOnlyCollection<IImageFrame>>)(() =>
+    IReadOnlyCollection<IImageFrame> IArtworkInfo.Thumbnails => field ??= ((Func<IReadOnlyCollection<IImageFrame>>) (() =>
     {
         var temp = new List<IImageFrame>();
         if (PreviewUrl is not null)
@@ -130,8 +130,7 @@ public record Post(
         return temp;
     }))();
 
-    [JsonIgnore]
-    IReadOnlyDictionary<string, object> IArtworkInfo.AdditionalInfo => new Dictionary<string, object>();
+    [JsonIgnore] IReadOnlyDictionary<string, object> IArtworkInfo.AdditionalInfo => new Dictionary<string, object>();
 
     /// <summary>
     /// TODO: 是否会有gif格式的图片？实现IImageSet
@@ -146,20 +145,15 @@ public record Post(
         : ImageType.SingleAnimatedImage;
     */
 
-    [JsonIgnore]
-    int IArtworkInfo.TotalFavorite => -1;
+    [JsonIgnore] int IArtworkInfo.TotalFavorite => -1;
 
-    [JsonIgnore]
-    int IArtworkInfo.TotalView => -1;
+    [JsonIgnore] int IArtworkInfo.TotalView => -1;
 
-    [JsonIgnore]
-    bool IArtworkInfo.IsFavorite => false;
+    [JsonIgnore] bool IArtworkInfo.IsFavorite => false;
 
-    [JsonIgnore]
-    public bool IsAiGenerated => false;
+    [JsonIgnore] public bool IsAiGenerated => false;
 
-    [JsonIgnore]
-    string IArtworkInfo.Description => "";
+    [JsonIgnore] string IArtworkInfo.Description => "";
 
     [JsonIgnore]
     public Uri WebsiteUri => new(Id.PlatformType switch
@@ -172,41 +166,31 @@ public record Post(
         _ => throw new ArgumentOutOfRangeException(nameof(Id.PlatformType))
     });
 
-    [JsonIgnore]
-    public Uri AppUri => new Uri($"pixeval://{Id.PlatformType}/{Id.Id}");
+    [JsonIgnore] public Uri AppUri => new Uri($"pixeval://{Id.PlatformType}/{Id.Id}");
 
-    [JsonIgnore]
-    IPreloadableList<IUser> IArtworkInfo.Authors => [];
+    [JsonIgnore] IPreloadableList<IUser> IArtworkInfo.Authors => [];
 
-    [JsonIgnore]
-    IPreloadableList<IUser> IArtworkInfo.Uploaders => [Uploader];
+    [JsonIgnore] IPreloadableList<IUser> IArtworkInfo.Uploaders => [Uploader];
 
-    [JsonIgnore]
-    string IArtworkInfo.Title => "";
+    [JsonIgnore] string IArtworkInfo.Title => "";
 
-    [JsonIgnore]
-    int IImageSize.Width => FileResolution.Width;
+    [JsonIgnore] int IImageSize.Width => FileResolution.Width;
 
-    [JsonIgnore]
-    int IImageSize.Height => FileResolution.Height;
+    [JsonIgnore] int IImageSize.Height => FileResolution.Height;
 
-    [JsonIgnore]
-    Uri IImageFrame.ImageUri => new(OriginalUrl);
+    [JsonIgnore] Uri IImageFrame.ImageUri => new(OriginalUrl);
 
     public IReadOnlyList<int>? UgoiraFrameDelays { get; init; }
 
-    public IReadOnlyList<PostIdentity>? ChildrenIds { get; init; } 
+    public IReadOnlyList<PostIdentity>? ChildrenIds { get; init; }
 
     public IReadOnlyList<Pool>? Pools { get; init; }
 
-    [JsonIgnore]
-    public Func<Post, Task<IReadOnlyList<PostIdentity>>>? ChildrenIdsGetter { get => SwapReturn(ref field); init; }
+    [JsonIgnore] public Func<Post, Task<IReadOnlyList<PostIdentity>>>? ChildrenIdsGetter { get => SwapReturn(ref field); init; }
 
-    [JsonIgnore]
-    public Func<Post, Task<IReadOnlyList<Pool>>>? PoolsGetter { get => SwapReturn(ref field); init; }
+    [JsonIgnore] public Func<Post, Task<IReadOnlyList<Pool>>>? PoolsGetter { get => SwapReturn(ref field); init; }
 
-    [JsonIgnore]
-    public Func<Post, Task<IReadOnlyList<Note>>>? NotesGetter { get => SwapReturn(ref field); init; }
+    [JsonIgnore] public Func<Post, Task<IReadOnlyList<Note>>>? NotesGetter { get => SwapReturn(ref field); init; }
 
     private static T? SwapReturn<T>(ref T? field) where T : class
     {
@@ -215,15 +199,13 @@ public record Post(
         return temp;
     }
 
-    [JsonIgnore]
-    public int SetIndex => -1;
+    [JsonIgnore] public int SetIndex => -1;
 
     public string Serialize() => JsonSerializer.Serialize(this, PostJsonSerializerContext.Default.Post);
 
     public static Post Deserialize(string data) => JsonSerializer.Deserialize(data, PostJsonSerializerContext.Default.Post)!;
 
-    [JsonIgnore]
-    public string SerializeKey => typeof(Post).FullName!;
+    [JsonIgnore] public string SerializeKey => typeof(Post).FullName!;
 }
 
 public enum ExistState { Exist, MarkDeleted, Deleted }
@@ -236,20 +218,16 @@ public record Note(string Id, string Text, Position Point, Size Size);
 
 public record Tag(string Type, string Name) : ITag
 {
-    [JsonIgnore]
-    public ITagCategory Category => new TagCategory(Type);
+    [JsonIgnore] public ITagCategory Category => new TagCategory(Type);
 
-    [JsonIgnore]
-    public string Description => "";
+    [JsonIgnore] public string Description => "";
 
-    [JsonIgnore]
-    public string TranslatedName { get; init; } = "";
+    [JsonIgnore] public string TranslatedName { get; init; } = "";
 }
 
 public record PostIdentity(string Id, string Md5Hash, PlatformType PlatformType) : IIdentityInfo
 {
-    [JsonIgnore]
-    public string Platform { get; } = PlatformType.GetString();
+    [JsonIgnore] public string Platform { get; } = PlatformType.GetString();
 
     public PostIdentity Fork(string id, string md5Hash) => new(id, md5Hash, PlatformType);
 
@@ -284,7 +262,7 @@ public enum PlatformType
     Rule34
 }
 
-public static class PlatformTypeHelper 
+public static class PlatformTypeHelper
 {
     public static string GetString(this PlatformType type) =>
         type switch
@@ -302,31 +280,26 @@ public record Uploader(string Id, string Name, PlatformType Platform) : IUser
 {
     string IPlatformInfo.Platform => Platform.GetString();
 
-    [JsonIgnore]
-    public string Description => "";
+    [JsonIgnore] public string Description => "";
 
     [JsonIgnore]
     public Uri WebsiteUri { get; } = new(Platform switch
     {
         PlatformType.Danbooru => "https://danbooru.donmai.us/users/" + Id,
         PlatformType.Gelbooru => "https://gelbooru.com/index.php?page=account&s=profile&id=" + Id,
-        PlatformType.Sankaku => "https://chan.sankakucomplex.com/users/"+ Name,
+        PlatformType.Sankaku => "https://chan.sankakucomplex.com/users/" + Name,
         PlatformType.Yandere => "https://yande.re/user/show/" + Id,
         PlatformType.Rule34 => "https://rule34.xxx/index.php?page=account&s=profile&uname=" + Name,
         _ => throw new ArgumentOutOfRangeException(nameof(Platform))
     });
 
-    [JsonIgnore]
-    public Uri? AppUri => null;
+    [JsonIgnore] public Uri? AppUri => null;
 
-    [JsonIgnore]
-    public IReadOnlyCollection<IImageFrame> Avatar => [];
+    [JsonIgnore] public IReadOnlyCollection<IImageFrame> Avatar => [];
 
-    [JsonIgnore]
-    public IReadOnlyDictionary<string, Uri> ContactInformation => new Dictionary<string, Uri>();
+    [JsonIgnore] public IReadOnlyDictionary<string, Uri> ContactInformation => new Dictionary<string, Uri>();
 
-    [JsonIgnore]
-    public IReadOnlyDictionary<string, object> AdditionalInfo => new Dictionary<string, object>();
+    [JsonIgnore] public IReadOnlyDictionary<string, object> AdditionalInfo => new Dictionary<string, object>();
 }
 
 public record struct Position(int Top, int Left);

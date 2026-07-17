@@ -1,105 +1,252 @@
 ﻿{
   Id: {
     Id: 507625,
-    Md5Hash: 17a281b47c5baf18e4c9f6d85cc83285
+    Md5Hash: 17a281b47c5baf18e4c9f6d85cc83285,
+    PlatformType: Yandere,
+    Platform: yandere
   },
   OriginalUrl: https://files.yande.re/image/17a281b47c5baf18e4c9f6d85cc83285/yande.re%20507625%20bra%20cameltoe%20garter_belt%20hashima_izumi%20hyoudou_michiru%20katou_megumi%20lingerie%20misaki_kurehito%20pantsu%20shimapan%20stockings%20string_panties%20thighhighs%20thong.png,
   SampleUrl: https://files.yande.re/sample/17a281b47c5baf18e4c9f6d85cc83285/yande.re%20507625%20sample%20bra%20cameltoe%20garter_belt%20hashima_izumi%20hyoudou_michiru%20katou_megumi%20lingerie%20misaki_kurehito%20pantsu%20shimapan%20stockings%20string_panties%20thighhighs%20thong.jpg,
   PreviewUrl: https://files.yande.re/jpeg/17a281b47c5baf18e4c9f6d85cc83285/yande.re%20507625%20bra%20cameltoe%20garter_belt%20hashima_izumi%20hyoudou_michiru%20katou_megumi%20lingerie%20misaki_kurehito%20pantsu%20shimapan%20stockings%20string_panties%20thighhighs%20thong.jpg,
-  PostedAt: 2019-01-09 17:14:18 +0,
-  UploaderId: {
+  CreateDate: 2019-01-09 17:14:18 +0,
+  Uploader: {
     Id: 162747,
-    Name: Twinsenzw
+    Name: Twinsenzw,
+    Platform: Yandere,
+    Description: ,
+    WebsiteUri: https://yande.re/user/show/162747
   },
   Source: aniplexplus 全巻購入特典 深崎暮人描き下ろしおめくりタペストリー,
   FileResolution: {
     Width: 8887,
     Height: 6287
   },
-  FileSizeInBytes: 33451252,
-  Rating: Questionable,
-  Parent: {
-    Id: 507843,
-    Md5Hash: 6d951445ccc66bd525a9e8ec386f9b03
+  ByteSize: 33451252,
+  SafeRating: {
+    SafeRatingValue: 30,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: false,
+    IsQuestionable: true,
+    IsExplicit: false,
+    IsGuro: false,
+    IsSafe: false,
+    IsR17: true,
+    IsR18: false,
+    IsR18G: false
   },
-  ChildrenIds: [
-    {
-      Id: 536313,
-      Md5Hash: 9c40357dc4818f82f5d9a16a29f20b2b
-    },
-    {
-      Id: 962046,
-      Md5Hash: ee0578d4eba0419b2a60d934ddc7a7ac
-    }
-  ],
   Tags: [
     {
       Type: artist,
-      Name: misaki kurehito
+      Name: misaki kurehito,
+      Category: {
+        Name: artist,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: copyright,
-      Name: saenai heroine no sodatekata
+      Name: saenai heroine no sodatekata,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: hashima izumi
+      Name: hashima izumi,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: hyoudou michiru
+      Name: hyoudou michiru,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: kasumigaoka utaha
+      Name: kasumigaoka utaha,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: katou megumi
+      Name: katou megumi,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: character,
-      Name: sawamura spencer eriri
+      Name: sawamura spencer eriri,
+      Category: {
+        Name: character,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: bra
+      Name: bra,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: cameltoe
+      Name: cameltoe,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: garter belt
+      Name: garter belt,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: lingerie
+      Name: lingerie,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: pantsu
+      Name: pantsu,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: shimapan
+      Name: shimapan,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: stockings
+      Name: stockings,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: string panties
+      Name: string panties,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: thighhighs
+      Name: thighhighs,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: thong
+      Name: thong,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     }
-  ]
+  ],
+  Parent: {
+    Id: 507843,
+    Md5Hash: 6d951445ccc66bd525a9e8ec386f9b03,
+    PlatformType: Yandere,
+    Platform: yandere
+  },
+  IsAiGenerated: false,
+  WebsiteUri: https://yande.re/post/show/507625,
+  AppUri: pixeval://Yandere/507625,
+  ChildrenIds: [
+    {
+      Id: 536313,
+      Md5Hash: 9c40357dc4818f82f5d9a16a29f20b2b,
+      PlatformType: Yandere,
+      Platform: yandere
+    },
+    {
+      Id: 962046,
+      Md5Hash: ee0578d4eba0419b2a60d934ddc7a7ac,
+      PlatformType: Yandere,
+      Platform: yandere
+    }
+  ],
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }

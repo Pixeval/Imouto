@@ -1,144 +1,345 @@
 ﻿{
   Id: {
     Id: 599785,
-    Md5Hash: 979e38627091c7d0273aa82da332ea4c
+    Md5Hash: 979e38627091c7d0273aa82da332ea4c,
+    Platform: danbooru
   },
   OriginalUrl: https://cdn.donmai.us/original/97/9e/979e38627091c7d0273aa82da332ea4c.png,
   SampleUrl: https://cdn.donmai.us/original/97/9e/979e38627091c7d0273aa82da332ea4c.png,
   PreviewUrl: https://cdn.donmai.us/180x180/97/9e/979e38627091c7d0273aa82da332ea4c.jpg,
-  PostedAt: 2010-01-18 00:37:03.687 +0,
-  UploaderId: {
+  CreateDate: 2010-01-18 00:37:03.687 +0,
+  Uploader: {
     Id: 170909,
-    Name: enkil
+    Name: enkil,
+    Description: ,
+    WebsiteUri: https://danbooru.donmai.us/users/170909
   },
   Source: ,
   FileResolution: {
     Width: 350,
     Height: 350
   },
-  FileSizeInBytes: 10833,
-  Rating: Explicit,
-  Pools: [
-    {
-      Id: 730,
-      Name: Rule_34,
-      Position: 180
-    },
-    {
-      Id: 1908,
-      Name: What_Has_Science_Done?!?,
-      Position: 3
-    },
-    {
-      Id: 2388,
-      Name: Unexplained_Body_Parts,
-      Position: 7
-    }
-  ],
+  ByteSize: 10833,
+  SafeRating: {
+    SafeRatingValue: 40,
+    IsNotSpecified: false,
+    IsGeneral: false,
+    IsSensitive: false,
+    IsQuestionable: false,
+    IsExplicit: true,
+    IsGuro: false,
+    IsSafe: false,
+    IsR17: false,
+    IsR18: true,
+    IsR18G: false
+  },
   Tags: [
     {
       Type: copyright,
-      Name: original
+      Name: original,
+      Category: {
+        Name: copyright,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: 1other
+      Name: 1other,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: breasts
+      Name: breasts,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: clitoris
+      Name: clitoris,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: dithering
+      Name: dithering,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: erection
+      Name: erection,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: female pubic hair
+      Name: female pubic hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: full-package futanari
+      Name: full-package futanari,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: futanari
+      Name: futanari,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: misplaced genitals
+      Name: misplaced genitals,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: monochrome
+      Name: monochrome,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: nipples
+      Name: nipples,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: oekaki
+      Name: oekaki,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: penis
+      Name: other focus,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: pubic hair
+      Name: penis,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: puffy nipples
+      Name: pubic hair,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: pussy
+      Name: puffy nipples,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: red theme
+      Name: pussy,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: solo
+      Name: red theme,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: testicles
+      Name: solo,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: uncensored
+      Name: testicles,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: veins
+      Name: uncensored,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: veiny penis
+      Name: veins,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: general,
-      Name: what
+      Name: veiny penis,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: what,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: artist request
+      Name: artist request,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     },
     {
       Type: meta,
-      Name: lowres
+      Name: lowres,
+      Category: {
+        Name: meta,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
     }
-  ]
+  ],
+  IsAiGenerated: false,
+  WebsiteUri: https://danbooru.donmai.us/posts/599785,
+  AppUri: pixeval://Danbooru/599785,
+  PoolsGetter: {
+    Type: Func<Post, Task<IReadOnlyList<Pool>>>,
+    Target: DanbooruApiLoader,
+    Method: System.Threading.Tasks.Task`1[System.Collections.Generic.IReadOnlyList`1[Imouto.BooruParser.Pool]] GetPoolsAsync(Imouto.BooruParser.Post)
+  },
+  SetIndex: -1,
+  SerializeKey: Imouto.BooruParser.Post
 }
