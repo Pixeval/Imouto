@@ -2,7 +2,6 @@ using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
-using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using HtmlAgilityPack;
@@ -12,15 +11,13 @@ using Misaki;
 
 namespace Imouto.BooruParser.Implementations.Gelbooru;
 
-public class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSettings> options)
+public partial class GelbooruApiLoader(IFlurlClientCache factory, IOptions<GelbooruSettings> options)
     : IBooruApiLoader
 {
     public string Platform => IPlatformInfo.Gelbooru;
 
-    private static readonly Regex DateTimeRegex = new(
-        ".*(?<month>[A-Za-z]{3}).*(?<date>\\d{2}).*(?<hours>\\d{2})\\:(?<minutes>\\d{2})\\:(?<seconds>\\d{2}).*(?<tzhours>[+\\-]\\d{2})(?<tzminutes>\\d{2}).*(?<year>\\d{4})",
-        RegexOptions.Compiled,
-        TimeSpan.FromSeconds(1));
+    [GeneratedRegex(@".*(?<month>[A-Za-z]{3}).*(?<date>\d{2}).*(?<hours>\d{2})\:(?<minutes>\d{2})\:(?<seconds>\d{2}).*(?<tzhours>[+\-]\d{2})(?<tzminutes>\d{2}).*(?<year>\d{4})", RegexOptions.Compiled, 1000)]
+    private static partial Regex DateTimeRegex { get; } 
 
     private const string BaseUrl = "https://gelbooru.com/";
 
