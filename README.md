@@ -83,7 +83,7 @@ The registered loaders are singletons, so every interface resolves to the same l
 - DanbooruSettings: 
   - Login, 
   - ApiKey, 
-  - BotUserAgent (required), 
+  - BotUserAgent (required, must contain `user #<your danbooru user id>`), 
   - PauseBetweenRequestsInMs
 - YandereSettings: 
   - Login, 
@@ -103,6 +103,11 @@ The registered loaders are singletons, so every interface resolves to the same l
   - Login, 
   - Password, 
   - PauseBetweenRequestsInMs
+
+Danbooru asks every api client to identify its account in the user agent: it has to contain the string
+`user #<id>`, where `<id>` is your danbooru user id from https://danbooru.donmai.us/profile, for example
+`MyDanbooruBot/1.0; user #123`. Cloudflare challenges requests without it on some endpoints (`post_versions`,
+`note_versions` and other history endpoints), which surfaces as HTTP 403.
 
 `PauseBetweenRequestsInMs`: 
   - 0 — requests can run in parallel; 
@@ -127,7 +132,10 @@ Note: Sankaku uses string post identifiers; int helpers are provided as extensio
 
 ## Changelog
 
-### Version 5.0.0
+### Version 4.4.0
+Danbooru settings now require your own user agent **with matching user id**. For example: `<YOURAPPNAME>/1.0; user #<YOUR USER ID>` where `<YOUR USER ID>` is your danbooru user id from https://danbooru.donmai.us/profile
+
+### Version 4.3.0
 Rule34 settings now require your own bot user agent. Set `Rule34Settings.BotUserAgent`; requests without it are rejected because Rule34 may return HTTP 403 for the default HTTP client user agent.
 
 ### Version 4.2.4

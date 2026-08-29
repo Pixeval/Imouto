@@ -16,7 +16,8 @@ public class DanbooruApiLoaderFixture
         = Options.Create(new DanbooruSettings 
         { 
             PauseBetweenRequestsInMs = 0,
-            BotUserAgent = "UnitTestBot/1.0"
+            // Some endpoints no longer work without providing matching user id in the user agent
+            BotUserAgent = "UnitTestBot/1.0; user #530402"
         });
     
     private readonly IOptions<DanbooruSettings> _authorizedOptions = Options.Create(
@@ -25,7 +26,7 @@ public class DanbooruApiLoaderFixture
             ApiKey = "t77cOKpOMV5I4HN3r3gfOooG5hrh3sAqgsD_YDQCZGc",
             Login = "testuser159",
             PauseBetweenRequestsInMs = 1,
-            BotUserAgent = "UnitTestBot/1.0"
+            BotUserAgent = "UnitTestBot/1.0; user #530402"
         });
 
     private IFlurlClientCache Factory =>

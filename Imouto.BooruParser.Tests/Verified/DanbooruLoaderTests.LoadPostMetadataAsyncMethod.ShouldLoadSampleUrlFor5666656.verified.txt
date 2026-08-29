@@ -330,6 +330,10 @@
     },
     {
       Type: general,
+      Name: group masturbation
+    },
+    {
+      Type: general,
       Name: group sex
     },
     {
@@ -411,6 +415,10 @@
     {
       Type: general,
       Name: male masturbation
+    },
+    {
+      Type: general,
+      Name: masturbating together
     },
     {
       Type: general,
