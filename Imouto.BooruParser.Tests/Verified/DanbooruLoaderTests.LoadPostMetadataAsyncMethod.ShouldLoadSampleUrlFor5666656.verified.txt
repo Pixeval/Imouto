@@ -817,6 +817,17 @@
     },
     {
       Type: general,
+      Name: group masturbation,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
       Name: group sex,
       Category: {
         Name: general,
@@ -1038,6 +1049,17 @@
     {
       Type: general,
       Name: male masturbation,
+      Category: {
+        Name: general,
+        TranslatedName: ,
+        Description: 
+      },
+      Description: ,
+      TranslatedName: 
+    },
+    {
+      Type: general,
+      Name: masturbating together,
       Category: {
         Name: general,
         TranslatedName: ,
